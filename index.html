@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바이브 코딩 사전</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                        mono: ['D2Coding', 'Consolas', 'monospace'],
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 3D Flip Styles */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .flip-card-inner { transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        /* Scrollbar aesthetics */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Toast logic */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transform: translate(-50%, 20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        body { font-family: 'Pretendard', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden selection:bg-indigo-200 selection:text-indigo-900">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 z-20 px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center shrink-0 shadow-sm">
+        <div class="text-xl font-extrabold text-indigo-700 flex items-center gap-2 mb-4 sm:mb-0 select-none">
+            <span class="text-2xl bg-indigo-100 text-indigo-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-inner">✨</span> 
+            바이브 코딩 사전
+        </div>
+        <nav class="flex gap-1 sm:gap-2">
+            <button class="nav-btn transition-root px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all bg-indigo-100 text-indigo-700 shadow-sm" data-target="view-dictionary">1. 용어 설명</button>
+            <button class="nav-btn transition-root px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900" data-target="view-sandbox">2. 용어 실습</button>
+            <button class="nav-btn transition-root px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100 hover:text-slate-900" data-target="view-flashcard">3. 용어 복습</button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 relative bg-slate-50 overflow-hidden">
+        
+        <!-- View 1: Dictionary -->
+        <section id="view-dictionary" class="view-section absolute inset-0 overflow-y-auto px-4 sm:px-6 py-6 custom-scrollbar flex flex-col items-center">
+            
+            <!-- Search Bar -->
+            <div class="sticky top-0 bg-slate-50/95 backdrop-blur z-10 w-full max-w-4xl pb-4 pt-2 shrink-0 border-b border-transparent shadow-[0_20px_20px_-20px_rgba(248,250,252,1)] items-center">
+                <div class="relative w-full shadow-sm rounded-2xl group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-transform group-focus-within:scale-110 group-focus-within:text-indigo-500 text-slate-400">
+                        <span class="text-xl">🔍</span>
+                    </div>
+                    <input type="text" id="search-input" class="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-slate-700 bg-white placeholder-slate-400 text-base shadow-inner" placeholder="찾고 싶은 UI 용어를 검색하세요... (예: 모달, 레이아웃)">
+                </div>
+            </div>
+
+            <!-- List Container -->
+            <div id="dictionary-container" class="w-full max-w-4xl mt-4 pb-12 flex-1 relative"></div>
+        </section>
+
+        <!-- View 2: Sandbox -->
+        <section id="view-sandbox" class="view-section absolute inset-0 overflow-hidden hidden w-full px-4 sm:px-8 lg:px-12 py-6">
+            <div class="h-full w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
+                <!-- Left: Fake Browser (60%) -->
+                <div class="w-full lg:w-[60%] h-[50vh] lg:h-full flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden group">
+                    <!-- MacOS Header -->
+                    <div class="bg-slate-100/80 backdrop-blur-md px-4 py-3 border-b border-slate-200 flex items-center justify-between shrink-0 select-none">
+                        <div class="flex gap-2">
+                            <div class="w-[14px] h-[14px] rounded-full bg-red-400 border border-red-500 shadow-sm hover:scale-110 transition-transform"></div>
+                            <div class="w-[14px] h-[14px] rounded-full bg-yellow-400 border border-yellow-500 shadow-sm hover:scale-110 transition-transform"></div>
+                            <div class="w-[14px] h-[14px] rounded-full bg-green-400 border border-green-500 shadow-sm hover:scale-110 transition-transform"></div>
+                        </div>
+                        <div class="mx-4 flex-1 max-w-md">
+                            <div class="bg-white px-3 py-1.5 rounded-lg text-xs text-slate-500 border border-slate-200 text-center truncate shadow-inner flex items-center justify-center gap-2 group-hover:border-indigo-200 transition-colors">
+                                <span class="opacity-70 text-[10px]">🔒</span> https://sandbox.vibecoding.com
+                            </div>
+                        </div>
+                        <div class="w-[42px]"></div> <!-- Spacer -->
+                    </div>
+                    <!-- Render Area -->
+                    <div id="sandbox-preview" class="flex-1 bg-white relative overflow-auto custom-scrollbar">
+                        <!-- Content -->
+                    </div>
+                </div>
+
+                <!-- Right: Controls & Details (40%) -->
+                <div class="w-full lg:w-[40%] h-[50vh] lg:h-full flex flex-col gap-5">
+                    <!-- List container -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 shrink-0 max-h-[45%] flex flex-col">
+                        <h3 class="text-xs font-bold text-slate-400 mb-3 px-1 uppercase tracking-widest flex justify-between items-center">
+                            <span>탐색할 용어 선택</span>
+                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full text-slate-500 select-none">실습 컴포넌트</span>
+                        </h3>
+                        <div id="sandbox-list" class="space-y-1.5 overflow-y-auto custom-scrollbar flex-1 pr-1"></div>
+                    </div>
+                    
+                    <!-- Detail container -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex-1 overflow-y-auto custom-scrollbar flex flex-col relative">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-full blur-3xl -z-10 -mr-10 -mt-10"></div>
+                        <div id="sandbox-term-title" class="mb-5 text-slate-800 border-b border-slate-100 pb-4"></div>
+                        
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1 mb-2">상세 설명</h4>
+                        <p id="sandbox-detail" class="text-slate-600 text-[15px] leading-relaxed mb-8 flex-1"></p>
+                        
+                        <div class="mt-auto pt-4 border-t border-slate-100 shrink-0">
+                            <h4 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                                <span class="text-indigo-600 bg-indigo-100 p-1.5 rounded-md text-xs">💻</span> 실제 코딩 적용 패턴
+                            </h4>
+                            <div class="bg-[#1e293b] border border-[#334155] text-green-400 p-4 rounded-xl font-mono text-sm relative group overflow-hidden shadow-inner">
+                                <div class="overflow-x-auto pb-1 custom-scrollbar">
+                                    <code id="sandbox-code" class="whitespace-pre align-top text-[13px] leading-relaxed text-[#caddbd]"></code>
+                                </div>
+                                <button id="sandbox-code-copy" class="absolute top-2 right-2 p-2 bg-slate-700/80 hover:bg-indigo-500 text-slate-300 hover:text-white rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 border border-slate-600 hover:border-indigo-400 shadow-md flex items-center" title="코드 복사">
+                                    📋
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 3: Flashcard -->
+        <section id="view-flashcard" class="view-section absolute inset-0 overflow-y-auto px-4 sm:px-6 py-6 hidden custom-scrollbar">
+            <div class="max-w-6xl mx-auto flex flex-col h-full">
+                <!-- Filter category -->
+                <div class="flex overflow-x-auto py-3 gap-2 sm:gap-3 mb-6 no-scrollbar shrink-0 px-1" id="flashcard-filter">
+                    <!-- Buttons injected -->
+                </div>
+                <!-- Grid Area -->
+                <div id="flashcard-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 pb-12 w-full place-content-start">
+                    <!-- Cards injected -->
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400 font-medium shrink-0 select-none z-20">
+        &copy; 2026 Vibe Coding Interactive Dictionary. All rights reserved. Designed for Learners.
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 left-1/2 bg-slate-800/95 backdrop-blur-md text-white px-6 py-4 rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] z-50 flex items-center gap-3 font-semibold pointer-events-none border border-slate-700">
+        <div class="w-7 h-7 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center border border-green-500/30">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <span id="toast-msg" class="tracking-wide text-[15px]"></span>
+    </div>
+
+    <!-- External DB Script Loading -->
+    <script src="data.js"></script>
+
+    <script>
+        // -------------------------
+        // 2. Core Utilities
+        // -------------------------
+        
+        // Copy to clipboard with UI feedback
+        window.copyToClipboard = function(e, text) {
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            
+            // Clipboard logic
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(showToastStr);
+            } else {
+                // Fallback
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.opacity = "0";
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToastStr();
+                } catch (err) {}
+                document.body.removeChild(textArea);
+            }
+
+            function showToastStr() {
+                const toast = document.getElementById('toast');
+                document.getElementById('toast-msg').innerText = `"${text}"이(가) 복사되었습니다!`;
+                toast.classList.add('show');
+                
+                if (window.toastTimeout) clearTimeout(window.toastTimeout);
+                window.toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+        };
+
+        // UI Component for Term + Copy Icon
+        function TermWithCopy(term, textSize = 'text-base') {
+            return `
+                <span class="inline-flex items-center gap-1.5 font-bold ${textSize} text-slate-800">
+                    ${term}
+                    <button onclick="copyToClipboard(event, '${term}')" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-500 hover:text-indigo-600 transition-colors text-sm shadow-sm flex items-center border border-slate-200" title="용어명 복사하기">
+                        📋
+                    </button>
+                </span>
+            `;
+        }
+
+        // -------------------------
+        // 3. View Renderers
+        // -------------------------
+
+        /* --- View 1: Dictionary --- */
+        function renderDictionary() {
+            const container = document.getElementById('dictionary-container');
+            const searchVal = document.getElementById('search-input').value.toLowerCase();
+            
+            const grouped = {};
+            categories.forEach(cat => { if(cat !== '전체보기') grouped[cat] = []; });
+            
+            DB.forEach(item => {
+                if (item.term.toLowerCase().includes(searchVal) || item.shortDesc.toLowerCase().includes(searchVal)) {
+                    if(!grouped[item.category]) grouped[item.category] = [];
+                    grouped[item.category].push(item);
+                }
+            });
+
+            let html = '';
+            let totalCount = 0;
+            
+            Object.keys(grouped).forEach(cat => {
+                if (grouped[cat].length > 0) {
+                    totalCount += grouped[cat].length;
+                    
+                    const catBadge = cat.split('.'); // ['1', '레이아웃']
+                    
+                    html += `<h2 class="text-xl font-bold mt-10 mb-5 px-1 pb-3 border-b-2 border-slate-200 text-slate-700 flex items-center gap-2">
+                                <span class="bg-indigo-100 text-indigo-700 w-7 h-7 rounded-lg flex items-center justify-center text-sm">${catBadge[0]}</span>
+                                ${catBadge[1]}
+                             </h2>`;
+                    
+                    html += `<div class="space-y-4">`;
+                    grouped[cat].forEach(item => {
+                        html += `
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center gap-4 group">
+                                <div class="w-full md:w-[35%] shrink-0">
+                                    ${TermWithCopy(item.term, 'text-lg')}
+                                </div>
+                                <div class="flex-1 text-slate-600 text-[15px] flex flex-col md:flex-row md:items-center">
+                                    <span class="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-md text-xs font-bold mb-3 md:mb-0 md:mr-4 border border-indigo-100 self-start shrink-0 pointer-events-none group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                        ${item.category}
+                                    </span>
+                                    <span class="leading-relaxed font-medium">${item.shortDesc}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+            });
+            
+            if(totalCount === 0) {
+                 html = `
+                    <div class="flex flex-col items-center justify-center py-20 text-slate-400">
+                        <div class="text-6xl mb-4 opacity-50">🔍</div>
+                        <p class="text-lg font-bold">검색 결과가 없습니다.</p>
+                        <p class="text-sm mt-1">다른 키워드(예: 팝업, 레이아웃)로 검색해보세요.</p>
+                    </div>
+                 `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        /* --- View 2: Sandbox --- */
+        let currentSandboxId = null;
+        function renderSandbox() {
+            const listContainer = document.getElementById('sandbox-list');
+            
+            let listHtml = '';
+            DB.forEach(item => {
+                const isActive = item.id === currentSandboxId;
+                listHtml += `
+                    <button onclick="selectSandboxItem(${item.id})" class="w-full text-left px-4 py-3.5 rounded-xl text-[14px] font-bold transition-all ${isActive ? 'bg-indigo-600 text-white shadow-md transform scale-[1.02]' : 'bg-white hover:bg-slate-50 border border-slate-200 text-slate-700'} flex justify-between items-center group">
+                        ${item.term}
+                        <span class="${isActive ? 'text-indigo-200' : 'text-slate-300 group-hover:text-indigo-400 group-hover:translate-x-1'} transition-all font-mono">▶</span>
+                    </button>
+                `;
+            });
+            listContainer.innerHTML = listHtml;
+            
+            if (currentSandboxId) {
+                const item = DB.find(d => d.id === currentSandboxId);
+                
+                document.getElementById('sandbox-term-title').innerHTML = TermWithCopy(item.term, 'text-2xl');
+                document.getElementById('sandbox-detail').innerText = item.detailDesc;
+                
+                // Escape HTML tags to show code properly
+                const escapedHtml = item.actionPrompt.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                document.getElementById('sandbox-code').innerHTML = escapedHtml;
+                
+                document.getElementById('sandbox-code-copy').onclick = (e) => copyToClipboard(e, item.actionPrompt);
+                
+                const previewContainer = document.getElementById('sandbox-preview');
+                item.render(previewContainer);
+            } else {
+                if (DB.length > 0) selectSandboxItem(DB[0].id);
+            }
+        }
+
+        function selectSandboxItem(id) {
+            currentSandboxId = id;
+            renderSandbox();
+        }
+
+        /* --- View 3: Flashcard --- */
+        let currentFilter = '전체보기';
+        function renderFlashcard() {
+            const filterContainer = document.getElementById('flashcard-filter');
+            const gridContainer = document.getElementById('flashcard-grid');
+            
+            let filterHtml = '';
+            categories.forEach(cat => {
+                const isActive = cat === currentFilter;
+                filterHtml += `
+                    <button onclick="setFlashcardFilter('${cat}')" class="whitespace-nowrap px-5 py-2.5 rounded-xl text-[14px] font-bold transition-all ${isActive ? 'bg-slate-800 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300'}">
+                        ${cat}
+                    </button>
+                `;
+            });
+            filterContainer.innerHTML = filterHtml;
+            
+            let gridHtml = '';
+            DB.forEach(item => {
+                if (currentFilter !== '전체보기' && item.category !== currentFilter) return;
+                
+                gridHtml += `
+                    <div class="perspective-1000 h-64 sm:h-72">
+                        <div class="flip-card w-full h-full relative cursor-pointer group" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-card-inner w-full h-full absolute transform-style-3d shadow-[0_4px_20px_-5px_rgba(0,0,0,0.08)] rounded-3xl group-hover:shadow-[0_8px_30px_-5px_rgba(79,70,229,0.15)] transition-all duration-300">
+                                <!-- Front -->
+                                <div class="absolute inset-0 backface-hidden bg-white rounded-3xl border border-slate-200 flex flex-col items-center justify-center p-6 text-center">
+                                    <span class="px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-lg text-xs font-black mb-5 border border-indigo-100 tracking-wide">${item.category}</span>
+                                    <div class="mb-3">${TermWithCopy(item.term, 'text-2xl')}</div>
+                                    <div class="absolute bottom-5 text-xs font-bold text-slate-300 mt-auto flex items-center gap-1 opacity-100 group-hover:text-indigo-400 transition-colors animate-pulse">
+                                        <span>🖱️</span> 터치하여 정답 확인
+                                    </div>
+                                </div>
+                                <!-- Back -->
+                                <div class="absolute inset-0 backface-hidden bg-indigo-600 rounded-3xl rotate-y-180 flex flex-col items-center justify-center p-8 text-center border-2 border-indigo-500 text-white overflow-hidden shadow-inner">
+                                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -mt-10 -mr-10"></div>
+                                    <div class="text-6xl mb-6 filter drop-shadow-md z-10">${item.icon || '✨'}</div>
+                                    <p class="text-base sm:text-[17px] font-bold leading-relaxed z-10 opacity-90 break-keep">${item.shortDesc}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            gridContainer.innerHTML = gridHtml;
+        }
+
+        function setFlashcardFilter(cat) {
+            currentFilter = cat;
+            renderFlashcard();
+        }
+
+        // -------------------------
+        // 4. Tab Navigation
+        // -------------------------
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+                
+                // Remove block or flex display
+                if (el.id === 'view-dictionary') el.classList.remove('flex');
+                if (el.id === 'view-sandbox') el.classList.remove('block');
+                if (el.id === 'view-flashcard') el.classList.remove('block');
+
+                // Special handling for views
+                if (el.id === viewId) {
+                    if (viewId === 'view-dictionary') {
+                        el.classList.remove('hidden');
+                        el.classList.add('flex');
+                    } else {
+                        el.classList.remove('hidden');
+                        el.classList.add('block');
+                    }
+                }
+            });
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === viewId) {
+                    btn.classList.add('bg-indigo-100', 'text-indigo-700', 'shadow-sm');
+                    btn.classList.remove('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900', 'shadow-none');
+                } else {
+                    btn.classList.remove('bg-indigo-100', 'text-indigo-700', 'shadow-sm');
+                    btn.classList.add('text-slate-600', 'hover:bg-slate-100', 'hover:text-slate-900', 'shadow-none');
+                }
+            });
+
+            if (viewId === 'view-dictionary') renderDictionary();
+            if (viewId === 'view-sandbox') renderSandbox();
+            if (viewId === 'view-flashcard') renderFlashcard();
+        }
+
+        // -------------------------
+        // 5. App Initialization
+        // -------------------------
+        window.onload = () => {
+            // Setup Nav Listeners
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => switchView(e.target.dataset.target));
+            });
+
+            // Setup Search Listener
+            document.getElementById('search-input').addEventListener('input', renderDictionary);
+
+            // Init App
+            switchView('view-dictionary');
+        };
+
+    </script>
+</body>
+</html>
