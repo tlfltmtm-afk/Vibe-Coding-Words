@@ -78,19 +78,19 @@
         <!-- Preview Area (Right) -->
         <section class="flex-1 bg-slate-100 relative flex flex-col items-center justify-center p-8 overflow-hidden">
             
-            <!-- Global Copy Action (Fixed Top) -->
-            <div class="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-6 bg-white/90 backdrop-blur-md px-8 py-4 rounded-3xl border border-white shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)]">
+            <!-- Global Copy Action (Refined Top Bar) -->
+            <div class="w-full max-w-[1240px] mb-6 flex items-center justify-between bg-white px-8 py-4 rounded-3xl border border-slate-200 shadow-sm shrink-0">
                 <div class="flex flex-col">
-                    <span id="concept-name-display" class="font-extrabold text-slate-800 text-base">--</span>
+                    <span id="concept-name-display" class="font-extrabold text-slate-800 text-lg">--</span>
                     <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wide">시스템 컬러 시스템 및 가이드 코드</span>
                 </div>
                 <button onclick="copyConceptCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl transition-all active:scale-95 flex items-center gap-2 text-sm">
-                    📋 컨셉 코드 복사
+                    📋 전체 컨셉 코드 복사
                 </button>
             </div>
 
             <!-- Fake Browser Container -->
-            <div id="preview-box" class="preview-window w-full h-full max-w-[1240px] max-h-[820px] bg-white rounded-3xl overflow-hidden flex flex-col border border-white relative mt-12">
+            <div id="preview-box" class="preview-window w-full h-full max-w-[1240px] max-h-[750px] bg-white rounded-3xl overflow-hidden flex flex-col border border-white relative">
                 <!-- Interactive Fake Site injected here -->
             </div>
 
@@ -196,14 +196,25 @@
         function renderList() {
             const list = document.getElementById('concept-list');
             list.innerHTML = CONCEPTS.map(c => `
-                <button onclick="selectConcept(${c.id})" class="w-full text-left p-4 rounded-2xl transition-all border ${currentId === c.id ? 'bg-indigo-50 border-indigo-200 shadow-sm' : 'bg-white border-transparent hover:bg-slate-50'} flex gap-4 items-center group">
-                    <div class="w-10 h-10 rounded-full border border-slate-200 shadow-inner shrink-0" style="background-color: ${c.colors.primary}"></div>
-                    <div class="flex-1 overflow-hidden">
-                        <p class="font-extrabold text-sm text-slate-800 truncate">${c.name}</p>
-                        <p class="text-[10px] text-slate-400 font-bold truncate">${c.tag}</p>
-                    </div>
-                </button>
+                <div class="group relative">
+                    <button onclick="selectConcept(${c.id})" class="w-full text-left p-4 pr-12 rounded-2xl transition-all border ${currentId === c.id ? 'bg-indigo-50 border-indigo-200 shadow-sm' : 'bg-white border-transparent hover:bg-slate-50'} flex gap-3 items-center">
+                        <div class="w-8 h-8 rounded-full border border-slate-200 shadow-inner shrink-0" style="background-color: ${c.colors.primary}"></div>
+                        <div class="flex-1 overflow-hidden">
+                            <p class="font-extrabold text-[13px] text-slate-800 truncate">${c.name}</p>
+                            <p class="text-[10px] text-slate-400 font-bold truncate">${c.tag}</p>
+                        </div>
+                    </button>
+                    <!-- Small Individual Copy Button -->
+                    <button onclick="event.stopPropagation(); specialCopy(${c.id})" class="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white border border-slate-100 rounded-lg text-slate-400 hover:text-indigo-600 hover:border-indigo-200 shadow-sm opacity-0 group-hover:opacity-100 transition-all z-10" title="이 컨셉 코드만 복사">
+                        📋
+                    </button>
+                </div>
             `).join('');
+        }
+
+        function specialCopy(id) {
+            const c = CONCEPTS.find(item => item.id === id);
+            copyText(c.blueprint);
         }
 
         function selectConcept(id) {
@@ -298,8 +309,10 @@
 
         function copyConceptCode() {
             const c = CONCEPTS.find(item => item.id === currentId);
-            const text = c.blueprint;
-            
+            copyText(c.blueprint);
+        }
+
+        function copyText(text) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => showToast());
             } else {
