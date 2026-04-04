@@ -381,7 +381,7 @@ const userText = `
 let currentLesson;
 const parsedData = {};
 
-const lines = userText.split('\\n');
+const lines = userText.split('\n');
 let sessionKey = 0;
 let slideIndex = 0;
 
