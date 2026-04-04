@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바이브 코딩 프로젝트 대시보드 - 프로 버전</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accent: '#6366f1'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+
+        .accordion-content.open {
+            max-height: 500px;
+            /* Large enough to fit content */
+            padding-top: 1rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .chevron-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .chevron-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .slide-content {
+            white-space: pre-line;
+        }
+
+        /* Premium Diagram Styling */
+        .diagram-box {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8));
+            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-darkBg text-white font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="p-8 border-b border-white/5 bg-slate-900/80 backdrop-blur-xl sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/20">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-blue-400"></i>
+                </div>
+                <div>
+                    <h1
+                        class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                        바이브 코딩 마스터 클래스
+                    </h1>
+                    <p class="text-slate-400 font-medium">15차시 통합 교육용 대시보드</p>
+                </div>
+            </div>
+            <div
+                class="px-4 py-2 bg-slate-800/50 rounded-full border border-slate-700 text-sm text-slate-300 font-semibold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                v2.0 Professional
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboards (Accordion List) -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-6 pb-32 mt-8 space-y-4" id="accordion-container">
+        <!-- Rendered by JS -->
+    </main>
+
+    <!-- Giant Slide Modal -->
+    <div id="slide-modal"
+        class="fixed inset-0 bg-black/98 z-50 hidden flex-col transition-all duration-300 opacity-0 translate-y-4">
+        <div
+            class="flex justify-between items-center p-6 border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-10">
+            <div class="flex items-center gap-4">
+                <div id="modal-session-badge"
+                    class="px-3 py-1 bg-white/10 text-white rounded-lg text-xs font-bold uppercase tracking-wider">
+                    Session 01</div>
+                <h2 id="modal-title" class="text-2xl font-bold text-white/90">차시 제목</h2>
+            </div>
+            <button id="btn-close-modal" class="p-2.5 hover:bg-white/10 rounded-xl transition-all group">
+                <i data-lucide="x" class="w-7 h-7 text-white/50 group-hover:text-white"></i>
+            </button>
+        </div>
+
+        <div
+            class="flex-1 flex flex-col md:flex-row items-center justify-center relative px-4 md:px-20 pt-8 pb-24 gap-8">
+            <!-- Left Arrow -->
+            <button id="btn-prev-slide"
+                class="hidden md:flex absolute left-4 lg:left-8 p-5 hover:bg-white/5 rounded-full transition-all text-white/30 hover:text-white disabled:opacity-0 disabled:pointer-events-none">
+                <i data-lucide="arrow-left" class="w-10 h-10"></i>
+            </button>
+
+            <!-- Giant Slide Canvas -->
+            <div id="slide-canvas"
+                class="w-full max-w-[90vw] md:max-w-7xl h-full flex flex-col p-8 md:p-16 transition-all duration-500 relative overflow-y-auto no-scrollbar">
+
+                <!-- Slide Header Section -->
+                <div class="mb-12">
+                    <span id="slide-badge"
+                        class="inline-block px-4 py-1.5 bg-accent/20 text-accent rounded-full text-sm font-bold tracking-tighter mb-6">SLIDE
+                        01</span>
+                    <h3 id="slide-title"
+                        class="text-5xl md:text-7xl font-extrabold text-white leading-[1.1] tracking-tight">슬라이드 제목</h3>
+                </div>
+
+                <!-- Mega Diagram Section -->
+                <div
+                    class="diagram-box border border-white/10 rounded-[2rem] p-8 md:p-14 mb-12 flex flex-col justify-center items-center relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="network" class="w-32 h-32"></i>
+                    </div>
+                    <p id="slide-diagram"
+                        class="text-2xl md:text-4xl font-bold text-blue-100 slide-content leading-snug text-center z-10 max-w-5xl">
+                    </p>
+                </div>
+
+                <!-- Footer Context -->
+                <div class="space-y-10">
+                    <div class="flex items-start gap-6">
+                        <div class="p-3 bg-accent/10 rounded-2xl shrink-0">
+                            <i data-lucide="lightbulb" class="w-8 h-8 text-accent"></i>
+                        </div>
+                        <p id="slide-desc"
+                            class="text-xl md:text-2xl text-slate-300 slide-content leading-relaxed font-medium"></p>
+                    </div>
+
+                    <!-- External Links Section -->
+                    <div id="slide-links" class="flex flex-wrap gap-4 pl-14">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Arrow -->
+            <button id="btn-next-slide"
+                class="hidden md:flex absolute right-4 lg:right-8 p-5 hover:bg-white/5 rounded-full transition-all text-white/30 hover:text-white disabled:opacity-0 disabled:pointer-events-none">
+                <i data-lucide="arrow-right" class="w-10 h-10"></i>
+            </button>
+        </div>
+
+        <!-- Indicator & Mobile Nav -->
+        <div
+            class="h-20 flex items-center justify-between px-10 fixed bottom-0 w-full bg-gradient-to-t from-black via-black/80 to-transparent">
+            <div class="flex gap-4 md:hidden">
+                <button id="btn-prev-mobile" class="p-3 bg-white/5 rounded-full"><i data-lucide="arrow-left"
+                        class="w-6 h-6"></i></button>
+                <button id="btn-next-mobile" class="p-3 bg-white/5 rounded-full"><i data-lucide="arrow-right"
+                        class="w-6 h-6"></i></button>
+            </div>
+            <div id="slide-indicator" class="text-2xl font-black italic tracking-widest text-slate-500 mx-auto">01 / 03
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-8 py-4 rounded-3xl shadow-2xl shadow-indigo-500/40 flex items-center gap-4 transform translate-y-32 opacity-0 transition-all duration-500 z-50 border border-white/20">
+        <div class="bg-white/20 p-2 rounded-full">
+            <i data-lucide="copy" class="w-5 h-5"></i>
+        </div>
+        <span class="font-bold">심화 멘토링 프롬프트가 복사되었습니다!</span>
+    </div>
+
+    <script>
+        const aiUrls = {
+            'gemini': 'https://gemini.google.com',
+            'chatgpt': 'https://chatgpt.com',
+            'claude': 'https://claude.ai',
+            'grok': 'https://x.com/i/grok'
+        };
+
+        const lessonData = [
+            {
+                id: 1,
+                title: '1차시: 바이브 코딩이란? (패러다임의 전환)',
+                summary: '코딩의 정의가 [언어 학습]에서 [AI 지연어 디렉팅]으로 변화하는 과정을 학습하고, 교육 현장에서의 새로운 창의성 교육 패러다임을 이해합니다.',
+                topic: '바이브 코딩이란?',
+                slides: [
+                    {
+                        title: '코더(Coder)에서 디렉터(Director)로 🎬',
+                        diagram: '👨💻 과거: [인간] ➡️ 복잡한 언어 ➡️ [컴퓨터]\n👨🎨 현재: [인간: 자연어] ➡️ 🤖 AI 코딩 ➡️ [컴퓨터]',
+                        desc: '자연어가 곧 프로그래밍 언어가 되는 시대입니다. 우리는 이제 지엽적인 문법에 매몰되지 않고 AI에게 방향을 제시하는 감독입니다.'
+                    },
+                    {
+                        title: '문법을 몰라도 괜찮은 이유 🎼',
+                        diagram: '🧠 아이디어 ➕ 🗣️ 명확한 프롬프트 🟰 💻 코드 완성',
+                        desc: 'AI는 이미 수많은 코드 베이스를 학습한 베테랑 개발자입니다. 아이디어를 명확하게 설명하는 능력이 가장 중요한 스킬이 되었습니다.'
+                    },
+                    {
+                        title: '누구나 창작자가 되는 교실 🏫✨',
+                        diagram: '💡 교사: 아이디어 ➡️ AI 도우미 앱 제작\n🌱 학생: 상상력 ➡️ 나만의 웹/게임 제작',
+                        desc: '기술적 진입 장벽이 사라지면서 교사와 학생 모두가 자신의 상상을 즉각적인 결과물로 바꿀 수 있는 창의적 도구를 갖게 됩니다.'
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: '2차시: 생성형 AI의 확장과 도전 목표',
+                summary: '단순 텍스트 생성을 넘어 작동하는 소프트웨어를 만드는 생성형 AI의 진화 단계를 파악하고, 이번 과정에서 제작할 최종 프로젝트 목표를 설정합니다.',
+                topic: '생성형 AI의 확장과 도전',
+                slides: [
+                    {
+                        title: '텍스트를 넘어 코드의 세계로 🚀',
+                        diagram: '📝 1단계: 텍스트 (글짓기)\n🎨 2단계: 미디어 (이미지/영상)\n💻 3단계: 소프트웨어 (작동하는 앱)',
+                        desc: 'AI의 역할이 답변을 주는 비서에서 직접 물건을 만드는 제작자(Maker)로 진화하고 있음을 이해합니다.'
+                    },
+                    {
+                        title: '상상이 현실이 되는 마법 🪄',
+                        diagram: '☁️ 상상: "우리 반 칭찬 앱이 필요해"\n⬇️ (AI와 브레인스토밍)\n📱 현실: 스마트폰에서 작동하는 정식 앱',
+                        desc: '아이디어를 실제로 "사용 가능한 도구"로 변환하는 과정을 경험하는 것이 이번 과정의 핵심입니다.'
+                    },
+                    {
+                        title: '우리가 얻어갈 3가지 전리품 🏆',
+                        diagram: '1️⃣ 웹포트폴리오\n2️⃣ 맞춤형 교육용 웹앱\n3️⃣ AI 창작 도서',
+                        desc: '이론 수업이 아닙니다. 실제 링크가 존재하고 배포된 결과물을 남기는 것이 도전 목표입니다.'
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: '3차시: 웹 생태계 (프론트/백엔드)',
+                summary: '사용자 화면인 프론트엔드와 데이터 처리를 담당하는 백엔드의 관계를 식당 시스템에 비유하여 명확히 이해합니다.',
+                topic: '웹 생태계 첫걸음',
+                slides: [
+                    {
+                        title: '웹의 작동 원리 (식당 비유) 🍽️',
+                        diagram: '👤 손님 (브라우저)\n💁 웨이터 (네트워크)\n👨🍳 주방 (서버/데이터베이스)',
+                        desc: '우리가 링크를 클릭했을 때 브라우저와 서버 사이에서 어떤 데이터가 오고 가는지 구조적으로 이해합니다.'
+                    },
+                    {
+                        title: '프론트엔드: 보이는 화면 🎭',
+                        diagram: '🏗️ HTML (뼈대) / 🎨 CSS (스타일) / ⚙️ JS (동작)',
+                        desc: '사용자가 직접 보고 만지는 모든 디자인적 요소와 상호작용은 프론트엔드 기술의 영역입니다.'
+                    },
+                    {
+                        title: '백엔드: 무대 뒤의 스태프 🥷',
+                        diagram: '💾 DB (저장) / 🧠 AI (통신) / 🔒 보안',
+                        desc: '데이터를 영구적으로 저장하거나 AI 모델과 공식적으로 통신하는 로직은 백엔드에서 안전하게 처리됩니다.'
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: '4차시: 구글 AI 스튜디오 입문',
+                summary: '제미나이(Gemini) 모델을 가장 강력하게 제어할 수 있는 개발자용 환경인 AI 스튜디오에서 코드를 직접 생성하고 배포하는 법을 익힙니다.',
+                topic: '구글 AI 스튜디오 입문',
+                slides: [
+                    {
+                        title: '강력한 AI 샌드박스 🛠️',
+                        diagram: '🌐 웹 브라우저 기반 ➡️ 즉시 테스트\n💵 무료 계정 ➡️ API 키 발급 가능',
+                        desc: '구글의 최신 모델을 무거운 설치 없이 브라우저에서 즉시 실험할 수 있는 최적의 개발 환경입니다.',
+                        links: [{ name: '구글 AI 스튜디오', url: 'https://aistudio.google.com' }]
+                    },
+                    {
+                        title: 'AI를 부리는 마법의 주문 📜',
+                        diagram: '[역할 부여] ➕ [구체적인 조건] ➡️ [고퀄리티 코드]',
+                        desc: '단순한 요청 대신 정교한 명렁어를 작성하여 AI가 정확히 내가 원하는 코드를 짜게 만드는 기법을 학습합니다.'
+                    },
+                    {
+                        title: '클릭 세 번으로 웹 배포 🐣',
+                        diagram: '프롬프트 입력 ➡️ Get Code ➡️ 브라우저 실행',
+                        desc: 'AI 스튜디오에서 생성된 코드를 즉시 공유 가능한 결과물로 구현해보는 실습입니다.'
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: '5차시: 코드 에디터 선택 가이드',
+                summary: '프로페셔널한 개발 환경을 위해 VS Code, 안티그래비티, Cursor 등 주요 에디터의 특징을 비교하고 나만의 작업실을 세팅합니다.',
+                topic: '에디터 선택 가이드',
+                slides: [
+                    {
+                        title: '나만의 본격적인 작업실 🏗️',
+                        diagram: '메모장 ➡️ (한계) / 에디터 ➡️ (기능 확장)',
+                        desc: '코딩 전용 폰트, 자동 완화, 실시간 미리보기 등 개발 생산성을 극대화하는 에디터의 필요성을 체감합니다.'
+                    },
+                    {
+                        title: '에디터 3대장 비교 ⚔️',
+                        diagram: '📘 VS Code / 🚀 Anti-gravity / 🖱️ Cursor',
+                        desc: '가장 널리 쓰이는 표준 에디터부터 최신 AI 기능이 내장된 특화 에디터까지 본인의 수준에 맞게 선택합니다.'
+                    },
+                    {
+                        title: '작업실 인테리어 (세팅) 🪚',
+                        diagram: '다운로드 ➡️ 확장 플러그인 ➡️ 로컬 폴더 오픈',
+                        desc: '에디터를 설치하고 실제 코딩을 시작하기 위한 최적의 초기 환경 설정을 마무리합니다.'
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: '6차시: 에디터에 AI 에이전트 심기',
+                summary: '독립적인 AI 사이트를 왕래할 필요 없이, 에디터 내부에 코딩 비서를 설치하여 실시간으로 코드를 수정하고 작성하는 고도화된 워크플로우를 구축합니다.',
+                topic: '에디터에 AI 에이전트 심기',
+                slides: [
+                    {
+                        title: '24시간 상주하는 코딩 비서 🤵♂️',
+                        diagram: '브라우저 AI (복붙의 번거로움)\n⬇️\n인-에디터 AI (즉각적인 수정)',
+                        desc: '코드의 맥락을 완벽히 이해하고 있는 AI 에이전트가 내 작업 공간에 들어와 직접 코딩을 도와줍니다.'
+                    },
+                    {
+                        title: '비서 고용 (확장 프로그램) 🤝',
+                        diagram: '🧩 Extensions ➡️ Search "AI" ➡️ Install',
+                        desc: 'Copilot, Roo, Cline 등 다양한 AI 확장 프로그램을 설치하고 연동하는 방법을 실습합니다.'
+                    },
+                    {
+                        title: '대화형 코딩의 시작 💬',
+                        diagram: '인간: "애니메이션 추가해줘"\nAI: "네, 코드를 수정했습니다. [Apply]"',
+                        desc: '채팅 창에 자연어로 요구사항을 입력하여 내 파일의 소스코드를 한 줄씩 자동으로 고쳐나가는 경험을 합니다.'
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: '7차시: 깃허브(GitHub) 기초',
+                summary: '전 세계 개발자들의 코드 저장소인 깃허브를 통해 소스코드를 안전하게 백업하고, 코드의 역사를 기록하는 버전 관리 시스템을 처음으로 접해봅니다.',
+                topic: '깃허브 기초',
+                slides: [
+                    {
+                        title: '전 세계 개발자들의 금고 🐙',
+                        diagram: '내 컴퓨터 💻 ➡️ (Sync) ➡️ ☁️ 깃허브 원격 저장소',
+                        desc: '내 코드를 물리적인 분실 위험 없이 인터넷상의 안전한 공간에 영구 보관하고 공유하는 기본 개념입니다.',
+                        links: [{ name: 'GitHub 공식 사이트', url: 'https://github.com' }]
+                    },
+                    {
+                        title: '코드의 타임머신 (버전 관리) ⏳',
+                        diagram: 'V1 ➡️ V2 ➡️ V3 ➡️ (실수 시) ➡️ 다시 V1으로!',
+                        desc: '언제든 과거의 정상적인 시점으로 코드를 되돌릴 수 있는 히스토리 추적 기능을 이해합니다.'
+                    },
+                    {
+                        title: '배포를 위한 필수 관문 🚪',
+                        diagram: '코드 업로드 ➡️ 깃허브 페이지 활성화 ➡️ 웹사이트 오픈',
+                        desc: '깃허브에 코드가 업로드되어야만 추후에 무료로 전 세계에 웹사이트를 배포할 수 있습니다.'
+                    }
+                ]
+            },
+            {
+                id: 8,
+                title: '8차시: [실전] 순수 프론트엔드 웹',
+                summary: '서버 연동 없이 HTML/CSS/JS만으로 작동하는 인터랙티브 정적 웹사이트를 구현하여 바이브 코딩의 실질적인 첫 결과물을 만들어냅니다.',
+                topic: '[실전] 순수 프론트엔드 웹',
+                slides: [
+                    {
+                        title: '유지비 Zero, 극대화된 속도 🪶',
+                        diagram: 'HTML 파일 하나만 있어도 OK\n브라우저만 있으면 어디서든 실행',
+                        desc: '별도의 비용 없이 브라우저의 성능만으로 충분히 멋진 기능을 구현할 수 있는 정적 웹의 장점을 파악합니다.'
+                    },
+                    {
+                        title: 'AI로 인터페이스 설계하기 🗺️',
+                        diagram: '예: 방탈출 게임 UI / 온라인 갤러리',
+                        desc: 'AI에게 디자인 컨셉과 구성 요소를 지시하여 복잡한 레이아웃을 순식간에 코드로 그려내는 과정을 실습합니다.'
+                    },
+                    {
+                        title: '수정하고 즉시 반영하기 🔍',
+                        diagram: '코드 편집 ➡️ 저장 ➡️ 새로고침 ➡️ 변화 확인',
+                        desc: 'AI와 대화하며 실시간으로 디자인과 기능을 미세 조정(Fine-tuning)하는 워크플로우에 익숙해집니다.'
+                    }
+                ]
+            },
+            {
+                id: 9,
+                title: '9차시: [실전] 프롬프트 생성기 웹',
+                summary: '사용자의 입력을 받아 AI가 이해하기 가장 좋은 형태의 프롬프트를 자동으로 조립해주는 스마트 도구를 웹 인터페이스로 직접 구축합니다.',
+                topic: '[실전] 프롬프트 생성기 웹',
+                slides: [
+                    {
+                        title: '자동 조립 자판기 개념 🧃',
+                        diagram: '[선택박스] ➕ [입력란] 🟰 완벽한 프롬프트 문자열',
+                        desc: '비전문가도 고품질의 AI 답변을 얻을 수 있도록 프롬프트 엔지니어링의 노하우를 UI 속에 녹여냅니다.'
+                    },
+                    {
+                        title: '유료 API 없이도 똑똑하게 🤫',
+                        diagram: '생성 ➡️ 복사 ➡️ 외부 AI(ChatGPT) 새 탭으로 보내기',
+                        desc: '비용 지출 없이 기능을 제공하기 위해 외부 무료 AI 서비스로 사용자를 연결하는 영리한 설계 방식을 학습합니다.'
+                    },
+                    {
+                        title: '현장 맞춤형 사례 탐구 🎒',
+                        diagram: '학급 운영 도우미 / 진로 상담 프롬프트 생성기',
+                        desc: '실제 교육 현장에서 교사와 학생들에게 가장 필요한 프롬프트 생성 앱을 직접 구상하고 구현합니다.'
+                    }
+                ]
+            },
+            {
+                id: 10,
+                title: '10차시: API와 토큰의 이해',
+                summary: '내 앱 내부에서 AI가 직접 응답하도록 제어하는 핵심 파이프라인인 API의 개념과 과금 기준인 토큰(Token)의 원리를 완벽하게 파악합니다.',
+                topic: 'API와 토큰의 이해',
+                slides: [
+                    {
+                        title: '시스템 사이의 통신 파이프 🚰',
+                        diagram: '나의 앱 ↔️ API ↔️ 구글/OpenAI 위성 서버',
+                        desc: '앱과 AI 모델의 지능을 실시간으로 연결해주는 데이터 전송 통로인 API의 역할을 이해합니다.'
+                    },
+                    {
+                        title: 'AI의 화폐, 토큰(Token) 🪙',
+                        diagram: '글자 수 ➡️ 토큰 변환 ➡️ 비용 산출',
+                        desc: 'AI가 정보를 읽고 쓰는 단위인 토큰의 정의를 배우고, 효율적으로 비용을 절약하는 최적화법을 배웁니다.'
+                    },
+                    {
+                        title: '가성비 vs 고성능 모델 선택 ⚖️',
+                        diagram: 'Gemini Flash (빠름/무료) vs GPT-4o (강력/비쌈)',
+                        desc: '서비스의 성격과 예산에 맞춰 어떤 AI 모델을 선택하는 것이 가장 현명한지 비교 분석합니다.'
+                    }
+                ]
+            },
+            {
+                id: 11,
+                title: '11차시: 무료 혜택과 보안 철칙',
+                summary: '개발자 계정의 무료 한도 활용법을 배우고, 특히 깃허브 업로드 시 API Key가 유출되어 요금 폭탄을 맞지 않도록 철저한 보안 습관을 형성합니다.',
+                topic: '무료 혜택과 보안 철칙',
+                slides: [
+                    {
+                        title: '신규 가입자 무료 한도 🎁',
+                        diagram: 'Free Tier ➡️ 매월 일정 횟수 자동 충전',
+                        desc: '학습이나 소규모 배포 시에는 비용이 발생하지 않도록 구글 AI 스튜디오 등의 무료 등급을 활용하는 법을 익힙니다.'
+                    },
+                    {
+                        title: '절대 노출 금지: 보안 키 관리 💳',
+                        diagram: '코드에 직접 입력 ❌ / 환경 변수 숨기기 ⭕',
+                        desc: 'API 키는 현금과 같습니다. 깃허브에 코드를 올리기 전 반드시 키를 분리하여 숨기는 방법(ignore)을 실습합니다.'
+                    },
+                    {
+                        title: '한도 설정: 요금 폭탄 방어 🛑',
+                        diagram: '결제 대시보드 ➡️ Usage Limit ➡️ Max $5 설정',
+                        desc: '과도한 데이터 사용이나 유출 사고 시에도 지정된 금액 이상은 결제되지 않도록 상한선을 설정하는 필수 방어책입니다.',
+                        links: [{ name: '구글 클라우드 결제 관리', url: 'https://console.cloud.google.com/billing' }]
+                    }
+                ]
+            },
+            {
+                id: 12,
+                title: '12차시: [실전] 사용자 API 입력 웹',
+                summary: '개발자가 비용을 부담하지 않고 사용자가 직접 자신의 API 키를 넣어서 사용하는 경제적인 웹 도구 제작법을 학습하고 실습합니다.',
+                topic: '[실전] 사용자 API 입력 웹',
+                slides: [
+                    {
+                        title: '유지비 Zero의 궁극적 로직 🌸',
+                        diagram: '나의 웹 ➡️ "당신의 키를 입력하세요" ➡️ AI 통신 성공',
+                        desc: '내가 만드는 모든 서비스가 영구히 무료로 유지될 수 있게 설계하는 실전형 전략입니다.'
+                    },
+                    {
+                        title: '브라우저 금고 활용 (로컬 스토리지) 💾',
+                        diagram: '최초 입력 ➡️ 자동 저장 ➡️ 재영창 시 즉시 시작',
+                        desc: '사용자가 매번 키를 입력하는 번거로움이 없도록 브라우저 내부에 안전하게 정보를 보관하는 로직을 구사합니다.'
+                    },
+                    {
+                        title: '학급 컨설팅 도우미 사례 👨🏫',
+                        diagram: '선생님들의 개인 키 사용 ➡️ 무제한 교육 상담 앱',
+                        desc: '동료 교사들과 공유해도 내 지출이 생기지 않는 효율적인 교육용 AI 툴 제작을 예로 들어 학습합니다.'
+                    }
+                ]
+            },
+            {
+                id: 13,
+                title: '13차시: [실전] 자체 API 완성형 웹',
+                summary: '키 입력 없이 즉시 사용 가능한 상용 서비스 수준의 웹 구조를 이해하고, 보안과 트래픽 통제를 위한 백엔드 중간 검문소(Proxy) 개념을 익힙니다.',
+                topic: '[실전] 자체 API 완성형 웹',
+                slides: [
+                    {
+                        title: '프로페셔널 서비스 구조 🏢',
+                        diagram: '사용자 (화면) ↔️ 백엔드 (보안/키) ↔️ AI 모델',
+                        desc: '사용자에게는 API 키를 요구하지 않으면서도 내 소중한 키는 안전하게 서버 뒤에 숨기는 표준 설계법입니다.'
+                    },
+                    {
+                        title: '백엔드라는 중간 검문소 🚧',
+                        diagram: '클라이언트 요청 ➡️ 검증 ➡️ 내 키 주입 ➡️ AI 호출',
+                        desc: '프론트엔드에서 API 서버를 직접 호출하지 않고 내 서버를 거쳐서 통신해야 하는 보안적 이유를 이해합니다.'
+                    },
+                    {
+                        title: '비용 방어: 트래픽 & 캐싱 제어 🛡️',
+                        diagram: '속도 제한(Limit) ➕ 이전 답변 재사용(Cache)',
+                        desc: '짧은 시간 과도한 요청을 막고, 똑같은 질문에는 AI를 거치지 않고 바로 답을 주는 지능적 비용 방어 기술입니다.'
+                    }
+                ]
+            },
+            {
+                id: 14,
+                title: '14차시: 깃허브로 무료 배포하기',
+                summary: '완성된 코드를 깃허브와 Vercel을 연동하여 전 세계 누구에게나 공유할 수 있는 실제 라이브 웹사이트 주소로 전환하는 전 과정을 완료합니다.',
+                topic: '깃허브로 무료 배포하기',
+                slides: [
+                    {
+                        title: '로컬 파일이 웹 주소가 되는 순간 🌍',
+                        diagram: '내 폴더 📂 ➡️ GitHub ➡️ Vercel ➡️ https://...',
+                        desc: '단순히 내 컴퓨터에서만 보이는 파일이 아니라 정식 웹 주소를 가진 인터넷 공간으로 진출합니다.'
+                    },
+                    {
+                        title: 'Vercel: 자동화 배포의 대명사 ⚡',
+                        diagram: '코드 푸시 (Push) ➡️ 자동 빌드 (Build) ➡️ 실시간 배포',
+                        desc: '클릭 한 번으로 서버 설정부터 SSL 보안 연결까지 완료해주는 배포 자동화 솔루션을 사용해봅니다.',
+                        links: [{ name: 'Vercel 공식 사이트', url: 'https://vercel.com' }]
+                    },
+                    {
+                        title: '첫 오픈 기념식 🎀',
+                        diagram: '단축 URL 생성 ➡️ 동료에게 링크 전송 ➡️ 모바일 확인',
+                        desc: '실제로 공개된 주소로 접속해보고 내 앱이 세상 밖으로 나온 쾌감을 느끼는 마지막 정점 단계입니다.'
+                    }
+                ]
+            },
+            {
+                id: 15,
+                title: '15차시: 개인 도메인 연결하기',
+                summary: '기존의 복잡한 임시 주소 대신 나만의 고유한 브랜드 가치를 가진 독자적인 도메인을 구매하고 연결하여 웹 서비스를 완성합니다.',
+                topic: '개인 도메인 연결하기',
+                slides: [
+                    {
+                        title: '브랜드 가치: 나만의 간판 📛',
+                        diagram: '복잡한-주소.vercel.app ➡️ my-vibe.com',
+                        desc: '기억하기 쉽고 신뢰감을 주는 개인 도메인이 가치를 높이는 브랜딩적 측면을 학습합니다.'
+                    },
+                    {
+                        title: '도메인 확보 실습 📜',
+                        diagram: '검색 ➡️ 소유권 구매 ➡️ 유지 관리',
+                        desc: '다양한 등록 업체를 비교하고 합리적인 가격에 원하는 주소를 소유하는 실질적인 방법을 배웁니다.',
+                        links: [
+                            { name: '가비아', url: 'https://domain.gabia.com' },
+                            { name: '호스팅케이알', url: 'https://www.hosting.kr' }
+                        ]
+                    },
+                    {
+                        title: '네임서버(DNS) 최종 매핑 🔗',
+                        diagram: '구매처 설정 ➡️ Vercel 주소와 연결 ➡️ 도메인 활성화',
+                        desc: '구매한 도메인을 실제 서버 데이터와 논리적으로 연결하여 완전한 하나의 사이트로 탄생시키는 최종 관문입니다.'
+                    }
+                ]
+            }
+        ];
+
+        function formatMarkdown(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>');
+        }
+
+        const accordionContainer = document.getElementById('accordion-container');
+
+        lessonData.forEach((lesson) => {
+            const itemHTML = `
+                <div class="bg-cardBg rounded-3xl border border-white/5 shadow-xl transition-all duration-500 hover:border-blue-500/30">
+                    <header class="p-6 cursor-pointer flex items-center justify-between group" onclick="toggleAccordion(${lesson.id})">
+                        <div class="flex items-center gap-5">
+                            <div class="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center font-black text-blue-400 border border-slate-700 group-hover:scale-110 transition-transform">
+                                ${lesson.id}
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">${lesson.title}</h3>
+                                <p class="text-sm text-slate-500 font-medium">${lesson.topic}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2 p-1.5 bg-slate-900/50 rounded-2xl border border-slate-700/50 mr-4" onclick="event.stopPropagation()">
+                                <select id="ai-select-${lesson.id}" class="bg-transparent text-slate-300 text-xs font-bold pl-3 pr-8 py-1 focus:outline-none appearance-none cursor-pointer">
+                                    <option value="gemini">Gemini</option>
+                                    <option value="chatgpt">ChatGPT</option>
+                                    <option value="claude">Claude</option>
+                                    <option value="grok">Grok</option>
+                                </select>
+                                <button onclick="handleMentoring(${lesson.id})" title="AI 심화 멘토링 프롬프트 복사" class="p-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                                    <i data-lucide="brain-circuit" class="w-5 h-5 text-white"></i>
+                                </button>
+                                <button onclick="openSlides(${lesson.id})" title="발표용 슬라이드 실행" class="p-2 bg-slate-700 hover:bg-slate-600 rounded-xl transition-all active:scale-95">
+                                    <i data-lucide="presentation" class="w-5 h-5 text-white"></i>
+                                </button>
+                            </div>
+                            <i data-lucide="chevron-down" id="chevron-${lesson.id}" class="chevron-icon w-6 h-6 text-slate-600"></i>
+                        </div>
+                    </header>
+                    
+                    <div id="content-${lesson.id}" class="accordion-content px-8">
+                        <div class="pt-4 border-t border-white/5">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="p-2 bg-blue-500/10 rounded-lg shrink-0 mt-1">
+                                    <i data-lucide="quote" class="w-5 h-5 text-blue-400"></i>
+                                </div>
+                                <p class="text-lg text-slate-300 font-medium leading-relaxed italic">
+                                    "${lesson.summary}"
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/40 rounded-2xl p-4 flex items-center justify-between border border-white/5">
+                                <span class="text-sm text-slate-400 font-semibold flex items-center gap-2">
+                                    <i data-lucide="info" class="w-4 h-4"></i>
+                                    상세 내용은 슬라이드, 심화 멘토링은 AI를 활용하세요.
+                                </span>
+                                <button onclick="openSlides(${lesson.id})" class="px-5 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                                    슬라이드 열기 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            accordionContainer.insertAdjacentHTML('beforeend', itemHTML);
+        });
+
+        lucide.createIcons();
+
+        // 1. Accordion Logic
+        function toggleAccordion(id) {
+            const content = document.getElementById(`content-${id}`);
+            const shadow = content.parentElement;
+            const chevron = document.getElementById(`chevron-${id}`);
+            const isOpen = content.classList.contains('open');
+
+            // Close all others
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                if (el.id !== `content-${id}`) {
+                    el.classList.remove('open');
+                    document.getElementById(`chevron-${el.id.split('-')[1]}`).classList.remove('rotated');
+                    el.parentElement.classList.remove('ring-2', 'ring-blue-500/20');
+                }
+            });
+
+            if (isOpen) {
+                content.classList.remove('open');
+                chevron.classList.remove('rotated');
+                shadow.classList.remove('ring-2', 'ring-blue-500/20');
+            } else {
+                content.classList.add('open');
+                chevron.classList.add('rotated');
+                shadow.classList.add('ring-2', 'ring-blue-500/20');
+            }
+        }
+
+        // 4. AI Mentoring Logic (Advanced Context Injection)
+        function handleMentoring(id) {
+            const lesson = lessonData.find(l => l.id === id);
+            const selectEl = document.getElementById(`ai-select-${id}`);
+            const selectedAI = selectEl.value;
+
+            // Collect all slide content for context
+            let slideContextLines = lesson.slides.map((s, idx) => {
+                return `[슬라이드 ${idx + 1}: ${s.title}]\n- 내용: ${s.diagram}\n- 핵심: ${s.desc}`;
+            }).join('\n\n');
+
+            const fullPrompt = `나는 아주아주 초보자야. 내가 지금 학습 중인 주제는 '${lesson.title}'이야.\n\n내가 공부한 핵심 내용은 다음과 같아:\n${slideContextLines}\n\n이 내용을 바탕으로 나를 멘토링 해줘. 이 내용을 매우 쉽게 다시 설명해주고, 심도 있는 추가 학습을 위해 내가 알아야 할 연관 주제 3개를 제시해줘.`;
+
+            navigator.clipboard.writeText(fullPrompt).then(() => {
+                showToast();
+                setTimeout(() => {
+                    const url = aiUrls[selectedAI];
+                    if (url) window.open(url, '_blank');
+                }, 1000);
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'translate-y-32');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-32');
+            }, 3000);
+        }
+
+        // 3 & 5. Slide Modal Logic (Mega Scale & Links)
+        let currentSession = null;
+        let currentSlideIndex = 0;
+
+        const modal = document.getElementById('slide-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBadge = document.getElementById('modal-session-badge');
+        const slideTitleEl = document.getElementById('slide-title');
+        const slideDescEl = document.getElementById('slide-desc');
+        const slideDiagramEl = document.getElementById('slide-diagram');
+        const slideLinksEl = document.getElementById('slide-links');
+        const slideBadge = document.getElementById('slide-badge');
+        const slideIndicator = document.getElementById('slide-indicator');
+        const slideCanvas = document.getElementById('slide-canvas');
+
+        const btnPrev = document.getElementById('btn-prev-slide');
+        const btnNext = document.getElementById('btn-next-slide');
+        const btnPrevMobile = document.getElementById('btn-prev-mobile');
+        const btnNextMobile = document.getElementById('btn-next-mobile');
+
+        function openSlides(lessonId) {
+            currentSession = lessonData.find(l => l.id === lessonId);
+            currentSlideIndex = 0;
+
+            modalTitle.textContent = currentSession.title;
+            modalBadge.textContent = `Session ${String(currentSession.id).padStart(2, '0')}`;
+
+            renderSlide();
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'translate-y-4');
+                modal.classList.add('opacity-100', 'translate-y-0');
+            }, 50);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSlides() {
+            modal.classList.add('opacity-0', 'translate-y-4');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('btn-close-modal').addEventListener('click', closeSlides);
+
+        function renderSlide() {
+            const slide = currentSession.slides[currentSlideIndex];
+            const total = currentSession.slides.length;
+
+            // Update content
+            slideBadge.textContent = `SLIDE ${String(currentSlideIndex + 1).padStart(2, '0')}`;
+            slideTitleEl.innerHTML = formatMarkdown(slide.title);
+            slideDiagramEl.innerHTML = formatMarkdown(slide.diagram);
+            slideDescEl.innerHTML = formatMarkdown(slide.desc);
+            slideIndicator.textContent = `${String(currentSlideIndex + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+
+            // Render Links
+            slideLinksEl.innerHTML = '';
+            if (slide.links && slide.links.length > 0) {
+                slide.links.forEach(link => {
+                    const btn = document.createElement('a');
+                    btn.href = link.url;
+                    btn.target = '_blank';
+                    btn.className = "flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl text-lg font-bold border border-white/10 transition-all active:scale-95";
+                    btn.innerHTML = `<i data-lucide="external-link" class="w-5 h-5"></i> ${link.name}`;
+                    slideLinksEl.appendChild(btn);
+                });
+                lucide.createIcons();
+            }
+
+            // Button states
+            btnPrev.disabled = currentSlideIndex === 0;
+            btnNext.disabled = currentSlideIndex === total - 1;
+            btnPrevMobile.disabled = currentSlideIndex === 0;
+            btnNextMobile.disabled = currentSlideIndex === total - 1;
+
+            // Flash effect
+            slideCanvas.style.opacity = '0';
+            slideCanvas.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                slideCanvas.style.opacity = '1';
+                slideCanvas.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        function nextSlide() { if (currentSlideIndex < currentSession.slides.length - 1) { currentSlideIndex++; renderSlide(); } }
+        function prevSlide() { if (currentSlideIndex > 0) { currentSlideIndex--; renderSlide(); } }
+
+        btnNext.addEventListener('click', nextSlide);
+        btnPrev.addEventListener('click', prevSlide);
+        btnNextMobile.addEventListener('click', nextSlide);
+        btnPrevMobile.addEventListener('click', prevSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('hidden')) {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+                if (e.key === 'Escape') closeSlides();
+            }
+        });
+    </script>
+</body>
+
+</html>
