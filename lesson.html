@@ -32,7 +32,6 @@
             letter-spacing: -0.02em;
         }
 
-        /* 세련된 스크롤바 */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -51,7 +50,6 @@
             background: #94a3b8;
         }
 
-        /* 아코디언 애니메이션 */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -72,12 +70,9 @@
             transform: rotate(180deg);
         }
 
-        /* 텍스트 포맷팅 (마크다운) */
         .slide-content {
             white-space: pre-wrap;
-            /* 줄바꿈 및 공백 유지 */
             word-break: keep-all;
-            /* 단어 단위 줄바꿈 (가독성 향상) */
         }
 
         .slide-content strong {
@@ -85,7 +80,6 @@
             font-weight: 800;
         }
 
-        /* 드롭다운 스타일 */
         .select-wrapper {
             position: relative;
         }
@@ -105,26 +99,6 @@
 
 <body class="bg-slate-50 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden">
 
-    <header
-        class="bg-white border-b border-slate-200 px-6 py-4 shrink-0 z-40 shadow-sm flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div
-                class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shadow-inner shrink-0">
-                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
-            </div>
-            <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Master
-                    Class</p>
-                <h1 class="text-xl font-black text-slate-900 tracking-tight leading-none">코딩 레슨 대시보드</h1>
-            </div>
-        </div>
-        <div
-            class="hidden md:flex px-4 py-1.5 bg-indigo-50 rounded-full border border-indigo-100 text-xs text-indigo-600 font-bold tracking-widest items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-            EXPERTISE 3.2
-        </div>
-    </header>
-
     <main class="flex-1 w-full overflow-y-auto custom-scrollbar p-4 md:p-8 relative bg-slate-50/50">
         <div class="max-w-5xl mx-auto space-y-4 pb-20" id="accordion-container">
         </div>
@@ -134,77 +108,77 @@
         class="fixed inset-0 bg-white z-50 hidden flex-col transition-all duration-500 opacity-0 translate-y-8">
 
         <div
-            class="flex justify-between items-center px-6 md:px-10 py-4 border-b border-slate-100 bg-white/95 backdrop-blur-xl sticky top-0 z-30 shrink-0">
-            <div class="flex items-center gap-4">
+            class="flex justify-between items-center px-4 md:px-8 py-2.5 border-b border-slate-100 bg-white/95 backdrop-blur-xl sticky top-0 z-30 shrink-0">
+            <div class="flex items-center gap-3 overflow-hidden">
                 <div id="modal-session-badge"
-                    class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-black tracking-widest shadow-md">
-                    SESSION 01
+                    class="px-2.5 py-1 bg-indigo-600 text-white rounded-md text-[10px] font-black tracking-tight shrink-0">
+                    S01
                 </div>
-                <h2 id="modal-title"
-                    class="text-sm md:text-base font-bold text-slate-700 tracking-tight truncate max-w-[200px] md:max-w-md">
-                    차시 제목</h2>
+                <div class="flex items-center gap-2 md:gap-3 overflow-hidden">
+                    <h2 id="modal-title"
+                        class="text-[11px] md:text-xs font-bold text-slate-400 tracking-tighter truncate max-w-[100px] md:max-w-xs uppercase">
+                        차시 제목</h2>
+                    <span class="w-px h-3 bg-slate-200 shrink-0"></span>
+                    <h3 id="slide-title"
+                        class="text-sm md:text-base font-black text-slate-900 tracking-tight truncate italic">
+                        슬라이드 제목
+                    </h3>
+                </div>
             </div>
             <button id="btn-close-modal"
-                class="p-2 md:p-2.5 hover:bg-slate-100 rounded-xl transition-all group border border-transparent hover:border-slate-200 shrink-0">
-                <i data-lucide="x"
-                    class="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:rotate-90 duration-300"></i>
+                class="p-1.5 hover:bg-slate-100 rounded-lg transition-all group border border-transparent shrink-0">
+                <i data-lucide="x" class="w-5 h-5 text-slate-400 group-hover:text-slate-900 duration-300"></i>
             </button>
         </div>
 
         <div class="flex-1 flex overflow-hidden relative bg-slate-50/30">
-
-            <div class="hidden xl:flex items-center justify-center w-24 shrink-0 z-30">
+            <div class="hidden xl:flex items-center justify-center w-16 shrink-0 z-30">
                 <button id="btn-prev-slide"
-                    class="p-4 hover:bg-white rounded-full transition-all text-slate-300 hover:text-indigo-600 hover:shadow-lg disabled:opacity-0 group border border-transparent hover:border-slate-200">
-                    <i data-lucide="chevron-left" class="w-10 h-10 group-hover:-translate-x-1 duration-300"></i>
+                    class="p-3 hover:bg-white rounded-full transition-all text-slate-300 hover:text-indigo-600 hover:shadow-md disabled:opacity-0 group">
+                    <i data-lucide="chevron-left" class="w-8 h-8 group-hover:-translate-x-1 duration-300"></i>
                 </button>
             </div>
 
             <div id="slide-scroll-area"
-                class="flex-1 overflow-y-auto custom-scrollbar px-6 py-10 md:py-16 relative w-full">
+                class="flex-1 overflow-y-auto custom-scrollbar px-4 py-6 md:py-10 relative w-full">
+                <div class="max-w-[900px] mx-auto flex flex-col justify-center min-h-full">
 
-                <div class="max-w-[1000px] mx-auto flex flex-col justify-center min-h-full">
-
-                    <div class="mb-10 text-center md:text-left">
+                    <div class="mb-4 flex justify-center md:justify-start">
                         <span id="slide-badge"
-                            class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-[11px] font-black tracking-[0.2em] mb-5 uppercase border border-indigo-100/50">Stage
+                            class="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-black tracking-widest uppercase border border-indigo-100/50">STAGE
                             01</span>
-                        <h3 id="slide-title"
-                            class="text-3xl md:text-4xl lg:text-[42px] font-black text-slate-900 leading-[1.3] tracking-tight break-keep">
-                            슬라이드 제목
-                        </h3>
                     </div>
 
                     <div
-                        class="bg-slate-50 rounded-[2rem] p-8 md:p-12 mb-6 border border-slate-200/60 shadow-sm relative overflow-hidden flex flex-col items-center justify-center min-h-[280px]">
+                        class="bg-slate-50 rounded-[1.5rem] p-6 md:p-10 mb-4 border border-slate-200/60 shadow-sm relative overflow-hidden flex flex-col items-center justify-center min-h-[200px] md:min-h-[260px]">
                         <div id="slide-watermark"
-                            class="absolute -right-4 -bottom-10 text-[14rem] font-black text-slate-200/50 select-none pointer-events-none tracking-tighter leading-none z-0">
+                            class="absolute -right-2 -bottom-6 text-[10rem] font-black text-slate-200/40 select-none pointer-events-none tracking-tighter leading-none z-0">
                             01
                         </div>
 
                         <p id="slide-diagram"
-                            class="text-lg md:text-2xl lg:text-[26px] font-bold text-slate-800 tracking-tight leading-[1.6] text-center z-10 w-full slide-content break-keep">
+                            class="text-lg md:text-2xl font-bold text-slate-800 tracking-tight leading-[1.5] text-center z-10 w-full slide-content break-keep">
                             도식 내용
                         </p>
                     </div>
 
                     <div
-                        class="bg-white border border-slate-200 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row gap-6 shadow-sm">
+                        class="bg-white border border-slate-200 rounded-[1.5rem] p-6 md:p-8 flex flex-col md:flex-row gap-5 shadow-sm">
                         <div class="shrink-0 flex justify-center md:justify-start">
                             <div
-                                class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center shadow-inner border border-indigo-100">
-                                <i data-lucide="zap" class="w-6 h-6 text-indigo-600"></i>
+                                class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center shadow-inner border border-indigo-100">
+                                <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i>
                             </div>
                         </div>
-                        <div class="space-y-3 w-full">
+                        <div class="space-y-2 w-full">
                             <span
-                                class="text-indigo-600 font-black text-[11px] tracking-[0.15em] uppercase block text-center md:text-left">Expert
+                                class="text-indigo-600 font-black text-[10px] tracking-widest uppercase block text-center md:text-left">Expert
                                 Insights</span>
                             <p id="slide-desc"
-                                class="text-[15px] md:text-[17px] text-slate-600 slide-content leading-[1.8] font-medium break-keep">
+                                class="text-[14px] md:text-[16px] text-slate-600 slide-content leading-[1.7] font-medium break-keep">
                                 상세 설명 내용
                             </p>
-                            <div id="slide-links" class="pt-4 flex flex-wrap gap-3 justify-center md:justify-start">
+                            <div id="slide-links" class="pt-2 flex flex-wrap gap-2 justify-center md:justify-start">
                             </div>
                         </div>
                     </div>
@@ -212,33 +186,31 @@
                 </div>
             </div>
 
-            <div class="hidden xl:flex items-center justify-center w-24 shrink-0 z-30">
+            <div class="hidden xl:flex items-center justify-center w-16 shrink-0 z-30">
                 <button id="btn-next-slide"
-                    class="p-4 hover:bg-white rounded-full transition-all text-slate-300 hover:text-indigo-600 hover:shadow-lg disabled:opacity-0 group border border-transparent hover:border-slate-200">
-                    <i data-lucide="chevron-right" class="w-10 h-10 group-hover:translate-x-1 duration-300"></i>
+                    class="p-3 hover:bg-white rounded-full transition-all text-slate-300 hover:text-indigo-600 hover:shadow-lg disabled:opacity-0 group">
+                    <i data-lucide="chevron-right" class="w-8 h-8 group-hover:translate-x-1 duration-300"></i>
                 </button>
             </div>
         </div>
 
         <div
-            class="h-16 md:h-20 flex items-center justify-between px-6 md:px-10 fixed bottom-0 w-full bg-white border-t border-slate-100 z-40 shrink-0">
-            <div class="flex items-center gap-4 md:gap-6">
-                <div class="flex xl:hidden gap-2">
+            class="h-12 md:h-14 flex items-center justify-between px-6 md:px-10 fixed bottom-0 w-full bg-white border-t border-slate-100 z-40 shrink-0">
+            <div class="flex items-center gap-4">
+                <div class="flex xl:hidden gap-1.5">
                     <button id="btn-prev-mobile"
-                        class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl transition-all active:scale-95 text-slate-500 hover:text-indigo-600"><i
-                            data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                        class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-500 active:scale-95 transition-all"><i
+                            data-lucide="chevron-left" class="w-4 h-4"></i></button>
                     <button id="btn-next-mobile"
-                        class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl transition-all active:scale-95 text-slate-500 hover:text-indigo-600"><i
-                            data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                        class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-500 active:scale-95 transition-all"><i
+                            data-lucide="chevron-right" class="w-4 h-4"></i></button>
                 </div>
-                <div id="slide-indicator" class="text-xl md:text-2xl font-black text-slate-300 italic tracking-[0.2em]">
+                <div id="slide-indicator" class="text-sm md:text-base font-black text-slate-300 italic tracking-widest">
                     01 / 03
                 </div>
             </div>
-            <div class="hidden md:flex items-center gap-4">
-                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest hidden lg:block">Use
-                    Keyboard Arrows ⌨️</span>
-                <div class="w-48 lg:w-64 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div class="flex items-center gap-4">
+                <div class="w-32 md:w-48 h-1 bg-slate-100 rounded-full overflow-hidden">
                     <div id="progress-bar" class="h-full bg-indigo-500 transition-all duration-500 rounded-full"
                         style="width: 33%"></div>
                 </div>
@@ -266,10 +238,6 @@
             'grok': 'https://x.com/i/grok'
         };
 
-        // =====================================================================
-        // 이 lessonData 변수는 update_slides.js 스크립트가 찾아 내용을 업데이트하는 곳입니다.
-        // 변수명이나 괄호 형태를 변경하지 마세요!
-        // =====================================================================
         const lessonData = [
             {
                 id: 1,
@@ -446,10 +414,10 @@
                 topic: 'Custom Domains',
                 slides: [
                     { title: '복잡한 기본 주소 대신, 나만의 간판 달기 📛', diagram: '❌ Vercel 기본 주소: `https://vibe-project-12345ab-random.vercel.app` (외우기도, 남에게 알려주기도 민망하고 힘듦)\n⭕ **개인 도메인: `https://www.teachers-vibe.co.kr` (명함에 적기 좋은 전문성, 짧고 기억하기 쉬움!)**', desc: '- 무료로 받은 배포 주소는 임시 번호판과 같습니다. 나만의 철학, 내 이름, 혹은 우리 학급의 아이덴티티가 담긴 깔끔한 \'도메인(인터넷 주소)\'을 연결하는 순간, 연습용 프로젝트가 아닌 진짜 상용 서비스와 같은 강력한 브랜드 가치를 갖게 됩니다.' },
-                    { title: '내 땅(인터넷 주소) 저렴하게 등기 치기 📜', diagram: '국내 등록 업체(가비아, 호스팅케이알 등) 접속 ➡️ 원하는 이름 검색 (`.co.kr`, `.com`, `.net` 등) ➡️ 누가 안 샀다면 1년 단위로 대여 결제 (커피 몇 잔 값이면 충분! 보통 1~2만 원 대)', desc: '- 인터넷 주소는 \'선착순 임대\' 개념입니다. 세계 통용되는 `.com`이나 국내 법인/개인을 나타내는 `.co.kr` 등 원하는 확장자를 검색해 보고, 저렴한 업체를 골라 소유권을 확보해 보세요. (참고로 한글 도메인보다 영어 도메인이 오류가 적습니다.)', links: [{ name: '가비아', url: 'https://domain.gabia.com' }] },
+                    { title: '내 땅(인터넷 주소) 저렴하게 등기 치기 📜', diagram: '국내 등록 업체(가비아, 호스팅케이알 등) 접속 ➡️ 원하는 이름 검색 (`.co.kr`, `.com`, `.net` 등) ➡️ 누가 안 샀다면 1년 단위로 대여 결제 (커피 몇 잔 값이면 충분! 보통 1~2만 원 대)', desc: '- 인터넷 주소는 \'선착순 임대\' 개념입니다. 세계 통용되는 `.com`이나 국내 법인/개인을 나타내는 `.co.kr` 등 원하는 확장자를 검색해 보고, 저렴한 업체를 골라 소유권을 확보해 보세요.', links: [{ name: '가비아', url: 'https://domain.gabia.com' }] },
                     { title: '산 도메인을 내 웹사이트에 씌우기 (네임서버 연결) 🔗', diagram: '[Vercel 설정] "내 사이트 주소를 `teachers-vibe.co.kr`로 할래!" (등록)\n⬇️ (서로 주파수 맞추기) ⬇️\n[가비아 네임서버 설정] "사람들이 이 주소 치고 들어오면, Vercel에 올려둔 내 서버 IP 주소로 안내해 줘!" (매핑 완료)', desc: '- 도메인 구매처(가비아)와 서버 호스팅처(Vercel)는 별개의 회사닙니다. 따라서 "이 도메인을 치면 저기 있는 서버로 데려가라"고 방향을 지정해 주는 \'네임서버(DNS)\' 설정 과정이 필요합니다. 이 과정만 거치면 진정한 나만의 웹 서비스 론칭이 완료됩니다. 축하합니다!' }
                 ],
-                qaList: ['네임서버를 연결했는데 왜 즉시 접속이 안 되나요? (전파 시간 문제)', '주소창에 \'안전하지 않음\' 경고가 뜹니다. HTTPS 자물쇠를 다는 방법은?', 'www가 있든 없든 똑같이 들어오게 설정할 수 있나요?', '도메인 1년 만료 후에 누군가 제 주소를 바로 가로채 갈 수 있나요?', '나중에 다른 업체로 이사가도 제가 산 도메인은 그대로 쓸 수 있나요?']
+                qaList: ['네임서버를 연결했는데 왜 즉시 접속이 안 되나요?', '주소창에 \'안전하지 않음\' 경고가 뜹니다. HTTPS 자물쇠를 다는 방법은?', 'www가 있든 없든 똑같이 들어오게 설정할 수 있나요?', '도메인 1년 만료 후에 누군가 제 주소를 가로채 갈 수 있나요?', '나중에 다른 업체로 이사가도 제가 산 도메인은 그대로 쓸 수 있나요?']
             }
         ];
 
@@ -573,7 +541,8 @@
             document.querySelectorAll('.accordion-content').forEach(el => {
                 if (el.id !== `content-${id}`) {
                     el.classList.remove('open');
-                    document.getElementById(`chevron-${el.id.split('-')}`).classList.remove('rotated');
+                    const c = document.getElementById(`chevron-${el.id.split('-')}`);
+                    if (c) c.classList.remove('rotated');
                     el.parentElement.classList.remove('ring-4', 'ring-indigo-100');
                 }
             });
@@ -586,7 +555,6 @@
                 content.classList.add('open');
                 chevron.classList.add('rotated');
                 card.classList.add('ring-4', 'ring-indigo-100');
-                // Scroll into view gently
                 setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
             }
         }
@@ -662,11 +630,11 @@ ${questions}
         let currentSession = null;
         let currentSlideIndex = 0;
         const modal = document.getElementById('slide-modal');
-        const slideTitleEl = document.getElementById('slide-title');
+        const slideTitleEl = document.getElementById('slide-title'); // 상단 바의 제목 요소
         const slideDescEl = document.getElementById('slide-desc');
         const slideDiagramEl = document.getElementById('slide-diagram');
         const slideLinksEl = document.getElementById('slide-links');
-        const slideBadge = document.getElementById('slide-badge');
+        const slideBadge = document.getElementById('slide-badge'); // 본문 내부 배지
         const slideIndicator = document.getElementById('slide-indicator');
         const progressBar = document.getElementById('progress-bar');
         const btnPrev = document.getElementById('btn-prev-slide');
@@ -677,21 +645,18 @@ ${questions}
             currentSession = lessonData.find(l => l.id === lessonId);
             currentSlideIndex = 0;
             document.getElementById('modal-title').textContent = currentSession.title;
-            document.getElementById('modal-session-badge').textContent = `SESSION ${String(currentSession.id).padStart(2, '0')}`;
+            document.getElementById('modal-session-badge').textContent = `S${String(currentSession.id).padStart(2, '0')}`;
             renderSlide();
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.add('opacity-100', 'translate-y-0'), 50);
-            // Iframe 환경 내부이므로 body 스크롤 방지
             document.body.style.overflow = 'hidden';
-
-            // 모달 열 때 스크롤 맨 위로 초기화
             document.getElementById('slide-scroll-area').scrollTop = 0;
         }
 
         function closeSlides() {
             modal.classList.remove('opacity-100', 'translate-y-0');
             setTimeout(() => modal.classList.add('hidden'), 500);
-            document.body.style.overflow = 'hidden'; // Iframe 전체 화면 유지를 위해 hidden 고정
+            document.body.style.overflow = 'hidden';
         }
 
         document.getElementById('btn-close-modal').addEventListener('click', closeSlides);
@@ -700,8 +665,12 @@ ${questions}
             const slide = currentSession.slides[currentSlideIndex];
             const total = currentSession.slides.length;
 
-            slideBadge.textContent = `STAGE ${String(currentSlideIndex + 1).padStart(2, '0')}`;
+            // 상단 바 제목 업데이트
             slideTitleEl.innerHTML = formatMarkdown(slide.title);
+
+            // 본문 내부 배지 업데이트
+            slideBadge.textContent = `STAGE ${String(currentSlideIndex + 1).padStart(2, '0')}`;
+
             slideDiagramEl.innerHTML = formatMarkdown(slide.diagram);
             slideDescEl.innerHTML = formatMarkdown(slide.desc);
             slideWatermark.textContent = String(currentSlideIndex + 1).padStart(2, '0');
@@ -714,7 +683,7 @@ ${questions}
                 slide.links.forEach(link => {
                     const btn = document.createElement('a');
                     btn.href = link.url; btn.target = '_blank';
-                    btn.className = "flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-black shadow-md hover:bg-indigo-500 transition-all";
+                    btn.className = "flex items-center gap-2 px-5 py-2 bg-indigo-600 text-white rounded-xl text-sm font-black shadow-md hover:bg-indigo-500 transition-all";
                     btn.innerHTML = `<i data-lucide="external-link" class="w-4 h-4"></i> ${link.name}`;
                     slideLinksEl.appendChild(btn);
                 });
@@ -722,8 +691,6 @@ ${questions}
             }
             btnPrev.disabled = currentSlideIndex === 0;
             btnNext.disabled = currentSlideIndex === total - 1;
-
-            // 슬라이드 이동 시 스크롤 맨 위로 이동
             document.getElementById('slide-scroll-area').scrollTop = 0;
         }
 
