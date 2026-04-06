@@ -25,30 +25,33 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
 
         body {
             font-family: 'Pretendard', sans-serif;
             letter-spacing: -0.02em;
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* 세련된 스크롤바 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        ::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 4px;
+            border-radius: 10px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
 
+        /* 아코디언 애니메이션 */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -56,7 +59,7 @@
         }
 
         .accordion-content.open {
-            max-height: 1200px;
+            max-height: 1500px;
             padding-top: 1.5rem;
             padding-bottom: 2rem;
         }
@@ -69,30 +72,20 @@
             transform: rotate(180deg);
         }
 
+        /* 텍스트 포맷팅 (마크다운) */
         .slide-content {
             white-space: pre-wrap;
+            /* 줄바꿈 및 공백 유지 */
+            word-break: keep-all;
+            /* 단어 단위 줄바꿈 (가독성 향상) */
         }
 
-        .diagram-container {
-            position: relative;
-            background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+        .slide-content strong {
+            color: #4f46e5;
+            font-weight: 800;
         }
 
-        .diagram-box {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(241, 245, 249, 0.9));
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), inset 0 0 20px rgba(79, 70, 229, 0.02);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1e293b 30%, #475569 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Dropdown Chevron Style */
+        /* 드롭다운 스타일 */
         .select-wrapper {
             position: relative;
         }
@@ -110,134 +103,158 @@
     </style>
 </head>
 
-<body class="bg-darkBg text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden">
 
-    <header class="p-6 border-b border-slate-200 bg-white/80 backdrop-blur-xl sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-5">
-                <a href="index.html"
-                    class="p-3 bg-slate-100 hover:bg-indigo-100 rounded-2xl border border-slate-200 transition-all group"
-                    title="홈으로 돌아가기">
-                    <i data-lucide="home" class="w-6 h-6 text-slate-500 group-hover:text-indigo-600"></i>
-                </a>
-                <div>
-                    <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">바이브 코딩 마스터 클래스</h1>
-                    <p class="text-slate-500 text-sm font-medium">15차시 통합 교육용 대시보드</p>
-                </div>
+    <header
+        class="bg-white border-b border-slate-200 px-6 py-4 shrink-0 z-40 shadow-sm flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div
+                class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shadow-inner shrink-0">
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
             </div>
-            <div class="flex items-center gap-4">
-                <div
-                    class="px-4 py-1.5 bg-indigo-50 rounded-full border border-indigo-100 text-xs text-indigo-600 font-bold tracking-widest flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                    EXPERTISE 3.2
-                </div>
+            <div>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Master
+                    Class</p>
+                <h1 class="text-xl font-black text-slate-900 tracking-tight leading-none">코딩 레슨 대시보드</h1>
             </div>
+        </div>
+        <div
+            class="hidden md:flex px-4 py-1.5 bg-indigo-50 rounded-full border border-indigo-100 text-xs text-indigo-600 font-bold tracking-widest items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+            EXPERTISE 3.2
         </div>
     </header>
 
-    <main class="flex-1 max-w-5xl w-full mx-auto p-6 pb-40 mt-8 space-y-4" id="accordion-container">
+    <main class="flex-1 w-full overflow-y-auto custom-scrollbar p-4 md:p-8 relative bg-slate-50/50">
+        <div class="max-w-5xl mx-auto space-y-4 pb-20" id="accordion-container">
+        </div>
     </main>
 
     <div id="slide-modal"
         class="fixed inset-0 bg-white z-50 hidden flex-col transition-all duration-500 opacity-0 translate-y-8">
+
         <div
-            class="flex justify-between items-center px-10 py-5 border-b border-slate-100 bg-white/80 backdrop-blur-xl sticky top-0 z-30">
-            <div class="flex items-center gap-6">
+            class="flex justify-between items-center px-6 md:px-10 py-4 border-b border-slate-100 bg-white/95 backdrop-blur-xl sticky top-0 z-30 shrink-0">
+            <div class="flex items-center gap-4">
                 <div id="modal-session-badge"
-                    class="px-4 py-1.5 bg-indigo-600 text-white rounded-lg text-sm font-black tracking-widest shadow-lg shadow-indigo-500/20">
-                    SESSION 01</div>
-                <h2 id="modal-title" class="text-lg font-bold text-slate-700 tracking-tight">차시 제목</h2>
+                    class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-black tracking-widest shadow-md">
+                    SESSION 01
+                </div>
+                <h2 id="modal-title"
+                    class="text-sm md:text-base font-bold text-slate-700 tracking-tight truncate max-w-[200px] md:max-w-md">
+                    차시 제목</h2>
             </div>
             <button id="btn-close-modal"
-                class="p-3 hover:bg-slate-100 rounded-2xl transition-all group border border-slate-200">
+                class="p-2 md:p-2.5 hover:bg-slate-100 rounded-xl transition-all group border border-transparent hover:border-slate-200 shrink-0">
                 <i data-lucide="x"
-                    class="w-6 h-6 text-slate-400 group-hover:text-slate-900 group-hover:rotate-90 duration-300"></i>
+                    class="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:rotate-90 duration-300"></i>
             </button>
         </div>
 
-        <div
-            class="flex-1 flex flex-col md:flex-row items-center justify-center relative px-6 md:px-16 pt-6 pb-24 gap-8 overflow-hidden diagram-container">
-            <button id="btn-prev-slide"
-                class="hidden xl:flex absolute left-8 p-6 hover:bg-slate-100 rounded-full transition-all text-slate-200 hover:text-slate-800 disabled:opacity-0 group z-30">
-                <i data-lucide="chevron-left" class="w-12 h-12 group-hover:-translate-x-1 duration-300"></i>
-            </button>
+        <div class="flex-1 flex overflow-hidden relative bg-slate-50/30">
 
-            <div id="slide-canvas"
-                class="w-full max-w-[95vw] md:max-w-7xl h-full flex flex-col p-6 md:p-12 transition-all duration-700 relative overflow-y-auto no-scrollbar z-20 pb-10">
-                <div class="mb-8 relative">
-                    <span id="slide-badge"
-                        class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-xs font-black tracking-[0.2em] mb-6 border border-indigo-100 uppercase">Stage
-                        01</span>
-                    <h3 id="slide-title"
-                        class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-[1.1] tracking-tight text-gradient">
-                        슬라이드 제목</h3>
-                </div>
+            <div class="hidden xl:flex items-center justify-center w-24 shrink-0 z-30">
+                <button id="btn-prev-slide"
+                    class="p-4 hover:bg-white rounded-full transition-all text-slate-300 hover:text-indigo-600 hover:shadow-lg disabled:opacity-0 group border border-transparent hover:border-slate-200">
+                    <i data-lucide="chevron-left" class="w-10 h-10 group-hover:-translate-x-1 duration-300"></i>
+                </button>
+            </div>
 
-                <div
-                    class="diagram-box border border-slate-200 rounded-[2.5rem] p-8 md:p-12 mb-10 flex flex-col justify-center items-center relative overflow-hidden">
-                    <div class="absolute -top-20 -right-20 p-16 opacity-[0.03] rotate-12 pointer-events-none">
-                        <i data-lucide="binary" class="w-80 h-80 text-slate-950"></i>
+            <div id="slide-scroll-area"
+                class="flex-1 overflow-y-auto custom-scrollbar px-6 py-10 md:py-16 relative w-full">
+
+                <div class="max-w-[1000px] mx-auto flex flex-col justify-center min-h-full">
+
+                    <div class="mb-10 text-center md:text-left">
+                        <span id="slide-badge"
+                            class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-[11px] font-black tracking-[0.2em] mb-5 uppercase border border-indigo-100/50">Stage
+                            01</span>
+                        <h3 id="slide-title"
+                            class="text-3xl md:text-4xl lg:text-[42px] font-black text-slate-900 leading-[1.3] tracking-tight break-keep">
+                            슬라이드 제목
+                        </h3>
                     </div>
-                    <p id="slide-diagram"
-                        class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight leading-relaxed text-center z-10 max-w-5xl slide-content">
-                    </p>
-                </div>
 
-                <div class="space-y-8">
                     <div
-                        class="flex items-start gap-6 bg-slate-50 p-8 rounded-[2rem] border border-slate-200 shadow-sm">
-                        <div class="p-3.5 bg-white rounded-2xl shrink-0 shadow-sm border border-slate-100">
-                            <i data-lucide="zap" class="w-8 h-8 text-indigo-500"></i>
+                        class="bg-slate-50 rounded-[2rem] p-8 md:p-12 mb-6 border border-slate-200/60 shadow-sm relative overflow-hidden flex flex-col items-center justify-center min-h-[280px]">
+                        <div id="slide-watermark"
+                            class="absolute -right-4 -bottom-10 text-[14rem] font-black text-slate-200/50 select-none pointer-events-none tracking-tighter leading-none z-0">
+                            01
                         </div>
-                        <div class="space-y-2">
-                            <span class="text-indigo-600 font-black text-xs tracking-widest uppercase">Expert
+
+                        <p id="slide-diagram"
+                            class="text-lg md:text-2xl lg:text-[26px] font-bold text-slate-800 tracking-tight leading-[1.6] text-center z-10 w-full slide-content break-keep">
+                            도식 내용
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-white border border-slate-200 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row gap-6 shadow-sm">
+                        <div class="shrink-0 flex justify-center md:justify-start">
+                            <div
+                                class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center shadow-inner border border-indigo-100">
+                                <i data-lucide="zap" class="w-6 h-6 text-indigo-600"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-3 w-full">
+                            <span
+                                class="text-indigo-600 font-black text-[11px] tracking-[0.15em] uppercase block text-center md:text-left">Expert
                                 Insights</span>
                             <p id="slide-desc"
-                                class="text-lg md:text-xl text-slate-600 slide-content leading-[1.6] font-semibold"></p>
+                                class="text-[15px] md:text-[17px] text-slate-600 slide-content leading-[1.8] font-medium break-keep">
+                                상세 설명 내용
+                            </p>
+                            <div id="slide-links" class="pt-4 flex flex-wrap gap-3 justify-center md:justify-start">
+                            </div>
                         </div>
                     </div>
-                    <div id="slide-links" class="flex flex-wrap gap-4 pl-2"></div>
+
                 </div>
             </div>
 
-            <button id="btn-next-slide"
-                class="hidden xl:flex absolute right-8 p-6 hover:bg-slate-100 rounded-full transition-all text-slate-200 hover:text-slate-800 disabled:opacity-0 group z-30">
-                <i data-lucide="chevron-right" class="w-12 h-12 group-hover:translate-x-1 duration-300"></i>
-            </button>
+            <div class="hidden xl:flex items-center justify-center w-24 shrink-0 z-30">
+                <button id="btn-next-slide"
+                    class="p-4 hover:bg-white rounded-full transition-all text-slate-300 hover:text-indigo-600 hover:shadow-lg disabled:opacity-0 group border border-transparent hover:border-slate-200">
+                    <i data-lucide="chevron-right" class="w-10 h-10 group-hover:translate-x-1 duration-300"></i>
+                </button>
+            </div>
         </div>
 
         <div
-            class="h-20 flex items-center justify-between px-10 fixed bottom-0 w-full bg-white border-t border-slate-100 z-40">
-            <div class="flex items-center gap-6">
+            class="h-16 md:h-20 flex items-center justify-between px-6 md:px-10 fixed bottom-0 w-full bg-white border-t border-slate-100 z-40 shrink-0">
+            <div class="flex items-center gap-4 md:gap-6">
                 <div class="flex xl:hidden gap-2">
-                    <button id="btn-prev-mobile" class="p-3 bg-slate-100 rounded-xl transition-all"><i
+                    <button id="btn-prev-mobile"
+                        class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl transition-all active:scale-95 text-slate-500 hover:text-indigo-600"><i
                             data-lucide="chevron-left" class="w-5 h-5"></i></button>
-                    <button id="btn-next-mobile" class="p-3 bg-slate-100 rounded-xl transition-all"><i
+                    <button id="btn-next-mobile"
+                        class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl transition-all active:scale-95 text-slate-500 hover:text-indigo-600"><i
                             data-lucide="chevron-right" class="w-5 h-5"></i></button>
                 </div>
-                <div id="slide-indicator" class="text-2xl font-black text-slate-300 italic tracking-[0.2em]">01 / 03
+                <div id="slide-indicator" class="text-xl md:text-2xl font-black text-slate-300 italic tracking-[0.2em]">
+                    01 / 03
                 </div>
             </div>
-            <div class="hidden xl:flex items-center gap-3">
-                <span class="text-[10px] text-slate-400 font-bold mr-4 uppercase tracking-wider">Use Keyboard Arrows
-                    ⌨️</span>
-                <div class="w-64 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-indigo-500 transition-all duration-500" style="width: 33%">
-                    </div>
+            <div class="hidden md:flex items-center gap-4">
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest hidden lg:block">Use
+                    Keyboard Arrows ⌨️</span>
+                <div class="w-48 lg:w-64 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-indigo-500 transition-all duration-500 rounded-full"
+                        style="width: 33%"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="toast"
-        class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-10 py-5 rounded-2xl shadow-2xl flex items-center gap-5 transform translate-y-40 opacity-0 transition-all duration-700 z-50">
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 md:px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-4 transform translate-y-40 opacity-0 transition-all duration-500 z-50 w-[90%] sm:w-auto">
         <div
-            class="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center shadow-lg shadow-indigo-500/40">
-            <i data-lucide="check" class="w-5 h-5"></i>
+            class="w-8 h-8 md:w-10 md:h-10 bg-indigo-500 rounded-full flex items-center justify-center shadow-lg shrink-0">
+            <i data-lucide="check" class="w-4 h-4 md:w-5 md:h-5"></i>
         </div>
         <div>
-            <p class="font-black text-base uppercase">Prompt Copied</p>
-            <p class="text-xs text-slate-400 font-medium">프롬프트가 클립보드에 복사되었습니다.</p>
+            <p class="font-black text-sm md:text-base tracking-tight">COPIED!</p>
+            <p class="text-[11px] md:text-xs text-slate-300 font-medium mt-0.5">프롬프트가 클립보드에 복사되었습니다.</p>
         </div>
     </div>
 
@@ -249,7 +266,10 @@
             'grok': 'https://x.com/i/grok'
         };
 
-        // 완전 복구된 Lesson Data (1차시 ~ 15차시)
+        // =====================================================================
+        // 이 lessonData 변수는 update_slides.js 스크립트가 찾아 내용을 업데이트하는 곳입니다.
+        // 변수명이나 괄호 형태를 변경하지 마세요!
+        // =====================================================================
         const lessonData = [
             {
                 id: 1,
@@ -427,9 +447,9 @@
                 slides: [
                     { title: '복잡한 기본 주소 대신, 나만의 간판 달기 📛', diagram: '❌ Vercel 기본 주소: `https://vibe-project-12345ab-random.vercel.app` (외우기도, 남에게 알려주기도 민망하고 힘듦)\n⭕ **개인 도메인: `https://www.teachers-vibe.co.kr` (명함에 적기 좋은 전문성, 짧고 기억하기 쉬움!)**', desc: '- 무료로 받은 배포 주소는 임시 번호판과 같습니다. 나만의 철학, 내 이름, 혹은 우리 학급의 아이덴티티가 담긴 깔끔한 \'도메인(인터넷 주소)\'을 연결하는 순간, 연습용 프로젝트가 아닌 진짜 상용 서비스와 같은 강력한 브랜드 가치를 갖게 됩니다.' },
                     { title: '내 땅(인터넷 주소) 저렴하게 등기 치기 📜', diagram: '국내 등록 업체(가비아, 호스팅케이알 등) 접속 ➡️ 원하는 이름 검색 (`.co.kr`, `.com`, `.net` 등) ➡️ 누가 안 샀다면 1년 단위로 대여 결제 (커피 몇 잔 값이면 충분! 보통 1~2만 원 대)', desc: '- 인터넷 주소는 \'선착순 임대\' 개념입니다. 세계 통용되는 `.com`이나 국내 법인/개인을 나타내는 `.co.kr` 등 원하는 확장자를 검색해 보고, 저렴한 업체를 골라 소유권을 확보해 보세요. (참고로 한글 도메인보다 영어 도메인이 오류가 적습니다.)', links: [{ name: '가비아', url: 'https://domain.gabia.com' }] },
-                    { title: '산 도메인을 내 웹사이트에 씌우기 (네임서버 연결) 🔗', diagram: '[Vercel 설정] "내 사이트 주소를 `teachers-vibe.co.kr`로 할래!" (등록)\n⬇️ (서로 주파수 맞추기) ⬇️\n[가비아 네임서버 설정] "사람들이 이 주소 치고 들어오면, Vercel에 올려둔 내 서버 IP 주소로 안내해 줘!" (매핑 완료)', desc: '- 도메인 구매처(가비아)와 서버 호스팅처(Vercel)는 별개의 회사입니다. 따라서 "이 도메인을 치면 저기 있는 서버로 데려가라"고 방향을 지정해 주는 \'네임서버(DNS)\' 설정 과정이 필요합니다. 이 과정만 거치면 진정한 나만의 웹 서비스 론칭이 완료됩니다. 축하합니다!' }
+                    { title: '산 도메인을 내 웹사이트에 씌우기 (네임서버 연결) 🔗', diagram: '[Vercel 설정] "내 사이트 주소를 `teachers-vibe.co.kr`로 할래!" (등록)\n⬇️ (서로 주파수 맞추기) ⬇️\n[가비아 네임서버 설정] "사람들이 이 주소 치고 들어오면, Vercel에 올려둔 내 서버 IP 주소로 안내해 줘!" (매핑 완료)', desc: '- 도메인 구매처(가비아)와 서버 호스팅처(Vercel)는 별개의 회사닙니다. 따라서 "이 도메인을 치면 저기 있는 서버로 데려가라"고 방향을 지정해 주는 \'네임서버(DNS)\' 설정 과정이 필요합니다. 이 과정만 거치면 진정한 나만의 웹 서비스 론칭이 완료됩니다. 축하합니다!' }
                 ],
-                qaList: ['네임서버를 연결했는데 왜 즉시 접속이 안 되나요? (전파 시간 문제)', "주소창에 '안전하지 않음' 경고가 뜹니다. HTTPS 자물쇠를 다는 방법은?", 'www가 있든 없든 똑같이 들어오게 설정할 수 있나요?', '도메인 1년 만료 후에 누군가 제 주소를 바로 가로채 갈 수 있나요?', '나중에 다른 업체로 이사가도 제가 산 도메인은 그대로 쓸 수 있나요?']
+                qaList: ['네임서버를 연결했는데 왜 즉시 접속이 안 되나요? (전파 시간 문제)', '주소창에 \'안전하지 않음\' 경고가 뜹니다. HTTPS 자물쇠를 다는 방법은?', 'www가 있든 없든 똑같이 들어오게 설정할 수 있나요?', '도메인 1년 만료 후에 누군가 제 주소를 바로 가로채 갈 수 있나요?', '나중에 다른 업체로 이사가도 제가 산 도메인은 그대로 쓸 수 있나요?']
             }
         ];
 
@@ -442,19 +462,19 @@
         lessonData.forEach((lesson) => {
             const itemHTML = `
                 <div class="bg-cardBg rounded-3xl border border-slate-200 shadow-sm transition-all duration-300 hover:border-indigo-300 hover:shadow-md overflow-hidden group">
-                    <header class="px-6 py-5 cursor-pointer flex items-center justify-between" onclick="toggleAccordion(${lesson.id})">
-                        <div class="flex items-center gap-5">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-black text-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                    <header class="px-4 md:px-6 py-4 md:py-5 cursor-pointer flex items-center justify-between" onclick="toggleAccordion(${lesson.id})">
+                        <div class="flex items-center gap-3 md:gap-5 w-full">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-black text-base md:text-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shrink-0">
                                 ${lesson.id}
                             </div>
-                            <div>
-                                <h3 class="text-lg font-black text-slate-800 tracking-tight group-hover:text-indigo-600 transition-colors">${lesson.title}</h3>
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${lesson.topic}</span>
+                            <div class="overflow-hidden">
+                                <h3 class="text-base md:text-lg font-black text-slate-800 tracking-tight group-hover:text-indigo-600 transition-colors truncate">${lesson.title}</h3>
+                                <span class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest block truncate">${lesson.topic}</span>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center gap-1.5 p-1.5 bg-slate-50 rounded-2xl border border-slate-100" onclick="event.stopPropagation()">
+                        <div class="flex items-center gap-2 md:gap-3 shrink-0 ml-2">
+                            <div class="hidden md:flex items-center gap-1.5 p-1.5 bg-slate-50 rounded-2xl border border-slate-100" onclick="event.stopPropagation()">
                                 <div class="select-wrapper">
                                     <select id="ai-select-${lesson.id}" class="bg-white text-slate-600 text-xs font-bold pl-3 pr-8 py-1.5 focus:outline-none appearance-none cursor-pointer border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-200">
                                         <option value="gemini">Gemini</option>
@@ -464,62 +484,75 @@
                                     </select>
                                 </div>
                                 <button onclick="handleMentoring(${lesson.id})" title="보통 멘토링 프롬프트" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
-                                    <i data-lucide="brain-circuit" class="w-5 h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
+                                    <i data-lucide="brain-circuit" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
                                 </button>
                                 <button onclick="openSlides(${lesson.id})" title="슬라이드 열기" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
-                                    <i data-lucide="presentation" class="w-5 h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
+                                    <i data-lucide="presentation" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
                                 </button>
                                 <button onclick="toggleQnA(${lesson.id}, event)" title="심화 Q&A" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
-                                    <i data-lucide="message-circle-question" class="w-5 h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
+                                    <i data-lucide="message-circle-question" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
                                 </button>
                             </div>
-                            <div class="p-1.5">
-                                <i data-lucide="chevron-down" id="chevron-${lesson.id}" class="chevron-icon w-5 h-5 text-slate-300"></i>
+                            <div class="p-1 md:p-1.5">
+                                <i data-lucide="chevron-down" id="chevron-${lesson.id}" class="chevron-icon w-4 h-4 md:w-5 md:h-5 text-slate-300"></i>
                             </div>
                         </div>
                     </header>
 
-                    <div id="content-${lesson.id}" class="accordion-content px-8">
+                    <div id="content-${lesson.id}" class="accordion-content px-4 md:px-8">
                         <div class="pt-4 border-t border-slate-50">
-                            <div class="bg-indigo-50/30 rounded-2xl p-6 border border-indigo-100/50 mb-6 relative overflow-hidden">
-                                <div class="flex items-start gap-5">
-                                    <div class="p-3 bg-white rounded-xl shadow-sm border border-indigo-50">
-                                        <i data-lucide="info" class="w-6 h-6 text-indigo-500"></i>
+                            <div class="flex md:hidden items-center justify-between gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100 mb-4">
+                                <select id="ai-select-mobile-${lesson.id}" class="bg-white text-slate-600 text-xs font-bold pl-2 pr-6 py-2 w-24 focus:outline-none appearance-none cursor-pointer border border-slate-200 rounded-lg shadow-sm">
+                                    <option value="gemini">Gemini</option>
+                                    <option value="chatgpt">ChatGPT</option>
+                                    <option value="claude">Claude</option>
+                                </select>
+                                <div class="flex gap-1">
+                                    <button onclick="handleMentoring(${lesson.id}, true)" class="p-2.5 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="brain-circuit" class="w-4 h-4"></i></button>
+                                    <button onclick="openSlides(${lesson.id})" class="p-2.5 bg-indigo-600 text-white rounded-lg"><i data-lucide="presentation" class="w-4 h-4"></i></button>
+                                    <button onclick="toggleQnA(${lesson.id}, event)" class="p-2.5 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="message-circle-question" class="w-4 h-4"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="bg-indigo-50/30 rounded-xl md:rounded-2xl p-4 md:p-6 border border-indigo-100/50 mb-6 relative overflow-hidden">
+                                <div class="flex items-start gap-4 md:gap-5">
+                                    <div class="p-2.5 md:p-3 bg-white rounded-xl shadow-sm border border-indigo-50 shrink-0">
+                                        <i data-lucide="info" class="w-5 h-5 md:w-6 md:h-6 text-indigo-500"></i>
                                     </div>
                                     <div class="space-y-4 flex-1">
-                                        <p class="text-[15px] text-slate-600 font-bold leading-relaxed">
+                                        <p class="text-sm md:text-[15px] text-slate-600 font-bold leading-relaxed">
                                             "${lesson.summary}"
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div id="qna-section-${lesson.id}" class="hidden p-8 bg-white rounded-[2rem] border-2 border-indigo-100 shadow-xl overflow-hidden relative">
-                                <div class="absolute -right-8 -top-8 text-indigo-50/50">
+                            <div id="qna-section-${lesson.id}" class="hidden p-5 md:p-8 bg-white rounded-[1.5rem] md:rounded-[2rem] border-2 border-indigo-100 shadow-xl overflow-hidden relative">
+                                <div class="absolute -right-8 -top-8 text-indigo-50/50 hidden md:block">
                                     <i data-lucide="help-circle" class="w-40 h-40"></i>
                                 </div>
 
                                 <div class="space-y-6 relative z-10 max-w-3xl mx-auto">
-                                    <div class="flex items-center justify-between border-b-2 border-indigo-50 pb-4 mb-2">
-                                        <h4 class="text-sm font-black text-indigo-900 flex items-center gap-2">
+                                    <div class="flex flex-col lg:flex-row lg:items-center justify-between border-b-2 border-indigo-50 pb-4 mb-2 gap-4">
+                                        <h4 class="text-xs md:text-sm font-black text-indigo-900 flex items-center gap-2">
                                             💡 이 차시에서 꼭 물어봐야 할 질문 목록
                                         </h4>
-                                        <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2 md:gap-3">
                                             <div class="select-wrapper">
-                                                <select id="qna-ai-select-${lesson.id}" class="bg-slate-50 border border-slate-200 text-slate-600 text-[12px] font-bold pl-4 pr-9 py-2 rounded-xl focus:ring-4 focus:ring-indigo-100 outline-none appearance-none cursor-pointer">
+                                                <select id="qna-ai-select-${lesson.id}" class="bg-slate-50 border border-slate-200 text-slate-600 text-[11px] md:text-[12px] font-bold pl-3 pr-8 py-2 rounded-xl focus:ring-4 focus:ring-indigo-100 outline-none appearance-none cursor-pointer">
                                                     <option value="gemini">Gemini AI</option>
-                                                    <option value="chatgpt">ChatGPT-4o</option>
+                                                    <option value="chatgpt">ChatGPT</option>
                                                     <option value="claude">Claude 3.5</option>
-                                                    <option value="grok">Grok-3</option>
+                                                    <option value="grok">Grok</option>
                                                 </select>
                                             </div>
-                                            <button onclick="handleQnAMentoring(${lesson.id})" class="px-6 py-2 bg-gradient-to-r from-indigo-600 to-accent text-white rounded-xl text-[12px] font-black shadow-lg shadow-indigo-500/30 active:scale-95 transition-all flex items-center gap-2">
-                                                멘토학습 <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                            <button onclick="handleQnAMentoring(${lesson.id})" class="px-4 md:px-6 py-2 bg-gradient-to-r from-indigo-600 to-accent text-white rounded-xl text-[11px] md:text-[12px] font-black shadow-lg shadow-indigo-500/30 active:scale-95 transition-all flex items-center gap-2">
+                                                멘토학습 <i data-lucide="sparkles" class="w-3 h-3 md:w-4 md:h-4"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <ul id="qna-list-${lesson.id}" class="grid gap-3">
-                                        </ul>
+                                    <ul id="qna-list-${lesson.id}" class="grid gap-2 md:gap-3">
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -553,6 +586,8 @@
                 content.classList.add('open');
                 chevron.classList.add('rotated');
                 card.classList.add('ring-4', 'ring-indigo-100');
+                // Scroll into view gently
+                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
             }
         }
 
@@ -568,8 +603,8 @@
                 qnaSection.classList.remove('hidden');
                 const listEl = document.getElementById(`qna-list-${id}`);
                 listEl.innerHTML = lesson.qaList.map((q, i) => `
-                    <li class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-[14px] font-bold text-slate-700 flex gap-4 hover:bg-white hover:border-indigo-300 transition-all group/qa">
-                        <span class="text-indigo-400 group-hover/qa:text-indigo-600 transition-colors">${i + 1}.</span> ${q}
+                    <li class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-100 text-[13px] md:text-[14px] font-bold text-slate-700 flex gap-3 hover:bg-white hover:border-indigo-300 transition-all group/qa leading-snug">
+                        <span class="text-indigo-400 group-hover/qa:text-indigo-600 transition-colors shrink-0">${i + 1}.</span> ${q}
                     </li>
                 `).join('');
                 setTimeout(() => qnaSection.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -578,9 +613,10 @@
             }
         }
 
-        function handleMentoring(id) {
+        function handleMentoring(id, isMobile = false) {
             const lesson = lessonData.find(l => l.id === id);
-            const selectEl = document.getElementById(`ai-select-${id}`);
+            const selectElId = isMobile ? `ai-select-mobile-${id}` : `ai-select-${id}`;
+            const selectEl = document.getElementById(selectElId) || document.getElementById(`ai-select-${id}`);
             const selectedAI = selectEl.value;
 
             const lessonDesc = lesson.slides.map(s => s.desc).join(' ');
@@ -618,7 +654,7 @@ ${questions}
         function showToast(title, sub) {
             const toast = document.getElementById('toast');
             toast.querySelector('p.font-black').textContent = title;
-            toast.querySelector('p.text-xs').textContent = sub;
+            toast.querySelector('p.text-[11px]').textContent = sub;
             toast.classList.remove('opacity-0', 'translate-y-40');
             setTimeout(() => toast.classList.add('opacity-0', 'translate-y-40'), 4000);
         }
@@ -635,6 +671,7 @@ ${questions}
         const progressBar = document.getElementById('progress-bar');
         const btnPrev = document.getElementById('btn-prev-slide');
         const btnNext = document.getElementById('btn-next-slide');
+        const slideWatermark = document.getElementById('slide-watermark');
 
         function openSlides(lessonId) {
             currentSession = lessonData.find(l => l.id === lessonId);
@@ -644,13 +681,17 @@ ${questions}
             renderSlide();
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.add('opacity-100', 'translate-y-0'), 50);
+            // Iframe 환경 내부이므로 body 스크롤 방지
             document.body.style.overflow = 'hidden';
+
+            // 모달 열 때 스크롤 맨 위로 초기화
+            document.getElementById('slide-scroll-area').scrollTop = 0;
         }
 
         function closeSlides() {
             modal.classList.remove('opacity-100', 'translate-y-0');
             setTimeout(() => modal.classList.add('hidden'), 500);
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'hidden'; // Iframe 전체 화면 유지를 위해 hidden 고정
         }
 
         document.getElementById('btn-close-modal').addEventListener('click', closeSlides);
@@ -658,10 +699,13 @@ ${questions}
         function renderSlide() {
             const slide = currentSession.slides[currentSlideIndex];
             const total = currentSession.slides.length;
+
             slideBadge.textContent = `STAGE ${String(currentSlideIndex + 1).padStart(2, '0')}`;
             slideTitleEl.innerHTML = formatMarkdown(slide.title);
             slideDiagramEl.innerHTML = formatMarkdown(slide.diagram);
             slideDescEl.innerHTML = formatMarkdown(slide.desc);
+            slideWatermark.textContent = String(currentSlideIndex + 1).padStart(2, '0');
+
             slideIndicator.textContent = `${String(currentSlideIndex + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
             progressBar.style.width = `${((currentSlideIndex + 1) / total) * 100}%`;
             slideLinksEl.innerHTML = '';
@@ -670,7 +714,7 @@ ${questions}
                 slide.links.forEach(link => {
                     const btn = document.createElement('a');
                     btn.href = link.url; btn.target = '_blank';
-                    btn.className = "flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl text-[14px] font-black shadow-md hover:bg-indigo-500 transition-all";
+                    btn.className = "flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-black shadow-md hover:bg-indigo-500 transition-all";
                     btn.innerHTML = `<i data-lucide="external-link" class="w-4 h-4"></i> ${link.name}`;
                     slideLinksEl.appendChild(btn);
                 });
@@ -678,6 +722,9 @@ ${questions}
             }
             btnPrev.disabled = currentSlideIndex === 0;
             btnNext.disabled = currentSlideIndex === total - 1;
+
+            // 슬라이드 이동 시 스크롤 맨 위로 이동
+            document.getElementById('slide-scroll-area').scrollTop = 0;
         }
 
         function nextSlide() { if (currentSlideIndex < currentSession.slides.length - 1) { currentSlideIndex++; renderSlide(); } }

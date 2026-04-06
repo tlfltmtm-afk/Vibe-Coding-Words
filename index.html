@@ -14,11 +14,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Pretendard', 'sans-serif'], mono: ['D2Coding', 'Consolas', 'monospace'] },
-                    colors: { primary: '#4f46e5', darkBg: '#f8fafc', cardBg: '#ffffff', accent: '#6366f1' },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
-                    }
+                    colors: { primary: '#4f46e5', darkBg: '#f8fafc', cardBg: '#ffffff', accent: '#6366f1' }
                 }
             }
         }
@@ -28,615 +24,95 @@
             font-family: 'Pretendard', sans-serif;
             letter-spacing: -0.02em;
         }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-            opacity: 0;
-        }
-
-        .accordion-content.open {
-            max-height: 1500px;
-            opacity: 1;
-        }
-
-        .chevron-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .chevron-icon.rotated {
-            transform: rotate(180deg);
-        }
-
-        .flip-card {
-            perspective: 1000px;
-        }
-
-        .flip-card-inner {
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .flip-card.flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .backface-hidden {
-            backface-visibility: hidden;
-        }
-
-        .rotate-y-180 {
-            transform: rotateY(180deg);
-        }
-
-        .select-wrapper {
-            position: relative;
-        }
-
-        .select-wrapper::after {
-            content: '▼';
-            font-size: 8px;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: #94a3b8;
-        }
-
-        .preview-window {
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 
 <body
     class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
 
-    <!-- Header -->
     <header
-        class="bg-white/90 backdrop-blur-md border-b border-slate-200 z-30 px-6 py-3 flex flex-col md:flex-row justify-between items-center shrink-0 shadow-sm">
+        class="bg-white/90 backdrop-blur-md border-b border-slate-200 z-30 px-6 py-3 flex flex-col md:flex-row justify-between items-center shrink-0 shadow-sm relative">
         <div class="flex items-center gap-5 w-full md:w-auto">
-            <button onclick="switchView('view-lesson')"
+            <button onclick="loadFrame('lesson.html', document.getElementById('btn-lesson'))"
                 class="text-xl font-extrabold text-indigo-700 flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0"
                 title="바이브 코딩 홈">
                 <span
                     class="text-2xl bg-indigo-100 text-indigo-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-inner">✨</span>
                 바이브 코딩
             </button>
-            <!-- Header Search moved to Dictionary tab -->
         </div>
 
-        <nav class="flex gap-1 sm:gap-2 mt-3 md:mt-0 flex-wrap">
-            <button
-                class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100"
-                data-target="view-lesson">1. 코딩 레슨</button>
-            <button
+        <nav class="flex gap-1 sm:gap-2 mt-3 md:mt-0 flex-wrap" id="main-nav">
+            <button id="btn-lesson"
                 class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all bg-indigo-100 text-indigo-700 shadow-sm"
-                data-target="view-dictionary">2. 용어 설명</button>
+                data-src="lesson.html">
+                1. 코딩 레슨
+            </button>
             <button
                 class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100"
-                data-target="view-sandbox">3. 용어 실습</button>
+                data-src="dictionary.html">
+                2. 용어 설명
+            </button>
             <button
                 class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100"
-                data-target="view-flashcard">4. 용어 복습</button>
+                data-src="sandbox.html">
+                3. 용어 실습
+            </button>
             <button
                 class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100"
-                data-target="view-concepts">5. 디자인 컨셉</button>
+                data-src="flashcard.html">
+                4. 용어 복습
+            </button>
+            <button
+                class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-semibold text-[14px] sm:text-[15px] transition-all text-slate-600 hover:bg-slate-100"
+                data-src="concepts.html">
+                5. 디자인 컨셉
+            </button>
         </nav>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 relative bg-slate-50 overflow-hidden">
-
-        <!-- View 1: Lesson (Accordion Dashboard) -->
-        <section id="view-lesson"
-            class="view-section absolute inset-0 overflow-y-auto px-6 py-8 hidden custom-scrollbar">
-            <div class="max-w-5xl mx-auto space-y-4" id="lesson-accordion-container"></div>
-        </section>
-
-        <!-- View 2: Dictionary -->
-        <section id="view-dictionary"
-            class="view-section absolute inset-0 overflow-y-auto px-6 py-8 hidden custom-scrollbar">
-            <div class="max-w-5xl mx-auto mb-6">
-                <div class="relative w-full max-w-2xl mx-auto group">
-                    <div
-                        class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors">
-                        <i data-lucide="search" class="w-5 h-5"></i>
-                    </div>
-                    <input type="text" id="header-search-input"
-                        class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 shadow-sm rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all text-[15px] outline-none placeholder-slate-400"
-                        placeholder="용어 검색...">
-                </div>
-            </div>
-            <div class="max-w-5xl mx-auto space-y-4" id="dictionary-container"></div>
-        </section>
-
-        <!-- View 3: Sandbox -->
-        <section id="view-sandbox" class="view-section absolute inset-0 overflow-hidden hidden px-4 py-4">
-            <div class="h-full max-w-[1600px] mx-auto flex gap-4 overflow-hidden">
-                <div
-                    class="w-[280px] shrink-0 flex flex-col bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div
-                        class="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center text-xs font-bold text-slate-400">
-                        용어 선택 <span class="bg-indigo-100 px-2 py-0.5 rounded-full text-indigo-600">Total DB</span></div>
-                    <div id="sandbox-list" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1.5"></div>
-                </div>
-                <div
-                    class="flex-1 flex flex-col bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-                    <div class="bg-slate-100/80 px-4 py-3 border-b border-slate-200 flex items-center justify-between">
-                        <div class="flex gap-2">
-                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                        </div>
-                        <div
-                            class="bg-white px-3 py-1 rounded-lg text-[10px] text-slate-400 border border-slate-200 truncate max-w-sm">
-                            🔒 https://sandbox.vibecoding.com</div>
-                        <div class="w-8"></div>
-                    </div>
-                    <div id="sandbox-preview" class="flex-1 overflow-auto custom-scrollbar"></div>
-                </div>
-                <div class="w-[380px] shrink-0 flex flex-col gap-4">
-                    <div
-                        class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex-1 overflow-y-auto custom-scrollbar flex flex-col">
-                        <div id="sandbox-term-title" class="mb-5 border-b border-slate-100 pb-4"></div>
-                        <p id="sandbox-detail" class="text-slate-600 text-[15px] leading-relaxed mb-8"></p>
-                        <div class="mt-auto pt-4 border-t border-slate-100 relative group">
-                            <h4 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2"><span
-                                    class="bg-indigo-100 p-1 rounded-md text-indigo-600 text-[10px]">💻</span> 적용 패턴
-                            </h4>
-                            <div
-                                class="bg-[#1e293b] text-[#caddbd] p-4 rounded-xl font-mono text-[11px] overflow-hidden">
-                                <code id="sandbox-code" class="whitespace-pre align-top block"></code>
-                            </div>
-                            <button id="sandbox-code-copy"
-                                class="absolute top-12 right-4 p-2 bg-slate-700 text-slate-300 rounded-lg opacity-0 group-hover:opacity-100 transition-all">📋</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- View 4: Flashcard -->
-        <section id="view-flashcard"
-            class="view-section absolute inset-0 overflow-y-auto px-6 py-8 hidden custom-scrollbar">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex overflow-x-auto py-3 gap-3 mb-6 no-scrollbar" id="flashcard-filter"></div>
-                <div id="flashcard-grid"
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-12"></div>
-            </div>
-        </section>
-
-        <!-- View 5: Design Concepts -->
-        <section id="view-concepts" class="view-section absolute inset-0 overflow-hidden hidden flex">
-            <aside class="w-[320px] bg-white border-r border-slate-200 flex flex-col shrink-0">
-                <div class="p-5 border-b border-slate-100 bg-slate-50/30">
-                    <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase mb-1">Pick a concept</p>
-                    <h3 class="text-lg font-extrabold text-slate-800 tracking-tight">웹 디자인 색상 조합 (10)</h3>
-                </div>
-                <div id="concept-list" class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-2"></div>
-            </aside>
-            <section class="flex-1 bg-slate-100 flex flex-col items-center justify-center p-8 overflow-hidden">
-                <div
-                    class="w-full max-w-[1240px] mb-6 flex items-center justify-between bg-white px-8 py-4 rounded-3xl border border-slate-200 shadow-sm shrink-0">
-                    <div>
-                        <span id="concept-name-display" class="font-extrabold text-slate-800 text-lg">--</span>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase">시스템 컬러 시스템 및 가이드 코드</p>
-                    </div>
-                    <button onclick="copyConceptCode()"
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl text-sm transition-all active:scale-95">📋
-                        전체 컨셉 코드 복사</button>
-                </div>
-                <div id="preview-box"
-                    class="preview-window w-full h-full max-w-[1240px] max-h-[750px] bg-white rounded-3xl overflow-hidden flex flex-col border border-white relative">
-                </div>
-            </section>
-        </section>
-
+    <main class="flex-1 relative bg-slate-50 overflow-hidden flex">
+        <iframe id="main-frame" src="lesson.html" class="w-full h-full border-none" title="콘텐츠 프레임"></iframe>
     </main>
 
-    <!-- Professional Slide Modal -->
-    <div id="slide-modal"
-        class="fixed inset-0 bg-white z-50 hidden flex-col transition-all duration-500 opacity-0 translate-y-8">
-        <div class="flex justify-between items-center px-10 py-5 border-b border-slate-100">
-            <div class="flex items-center gap-6">
-                <div id="modal-session-id"
-                    class="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-black tracking-widest">SESSION 01
-                </div>
-                <h2 id="modal-lesson-title" class="text-lg font-bold text-slate-700">차시 제목</h2>
-            </div>
-            <button onclick="closeSlides()" class="p-3 hover:bg-slate-100 rounded-2xl border border-slate-200"
-                title="닫기">
-                <i data-lucide="x" class="w-6 h-6 text-slate-400"></i>
-            </button>
-        </div>
-        <div class="flex-1 flex flex-col items-center justify-center relative p-8 md:p-16 overflow-hidden">
-            <button id="btn-prev-slide"
-                class="absolute left-8 p-4 hover:bg-slate-100 rounded-full transition-all text-slate-200 hover:text-slate-800 z-30"
-                title="이전 슬라이드"><i data-lucide="chevron-left" class="w-12 h-12"></i></button>
-            <div id="slide-canvas" class="w-full max-w-7xl h-full flex flex-col z-20 overflow-y-auto no-scrollbar">
-                <div class="mb-8">
-                    <span id="slide-badge"
-                        class="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-black tracking-widest mb-4 border border-indigo-100 uppercase">Stage
-                        01</span>
-                    <h3 id="slide-title" class="text-4xl md:text-5xl font-black text-slate-900 leading-tight">슬라이드 제목
-                    </h3>
-                </div>
-                <div
-                    class="flex-1 bg-slate-50 border border-slate-200 rounded-[2.5rem] p-8 flex flex-col justify-center items-center mb-8 relative overflow-hidden">
-                    <p id="slide-diagram"
-                        class="text-xl md:text-3xl font-black text-slate-800 text-center z-10 whitespace-pre-wrap"></p>
-                </div>
-                <div class="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100 flex gap-4">
-                    <div class="p-2 bg-white rounded-xl shadow-sm border border-indigo-50"><i data-lucide="zap"
-                            class="w-6 h-6 text-indigo-500"></i></div>
-                    <p id="slide-desc" class="text-lg text-slate-600 font-semibold leading-relaxed"></p>
-                </div>
-                <div id="slide-links" class="mt-8 flex gap-4"></div>
-            </div>
-            <button id="btn-next-slide"
-                class="absolute right-8 p-4 hover:bg-slate-100 rounded-full transition-all text-slate-200 hover:text-slate-800 z-30"
-                title="다음 슬라이드"><i data-lucide="chevron-right" class="w-12 h-12"></i></button>
-        </div>
-        <div class="h-20 flex items-center justify-between px-10 border-t border-slate-100">
-            <div id="slide-indicator" class="text-lg font-black text-slate-300 italic tracking-widest">01 / 03</div>
-            <div class="w-64 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                <div id="progress-bar" class="h-full bg-indigo-500 transition-all duration-500" style="width: 33%">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast"
-        class="fixed bottom-10 left-1/2 bg-slate-800/95 backdrop-blur-md text-white px-6 py-4 rounded-xl shadow-2xl z-50 flex items-center gap-3 font-semibold pointer-events-none border border-slate-700 transition-all opacity-0 invisible translate-y-5">
-        <div
-            class="w-6 h-6 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center border border-green-500/30">
-            <i data-lucide="check" class="w-3 h-3"></i>
-        </div>
-        <span id="toast-msg" class="text-sm tracking-wide"></span>
-    </div>
-
-    <!-- Data & Scripts -->
-    <script src="data.js"></script>
     <script>
-        // AI Links & Lesson Data Integration (from lesson.html)
-        const aiUrls = { 'gemini': 'https://gemini.google.com', 'chatgpt': 'https://chatgpt.com', 'claude': 'https://claude.ai', 'grok': 'https://x.com/i/grok' };
+        // --- Iframe Navigation Logic ---
+        const iframe = document.getElementById('main-frame');
+        const navButtons = document.querySelectorAll('.nav-btn');
 
-        // --- View Switching Logic ---
-        function switchView(viewId) {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
-            const activeView = document.getElementById(viewId);
-            if (activeView) activeView.classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if (btn.dataset.target === viewId) {
-                    btn.classList.add('bg-indigo-100', 'text-indigo-700', 'shadow-sm');
-                    btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
-                } else {
-                    btn.classList.remove('bg-indigo-100', 'text-indigo-700', 'shadow-sm');
-                    btn.classList.add('text-slate-600', 'hover:bg-slate-100');
-                }
-            });
-
-            if (viewId === 'view-dictionary') { renderDictionary(); }
-
-            if (viewId === 'view-lesson') renderLessonList();
-            if (viewId === 'view-sandbox') renderSandbox();
-            if (viewId === 'view-flashcard') renderFlashcard();
-            if (viewId === 'view-concepts') renderConceptList();
-        }
-
-        // --- Toast Logic ---
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('opacity-0', 'invisible', 'translate-y-5');
-            toast.classList.add('opacity-100', 'visible', 'translate-y-0');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'invisible', 'translate-y-5');
-                toast.classList.remove('opacity-100', 'visible', 'translate-y-0');
-            }, 3000);
-        }
-
-        // --- View 1: Lesson Logic (integrated from lesson.html) ---
-        const lessonData = [
-            { id: 1, title: '1차시: 바이브 코딩이란? (패러다임의 전환)', summary: '문법 암기는 이제 그만! 말 한마디로 코딩이 시작되는 AI 디렉팅의 신세계를 경험해 보세요.', topic: 'Vibe Coding', slides: [{ title: '코더(Coder)에서 디렉터(Director)로 🎬', diagram: '【 과거의 코딩 】\n인간 ━━▶ 컴퓨터\n\n【 현재의 코딩 】\n인간 ━━▶ 🤖 AI Agent ━━▶ 컴퓨터', desc: '더 이상 복잡한 문법에 갇히지 마세요. 당신은 이제 AI 개발팀을 지휘하는 총감독입니다.' }, { title: '문법을 몰라도 괜찮은 이유 🎼', diagram: '🧠 아이디어\n➕ 🗣️ 프롬프트\n━━━━━━━━━━\n🟰 💻 코드 결과물', desc: 'AI는 모든 코드를 알고 있습니다. 당신의 명확한 아이디어가 곧 코드가 됩니다.' }, { title: '창의성이 무기가 되는 교실 🏫✨', diagram: '💡 아이디어 즉시 구현\n⬇️\n🚀 성취감 극대화', desc: '기술의 장벽이 무너진 자리에는 오직 상상력만이 남습니다.' }], qaList: ['프롬프트 오타가 있어도 AI가 코딩을 해주나요?', '코딩 지식 없이 복잡한 앱도 말로만 만드나요?', 'AI 코드의 보안 문제는 초보자가 어떻게 대처하나요?', '한글 프롬프트와 영어 번역 중 차이가 큰가요?', '에러가 날 때 어디서부터 질문해야 해결이 빠른가요?'] },
-            { id: 2, title: '2차시: 생성형 AI의 확장과 도전 목표', summary: '단순한 대화를 넘어 실제 작동하는 도구를 만드는 법. 창작의 지평을 확인하세요.', topic: 'Gen-AI Evolution', slides: [{ title: '텍스트를 넘어 코드의 세계로 🚀', diagram: '📝 TEXT\n🎨 MEDIA\n💎 TOOL (App Building)', desc: 'AI는 이제 단순한 정보 요약가가 아닙니다. 우리가 사용하는 실제 도구를 제조해냅니다.' }, { title: '꿈을 실현하는 가장 빠른 방법 🪄', diagram: '☁️ 흐릿한 상상\n⬇️\n📱 명확한 현실 (URL)', desc: '아이디어가 웹사이트라는 강력한 자산으로 변하는 이 마법을 확인하세요.' }, { title: '나만의 디지털 자산 확보 🏆', diagram: '1. 웹사이트 / 2. 교육용 앱 / 3. AI 인사이트', desc: '누구도 뺏을 수 없는 세 가지 결과물을 손에 쥐게 됩니다.' }], qaList: ['웹앱을 플레이스토어에 정식 출시할 수 있나요?', '아이디어의 저작권 보호는 가능한가요?', 'AI에게 어떻게 지시해야 세련된 디자인이 나오나요?', '코딩 전자책 형태로도 바로 생성할 수 있나요?', '추상적인 아이디어를 구체화하는 AI 리드 팁은?'] },
-            { id: 3, title: '3차시: 웹 생태계 첫걸음 (프론트/백엔드)', summary: '우리가 매일 쓰는 웹사이트 뒷면에는 무엇이 있을까요? 환상적인 협업을 들여다봅니다.', topic: 'Web Foundation', slides: [{ title: '보이지 않는 곳의 분주함 🍽️', diagram: '👤 [사용자] ━▶ 💁 [웨이터]\n🛒 [DB] ━▶ 👨‍🍳 [주방 서버]', desc: '눈에 보이는 UI 이면에는 정교하게 돌아가는 서버 주방이 있습니다.' }, { title: '프론트엔드: 시선이 머무는 곳 🎭', diagram: '🏗️ HTML / 🎨 CSS / ⚙️ JS', desc: '사용자의 첫인상을 결정짓는 아름다운 껍데기와 역동적인 반응 기술입니다.' }, { title: '백엔드: 시스템의 뇌 🥷', diagram: '💾 데이터 저장 / 🛡️ 보안 / 🤖 지능 엔진', desc: '모든 연산과 저장, 보안을 책임지는 든든한 뇌의 역할을 확인하세요.' }], qaList: ['간단한 게임 웹에도 서버가 꼭 필요할까요?', '프론트엔드 코드를 남들이 못 보게 숨길 수 있나요?', '데이터베이스 대신 구글 시트를 서버로 써도 되나요?', '모바일 반응형 화면이 깨지는 문제는 어떻게 고치나요?', '프론트와 백엔드 통신 에러 시 책임 소재 파악법은?'] },
-            { id: 4, title: '4차시: 구글 AI 스튜디오 입문 및 실습', summary: '구글의 압도적 지능 Gemini를 가장 날 것 그대로 제어하는 법. 개발자들의 비밀 무기를 공개합니다.', topic: 'Google AI Studio', slides: [{ title: '개발자의 비밀 샌드박스 🛠️', diagram: '🌐 빠른 테스트\n🔑 공식 API 발급\n⚡ 즉각적인 성과', desc: '준비 작업은 필요 없습니다. 구글의 강력한 지능을 브라우저에서 즉시 내 것으로 만드세요.' }, { title: '정교한 지시서 작성법 📜', diagram: '배경 설정\n➕ 규칙 입력\n➕ 출력 형식', desc: 'AI를 길들이는 가장 강력한 도구인 프롬프트의 표준 규격을 마스터합니다.' }, { title: '아이디어에서 실전 코드로 🐣', diagram: '생성 ➡️ 추출 ➡️ 즉시 사용', desc: '성능 좋은 로직을 만들었다면, 이제 클릭 한 번으로 배포 가능한 코드를 얻어낼 차례입니다.' }], qaList: ['일반 챗GPT 플러스(유료)를 쓰는 것과 무료인 구글 AI 스튜디오를 쓰는 것의 가장 큰 개발상 차이는 무엇인가요?', '프롬프트를 엄청 길게 썼더니 AI가 코드를 중간에서 뚝 끊고 생성을 멈춥니다. 어떻게 이어서 받나요?', '화면 기획서를 손으로 대충 그려서 사진으로 찍어 올린 뒤 코드로 바꿔달라고 해도 되나요?', "System Instructions(시스템 지시어) 부분과 일반 채팅 입력창은 어떤 기준으로 구분해서 써야 하나요?", '구글 AI 스튜디오에서 생성한 코드를 상업용으로 판매해도 라이선스 문제가 없나요?'] },
-            { id: 5, title: '5차시: 내게 맞는 코드 에디터 선택하기', summary: '나만의 코딩 작업실을 꾸리는 법. 아이디어가 실제로 구동되는 마법 같은 공간을 구축합니다.', topic: 'IDE Selector', slides: [{ title: '장인에게 필요한 연장 🏗️', diagram: '단순 메모\n🆚\n지능형 에디터', desc: '좋은 에디터는 오타를 잡아주는 비서이자, AI가 24시간 내 곁에 상주할 수 있는 최고의 아지트입니다.' }, { title: '에디터 삼국지 ⚔️', diagram: '🏆 VS Code\n🚀 Anti-gravity\n🪄 Cursor', desc: '전 세계가 선택한 표준부터 AI 특화 에디터까지, 나에게 딱 맞는 파트너를 찾아봅니다.' }, { title: '완벽한 코딩 인테리어 🪚', diagram: '설치 ➡️ 확장 프로그램 ➡️ 세팅', desc: '효율을 200% 끌어올릴 필수 확장 도구들을 설치하며 실전 준비를 마칩니다.' }], qaList: ['학교 컴퓨터라 보안 프로그램 때문에 프로그램 설치가 막혀있는데, 웹에서 바로 쓰는 에디터는 없나요?', '코드를 복사해서 에디터에 붙여넣었는데 글씨가 전부 하얀색이고 색깔 구분이 안 됩니다. 왜 이러나요?', '한글 주석을 달았는데 에디터에서 깨져서(외계어) 보입니다. 인코딩 문제는 어떻게 해결하나요?', 'VS Code와 Cursor를 동시에 설치해두고 왔다 갔다 하면서 써도 충돌이 없나요?', '바탕화면의 폴더를 에디터로 열지 않고 파일 하나만 열어서 작업하면 나중에 어떤 문제가 생기나요?'] },
-            { id: 6, title: '6차시: 에디터에 AI 에이전트 심기', summary: '브라우저를 오가는 수고는 끝! 코드 속으로 AI를 직접 불러와 실시간으로 대화하며 개발하세요.', topic: 'AI Agent Integration', slides: [{ title: '옆에 앉은 천재 실무 비서 🤵‍♂️', diagram: '창 이동 (X)\n코드 내 채팅 (O)', desc: 'AI가 내 전체 프로젝트 파일을 읽고 있어, "이거 고쳐줘" 한마디면 수십 줄의 코드가 자동 수정됩니다.' }, { title: '에이전트를 소환하는 법 🤝', diagram: '플러그인 ➡️ 연결 ➡️ 기가 막힌 협업', desc: '내 생각을 이해하고 스스로 파일을 생성하는 자동 실행형 에이전트의 강력함을 이식합니다.' }, { title: '한글로 명하는 프로토콜 💬', diagram: '인간의 말 ➡️ AI의 전방위적 수행', desc: '기술 언어는 잊으세요. 이제 논리적인 한글 설명만으로도 완벽한 코드가 완성됩니다.' }], qaList: ['Cursor나 GitHub Copilot 같은 도구는 유료인데, 무료로 쓸 수 있는 에디터 AI 플러그인은 없나요?', 'AI가 코드를 수정해 줬는데 원래 코드가 다 망가졌습니다. 안전하게 되돌리기(Undo) 단축키가 뭔가요?', '에디터 안의 AI 채팅창에 질문했는데, AI가 내 프로젝트의 다른 파일(CSS 등)은 못 읽고 헛소리를 합니다. 왜 그런가요?', 'AI 비서가 제 코드를 학습해서 외부로 유출할 위험(개인정보 침해)은 없나요?', '여러 줄의 코드를 한 번에 선택해서 "이 부분만 다시 짜줘"라고 인라인(Inline)으로 지시하는 정확한 방법이 궁금합니다.'] },
-            { id: 7, title: '7차시: 깃허브(GitHub)란 무엇이고 왜 필요한가?', summary: '코드를 영원히 보관하고 전 세계와 나누는 소셜 코드 금고. 개발자들의 성지를 탐험합니다.', topic: 'GitHub Basics', slides: [{ title: '전 세계의 코드가 모이는 곳 🐙', diagram: '내 PC 💻 ━━━━━▶ 클라우드 금고 ☁️', desc: '작업한 코드를 안전하게 깃허브에 백업하고, 누구나 볼 수 있는 주소로 공유하세요.' }, { title: '시간을 거스르는 기술 ⏳', diagram: '과거 ➡️ 현재 ➡️ 미래\n(언제든 과거로 복구)', desc: '코드를 망쳐도 괜찮습니다. 타임머신을 타듯 가장 성공적이었던 과거 버전으로 즉시 되돌아갑니다.' }, { title: '웹 배포의 출발점 🚪', diagram: '저장소 생성 ➡️ 프로젝트 연결', desc: '세상에 내 웹사이트를 공개하기 위해 거쳐야 할 가장 첫 번째 관문입니다.' }], qaList: ['코드에 실수로 중요한 비밀번호를 적은 채 깃허브에 올렸습니다. 급하게 삭제하려면 어떻게 해야 하나요?', 'Commit(커밋)과 Push(푸시)의 정확한 차이가 뭔가요? 커밋만 하면 인터넷에 안 올라가나요?', "Merge Conflict(병합 충돌) 이라는 빨간 에러가 뜨면서 업로드가 거부됩니다. 어떻게 해결하나요?", '무료 깃허브 계정에 코드가 아닌 동영상 파일이나 대용량 이미지 파일도 무제한으로 올릴 수 있나요?', '내 코드를 비공개(Private)로 올렸다가 나중에 배포할 때만 공개(Public)로 전환할 수 있나요?'] },
-            { id: 8, title: '8차시: [실전 A-1] 순수 프론트엔드 정적 웹 만들기', summary: 'HTML, CSS, JS만으로도 놀라운 사용자 경험을! AI와 함께 단숨에 웹사이트를 창조합니다.', topic: 'Static Web Prototyping', slides: [{ title: '가볍고 강력한 첫걸음 🪶', diagram: '비용 0원 / 로딩 속도 최상', desc: '복잡한 서버 연동 없는 정적 웹은 초보자가 가장 먼저 마스터해야 할 빠른 프로토타이핑 도구입니다.' }, { title: 'AI와 실시간으로 디자인하기 🗺️', diagram: '분위기 설명 ➡️ 완성된 UI', desc: '디자인 실력이 없어도 괜찮습니다. 원하는 느낌을 전달해 AI가 그려내는 마법 같은 화면을 만나보세요.' }, { title: '즉각적인 피드백 루프 🔍', diagram: '수정 ➡️ 저장 ➡️ 즉시 확인', desc: '내 코드가 어떻게 작동하는지 실시간으로 확인하며 만족스러운 결과물이 나올 때까지 다듬어봅니다.' }], qaList: ['정적 웹사이트에 댓글 달기 기능이나 좋아요 버튼을 추가하려면 어떻게 해야 하나요?', '브라우저에서 새로고침을 해도 수정한 코드가 반영 안 되고 옛날 화면이 계속 뜹니다. (캐시 해결법)', '이미지를 폴더에 넣고 코드를 짰는데, 화면에 엑스박스(깨진 아이콘)가 뜹니다. 경로는 어떻게 하나요?', '순수 HTML/JS 파일만 있는 폴더를 통째로 카톡으로 친구에게 보내면, 친구 컴퓨터에서도 똑같이 열리나요?', '방탈출 게임에서 똑똑한 학생이 개발자 도구(F12)를 열어 정답 소스코드를 찾아내는 것을 방지할 꼼수가 있나요?'] },
-            { id: 9, title: '9차시: [실전 A-2] 프롬프트 생성기 서비스 만들기', summary: '질문을 조립해주는 똑똑한 자판기 만들기. 누구나 고품격 AI 질문을 생성할 수 있는 도구를 구축합니다.', topic: 'Prompt Generator Web', slides: [{ title: '고성능 질문 조립기 🧃', diagram: '입력 ➡️ AI 최적 문장 조립', desc: '사용자의 단순한 단어를 AI가 가장 좋아하는 "완벽한 배경과 맥락"으로 정교하게 빚어냅니다.' }, { title: '영리한 배포 아이디어 🤫', diagram: '복사 ➡️ 무료 AI 서비스 연결', desc: '값비싼 연결 비용 없이도 사용자를 무료 AI 사이트로 즉각 안내하는 천재적인 우회법을 구현합니다.' }, { title: '업무 속도를 10배 높이는 도구 🎒', diagram: '학급 관리 / 보고서 실무 지원', desc: '현장의 피로도를 획기적으로 낮춰줄 실무형 자동화 프롬프트 도구를 완성합니다.' }], qaList: ['텍스트 입력창(Textarea)에서 사용자가 엔터(줄바꿈)를 여러 번 친 내용을 어떻게 프롬프트에 온전히 담나요?', '클립보드에 복사된 후 새 탭이 열릴 때, 팝업 차단 경고창이 뜨면서 안 열리는 현상은 어떻게 고치나요?', '챗GPT가 아니라 국내 AI 사이트(뤼튼, 클로바 등)로 새 탭을 연결하도록 코드를 수정할 수 있나요?', '챗GPT 채팅창에 자동으로 붙여넣고 전송 버튼까지 누르게 만들 수는 없나요?', '체크박스를 여러 개 중복으로 선택했을 때, 문장이 자연스럽게 조합되게 하려면 어떤 로직이 필요한가요?'] },
-            { id: 10, title: '10차시: API와 토큰(Token)의 이해', summary: 'AI와의 유료 대화법. 지능을 빌려오는 통로인 API와 비용의 핵심인 토큰을 파헤칩니다.', topic: 'API & Tokenomics', slides: [{ title: '보이지 않는 악수(API) 🚰', diagram: '내 앱 ━━━━▶ 거대 두뇌(LLM)', desc: '시스템과 시스템이 데이터를 주고받는 공식 약속, API를 통해 AI의 지각 능력을 빌려옵니다.' }, { title: 'AI의 언어 단위, 토큰 🪙', diagram: '단어 단위 🟰 비용 체계', desc: '글자가 아닌 의미 단위로 과금됩니다. 짧고 강력한 프롬프트가 지갑을 지킵니다.' }, { title: '상황별 모델 배합 전략 ⚖️', diagram: '속도파 Flash ➕ 실무파 Pro', desc: '무조건 비싼 게 정답은 아닙니다. 목적에 맞는 모델을 골라 실용적인 앱을 완성합니다.' }], qaList: ['영어보다 한글로 질문할 때 토큰 비용이 2~3배 더 비싸다는데 진짜인가요?', '사용자가 엄청나게 긴 소설책을 복사해서 붙여넣으면 요금을 다 내야 하나요? 글자 수 제한은?', '선불(충전)과 후불(사용량) 중 초보자에게 어떤 결제 방식이 더 안전한가요?', "'입력 토큰'과 '출력 토큰'의 가격이 다르다던데, 비용을 아끼려면 프롬프트를 길게 쓰는 게 나은가요?", 'AI 모델별 최대로 읽을 수 있는 토큰 한도(Context Window)가 초과되면 어떤 에러가 발생하나요?'] },
-            { id: 11, title: '11차시: 무료 혜택과 API 보안 철칙', summary: '구글이 주는 넘치는 무료 혜택을 안전하게! 사소한 실수로 인한 요금 폭탄을 막는 방어 기술입니다.', topic: 'Cloud Security', slides: [{ title: '최신 AI를 공짜로 쓰는 법 🎁', diagram: 'Gemini Free Tier (최대 혜택)', desc: '구글이 개발자들에게 열어준 거대한 인프라 혜택을 남김없이 활용해 봅니다.' }, { title: '내 암호(Secret Key) 지키기 💳🚨', diagram: '노출 주의 ➡️ 보안 설정 마스터', desc: 'API 키는 현찰과 같습니다. 깃허브 등 공개된 장소에 유출되지 않게 꽁꽁 숨기는 법을 배웁니다.' }, { title: '지갑 철벽 방수 장구 🛑', diagram: '결제 한도 설정 ➡️ 실시간 알림', desc: '혹시 모를 대형 사고를 원천 차단하는 구글 클라우드의 안전 잠금장치를 구축합니다.' }], qaList: ['실수로 깃허브에 올린 .env 파일을 지우면 안전해지나요? (히스토리 문제)', '누군가 제 키를 훔쳐 가지 못하게 내 웹사이트 주소에서만 작동하도록 제한할 수 있나요?', 'Vercel 같은 곳에 배포할 때는 환경변수 설정을 어떻게 하나요?', '구글 API를 무료로 쓸 때 체험 기간이 끝나거나 한도를 넘으면 어떻게 되나요?', '방문자가 해킹 프로그램으로 내 서버의 API 키를 가로채는 일이 가능한가요?'] },
-            { id: 12, title: '12차시: [실전 B-1] 사용자 API 직접 입력 방식 웹 만들기', summary: '사용자 본인의 키를 연료처럼 투입하는 방식. 개발자 비용은 0원으로 유지하며 무제한 확장을 꿈꿉니다.', topic: 'BYOK Implementation', slides: [{ title: '누구나 주인이 되는 0원 앱 🌸', diagram: '틀(App) ➕ 사용자 키(연료)', desc: '내가 서버비를 감당하지 않아도 누구나 자유롭게 AI를 이용할 수 있는 실무적 설계법입니다.' }, { title: '내 기기에만 저장되는 비결 💾', diagram: 'LocalStorage (안전한 보관)', desc: '서버로 전송되지 않는 브라우저 내 금고를 활용해 사용자의 프라이버시와 보안을 지킵니다.' }, { title: '나눔의 기쁨, 배포의 자유 👨‍🏫', diagram: '과금 걱정 0 ➡️ 전국적 공유 가능', desc: '전국의 학교 현장에서 수만 명의 교사가 함께 써도 문제없는 지속 가능한 앱을 완성합니다.' }], qaList: ['로컬 스토리지에 저장된 키는 컴퓨터를 껐다 켜도 남아있나요? 언제 지워지나요?', '크롬 시크릿 모드에서도 로컬 스토리지가 정상적으로 작동하나요?', '로컬 스토리지에 그대로 저장하면 위험하지 않나요? 암호화는 가능한가요?', '모바일 브라우저에서도 로컬 스토리지 API 키 저장 기능이 동일하게 작동하나요?', '사용자가 잘못된 키를 입력했을 때 부드러운 안내창을 띄우려면 어떻게 짜야 하나요?'] },
-            { id: 13, title: '13차시: [실전 B-2] 자체 API 포함 완성형 웹 만들기', summary: '사용자 경험의 끝판왕! 서버가 모든 복잡한 처리를 대신 해주는 프로페셔널한 서비스를 구축합니다.', topic: 'Full-Stack Integration', slides: [{ title: '심리스한 사용자 경험 🏢', diagram: '사용자 만족 ➡️ 서버의 철저한 은닉', desc: '사용자가 키를 몰라도 됩니다. 가장 자연스러운 방식으로 고도의 지능을 전달하는 앱의 정석을 마스터합니다.' }, { title: '통제된 데이터 게이트웨이 🚧', diagram: '클라이언트 ➡️ 서버 ➡️ AI 본사', desc: '내부에 API 키를 완벽히 숨긴 채, 오직 안전한 서버 통신만을 허용하는 철벽의 구조를 설계합니다.' }, { title: '스마트한 지갑 관리 (최적화) 🛡️', diagram: '요청 제한 ➕ 중복 질문 답변 재사용', desc: '불필요한 AI 비용을 아끼고 트래픽 폭주를 막는 실무형 서버 로직을 탑재합니다.' }], qaList: ['백엔드 구축 시 Node.js와 Python 중 AI 통신에 더 유리한 것은 무엇인가요?', "배포 시 'CORS Error'라는 붉은 글씨가 뜨며 차단당합니다. 해결법이 뭔가요?", '수백 명이 동시에 접속해도 서버가 다운되지는 않나요?', 'AI 답변 대기 시간이 길 때 화면에 로딩 중 빙글빙글 아이콘은 어떻게 구현하나요?', 'Vercel의 Serverless Function 기능을 이용하면 서버 임대 없이도 가능한가요?'] },
-            { id: 14, title: '14차시: 깃허브로 무료 배포하기', summary: '내 컴퓨터 안의 결과물이 전 세계 누구나 접속하는 살아있는 주소로 변신하는 감동의 순간입니다.', topic: 'Deployment Mastery', slides: [{ title: '아이디어가 세상 밖으로 🌍', diagram: '내 파일 ━━━━▶ 전 세계 접속 URL', desc: '로컬 환경에 갇혀있던 코드가 살아있는 웹사이트 주소로 재탄생해 모두와 만납니다.' }, { title: '배포계의 절대 강자, Vercel ⚡', diagram: '커밋 한 번에 배포 완료', desc: '어려운 서버 관리는 그만! 깃허브에 코드를 올리기만 하면 실시간 업데이트되는 배포 마법을 확인하세요.' }, { title: '모바일로 확인하는 내 작품 🎀', diagram: '주소창 입력 ➡️ 즉시 접속', desc: '내 손 안의 스마트폰에서 내가 만든 앱이 돌아갈 때의 전율을 직접 경험해 보세요.' }], qaList: ["배포 후 'Build Failed' 에러가 났습니다. 로그 확인과 해결은 어떻게 하나요?", '코드를 깃허브에 올렸는데 웹에는 예전 버전이 뜹니다. 수동 업데이트를 해야 하나요?', '배포된 사이트가 망가졌습니다. 어제 버전으로 롤백하는 기능이 있나요?', '무료 요금제 트래픽 용량을 초과하면 요금이 청구되나요, 접속이 중단되나요?', 'Vercel이 시작 폴더(Root)를 못 찾을 때의 설정법은 무엇인가요?'] },
-            { id: 15, title: '15차시: 나만의 브랜드 도메인 연결하기', summary: '임시 주소는 이제 그만! 나만의 고유한 이름으로 신뢰와 전문성을 갖춘 브랜드를 완성하세요.', topic: 'Custom Domains', slides: [{ title: '나만의 디지털 영토 📛', diagram: '무료 주소(전세) 🆚 내 이름(자가 무한보존)', desc: '평범한 임시 주소를 버리고, 10년 뒤에도 기억될 나만의 고유 브랜드를 선점해 보세요.' }, { title: '간판 달기 실전 테크닉 📜', diagram: '구매 ➡️ 네임서버 설정 ➡️ 연결', desc: '복잡해 보이는 도메인 연결 과정을 가장 쉽게 풀어냅니다. 단 몇 번의 클릭으로 주인을 인증하세요.' }, { title: '진정한 서비스의 탄생 🔗', diagram: '접속 성공 ➡️ 소유권 확립', desc: '내가 정한 전용 주소로 모든 사람이 들어올 수 있게 되었을 때 비로소 이 여정이 완성됩니다.' }], qaList: ['네임서버를 연결했는데 왜 즉시 접속이 안 되나요? (전파 시간 문제)', "주소창에 '안전하지 않음' 경고가 뜹니다. HTTPS 자물쇠를 다는 방법은?", 'www가 있든 없든 똑같이 들어오게 설정할 수 있나요?', '도메인 1년 만료 후에 누군가 제 주소를 바로 가로채 갈 수 있나요?', '나중에 다른 업체로 이사가도 제가 산 도메인은 그대로 쓸 수 있나요?'] }
-        ];
-
-        function renderLessonList() {
-            const container = document.getElementById('lesson-accordion-container');
-            container.innerHTML = lessonData.map(l => `
-                <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden transition-all hover:border-indigo-300 shadow-sm group">
-                    <header class="px-6 py-5 cursor-pointer flex items-center justify-between" onclick="toggleLessonAccordion(${l.id})">
-                        <div class="flex items-center gap-5">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-black text-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">${l.id}</div>
-                            <div>
-                                <h3 class="text-lg font-black text-slate-800 group-hover:text-indigo-600">${l.title}</h3>
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${l.topic}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center gap-1.5 p-1.5 bg-slate-50 rounded-2xl border border-slate-100" onclick="event.stopPropagation()">
-                                <div class="select-wrapper">
-                                    <select id="ls-ai-${l.id}" class="bg-white text-slate-600 text-[11px] font-bold pl-3 pr-8 py-1.5 focus:outline-none appearance-none cursor-pointer border border-slate-200 rounded-xl">
-                                        <option value="gemini">Gemini</option><option value="chatgpt">ChatGPT</option><option value="claude">Claude</option><option value="grok">Grok</option>
-                                    </select>
-                                </div>
-                                <button onclick="handleLSMentoring(${l.id}, false)" class="p-2 hover:bg-primary bg-white border border-slate-200 rounded-xl transition-all group/b" title="AI 멘토링 요청"><i data-lucide="brain-circuit" class="w-4 h-4 text-slate-400 group-hover/b:text-white"></i></button>
-                                <button onclick="openSlides(${l.id})" class="p-2 hover:bg-primary bg-white border border-slate-200 rounded-xl transition-all group/b" title="강의 슬라이드 보기"><i data-lucide="presentation" class="w-4 h-4 text-slate-400 group-hover/b:text-white"></i></button>
-                                <button onclick="toggleQnA(${l.id}, event)" class="p-2 hover:bg-primary bg-white border border-slate-200 rounded-xl transition-all group/b" title="핵심 Q&A 확인"><i data-lucide="message-circle-question" class="w-4 h-4 text-slate-400 group-hover/b:text-white"></i></button>
-                            </div>
-                            <i data-lucide="chevron-down" id="ls-chevron-${l.id}" class="chevron-icon w-5 h-5 text-slate-300"></i>
-                        </div>
-                    </header>
-                    <div id="ls-content-${l.id}" class="accordion-content px-8">
-                        <div class="pt-4 border-t border-slate-50 pb-6">
-                            <div class="bg-indigo-50/40 rounded-2xl p-6 border border-indigo-100 flex gap-4">
-                                <div class="p-3 bg-white rounded-xl shadow-sm"><i data-lucide="info" class="w-6 h-6 text-indigo-500"></i></div>
-                                <p class="text-[15px] text-slate-600 font-bold leading-relaxed">"${l.summary}"</p>
-                            </div>
-                            <div id="ls-qna-${l.id}" class="hidden mt-6 p-8 bg-white border-2 border-indigo-100 rounded-[2rem] shadow-xl relative overflow-hidden animate-[slideUp_0.4s]">
-                                <div class="flex items-center justify-between border-b-2 border-indigo-50 pb-4 mb-4">
-                                    <h4 class="text-sm font-black text-indigo-900">💡 이 차시의 핵심 Q&A 목록</h4>
-                                    <div class="flex gap-2">
-                                        <div class="select-wrapper">
-                                            <select id="ls-qna-ai-${l.id}" class="bg-slate-50 border border-slate-200 text-slate-600 text-[11px] font-bold pl-3 pr-8 py-2 rounded-xl appearance-none cursor-pointer">
-                                                <option value="gemini">Gemini</option><option value="chatgpt">ChatGPT</option><option value="claude">Claude</option>
-                                            </select>
-                                        </div>
-                                        <button onclick="handleLSMentoring(${l.id}, true)" class="px-5 py-2 bg-indigo-600 text-white rounded-xl text-xs font-black shadow-lg">멘토학습</button>
-                                    </div>
-                                </div>
-                                <ul class="space-y-2 text-sm text-slate-700 font-bold" id="ls-qna-list-${l.id}"></ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        let openLessonIdx = null;
-        function toggleLessonAccordion(id) {
-            const content = document.getElementById(`ls-content-${id}`);
-            const chevron = document.getElementById(`ls-chevron-${id}`);
-            if (openLessonIdx && openLessonIdx !== id) {
-                document.getElementById(`ls-content-${openLessonIdx}`).classList.remove('open');
-                document.getElementById(`ls-chevron-${openLessonIdx}`).classList.remove('rotated');
+        function loadFrame(src, activeBtn) {
+            // 1. Iframe 소스 변경
+            if (iframe.src && !iframe.src.endsWith(src)) {
+                iframe.src = src;
             }
-            content.classList.toggle('open');
-            chevron.classList.toggle('rotated');
-            openLessonIdx = content.classList.contains('open') ? id : null;
-        }
 
-        function toggleQnA(id, event) {
-            event.stopPropagation();
-            const qSection = document.getElementById(`ls-qna-${id}`);
-            if (qSection.classList.contains('hidden')) {
-                const lesson = lessonData.find(l => l.id === id);
-                document.getElementById(`ls-qna-list-${id}`).innerHTML = lesson.qaList.map((q, i) => `<li class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex gap-3 hover:bg-white transition-all"><span class="text-indigo-500">${i + 1}.</span> ${q}</li>`).join('');
-                qSection.classList.remove('hidden');
-                if (!document.getElementById(`ls-content-${id}`).classList.contains('open')) toggleLessonAccordion(id);
-            } else { qSection.classList.add('hidden'); }
-        }
-
-        function handleLSMentoring(id, isDetailed) {
-            const lesson = lessonData.find(l => l.id === id);
-            const ai = document.getElementById(isDetailed ? `ls-qna-ai-${id}` : `ls-ai-${id}`).value;
-            const context = lesson.slides.map(s => s.desc).join('\n');
-            const questions = lesson.qaList.join('\n');
-            const prompt = isDetailed ? `학습 주제: '${lesson.title}'\n강의 요약:\n${context}\n궁금한 질문:\n${questions}\n너는 나의 AI 멘토야. 위 질문 리스트를 다시 보여주고 내가 번호를 고르면 쉽게 설명해줘.` : `학습 주제: '${lesson.title}'\n강의 요약:\n${context}\n이 주제에 대해 더 쉽고 자세하게 설명해줘.`;
-            navigator.clipboard.writeText(prompt).then(() => {
-                showToast("프롬프트 복사 성공! AI 창으로 이동합니다.");
-                setTimeout(() => window.open(aiUrls[ai], '_blank'), 1000);
+            // 2. 모든 버튼 스타일 초기화 (비활성 상태)
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-indigo-100', 'text-indigo-700', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-100');
             });
-        }
 
-        // --- Slide Modal Integration ---
-        let lsCurSess = null, lsCurSli = 0;
-        function openSlides(id) {
-            lsCurSess = lessonData.find(l => l.id === id); lsCurSli = 0;
-            document.getElementById('modal-session-id').innerText = `SESSION ${String(id).padStart(2, '0')}`;
-            document.getElementById('modal-lesson-title').innerText = lsCurSess.title;
-            renderSli();
-            document.getElementById('slide-modal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('slide-modal').classList.add('opacity-100', 'translate-y-0'), 50);
-        }
-        function closeSlides() {
-            const m = document.getElementById('slide-modal');
-            m.classList.remove('opacity-100', 'translate-y-0');
-            setTimeout(() => m.classList.add('hidden'), 500);
-        }
-        function renderSli() {
-            const s = lsCurSess.slides[lsCurSli];
-            document.getElementById('slide-badge').innerText = `Stage ${lsCurSli + 1}`;
-            document.getElementById('slide-title').innerText = s.title;
-            document.getElementById('slide-diagram').innerText = s.diagram;
-            document.getElementById('slide-desc').innerText = s.desc;
-            document.getElementById('slide-indicator').innerText = `${lsCurSli + 1} / ${lsCurSess.slides.length}`;
-            document.getElementById('progress-bar').style.width = `${((lsCurSli + 1) / lsCurSess.slides.length) * 100}%`;
-            document.getElementById('btn-prev-slide').disabled = (lsCurSli === 0);
-            document.getElementById('btn-next-slide').disabled = (lsCurSli === lsCurSess.slides.length - 1);
-        }
-        document.getElementById('btn-prev-slide').onclick = () => { if (lsCurSli > 0) { lsCurSli--; renderSli(); } };
-        document.getElementById('btn-next-slide').onclick = () => { if (lsCurSli < lsCurSess.slides.length - 1) { lsCurSli++; renderSli(); } };
-
-        // --- View 2: Dictionary Logic ---
-        function renderDictionary() {
-            const c = document.getElementById('dictionary-container');
-            const search = document.getElementById('header-search-input').value.toLowerCase();
-            const filtered = DB.filter(i => i.term.toLowerCase().includes(search) || i.shortDesc.toLowerCase().includes(search));
-            const groups = {};
-            categories.filter(ca => ca !== '전체보기').forEach(ca => groups[ca] = []);
-            filtered.forEach(i => { if (groups[i.category]) groups[i.category].push(i); });
-            let h = '';
-            Object.keys(groups).forEach(ca => {
-                if (groups[ca].length > 0) {
-                    const b = ca.split('.');
-                    h += `
-                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                            <button onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.chevron-icon').classList.toggle('rotated')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-slate-50">
-                                <div class="flex items-center gap-4"><span class="bg-indigo-600 text-white w-8 h-8 rounded-xl flex items-center justify-center font-bold">${b[0]}</span><span class="text-xl font-extrabold text-slate-800">${b[1]}</span></div>
-                                <i data-lucide="chevron-down" class="chevron-icon w-5 h-5 text-slate-400"></i>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="px-6 pb-6 pt-2 space-y-3 bg-slate-50/30">
-                                    ${groups[ca].map(i => `
-                                        <div class="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between group">
-                                            <div class="flex flex-col"><span class="font-bold text-slate-800">${i.term}</span><span class="text-sm text-slate-500">${i.shortDesc}</span></div>
-                                            <button onclick="navigator.clipboard.writeText('${i.term}').then(()=>showToast('${i.term} 복사됨'))" class="p-2 hover:bg-indigo-50 text-slate-300 hover:text-indigo-600 transition-all opacity-0 group-hover:opacity-100" title="용어 복사">📋</button>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-            c.innerHTML = h || `<div class="py-20 text-center text-slate-400">검색 결과가 없습니다.</div>`;
-            lucide.createIcons();
-        }
-
-        // --- View 3: Sandbox Logic ---
-        let curSbxId = null;
-        function renderSandbox() {
-            const list = document.getElementById('sandbox-list');
-            list.innerHTML = DB.map(i => `<button onclick="selSbx(${i.id})" class="w-full text-left px-4 py-3 rounded-xl text-xs font-bold transition-all ${i.id === curSbxId ? 'bg-indigo-600 text-white shadow-md' : 'bg-white border text-slate-700 hover:bg-slate-50'} flex justify-between truncate" title="${i.term} 연습하기"><span>${i.term}</span><span>▶</span></button>`).join('');
-            if (curSbxId) {
-                const i = DB.find(d => d.id === curSbxId);
-                document.getElementById('sandbox-term-title').innerHTML = `<h3 class="text-2xl font-black text-slate-800">${i.term}</h3>`;
-                document.getElementById('sandbox-detail').innerText = i.detailDesc;
-                document.getElementById('sandbox-code').innerText = i.actionPrompt;
-                document.getElementById('sandbox-code-copy').onclick = () => { navigator.clipboard.writeText(i.actionPrompt).then(() => showToast("코드 복사됨")); };
-                document.getElementById('sandbox-code-copy').setAttribute('title', '프롬프트 복사');
-                i.render(document.getElementById('sandbox-preview'));
-            } else if (DB.length > 0) selSbx(DB[0].id);
-        }
-        function selSbx(id) { curSbxId = id; renderSandbox(); }
-
-        // --- View 4: Flashcard Logic ---
-        let curFltr = '전체보기';
-        function renderFlashcard() {
-            document.getElementById('flashcard-filter').innerHTML = categories.map(cat => `<button onclick="setFlt('${cat}')" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold transition-all ${cat === curFltr ? 'bg-slate-800 text-white' : 'bg-white border text-slate-600'}">${cat}</button>`).join('');
-            document.getElementById('flashcard-grid').innerHTML = DB.filter(i => curFltr === '전체보기' || i.category === curFltr).map(i => `
-                <div class="flip-card h-64 group" onclick="this.classList.toggle('flipped')">
-                    <div class="flip-card-inner w-full h-full relative cursor-pointer shadow-sm rounded-3xl border group-hover:shadow-md transition-all">
-                        <div class="absolute inset-0 backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-6 text-center">
-                            <span class="px-2 py-1 bg-indigo-50 text-indigo-600 rounded text-[10px] font-black mb-4">${i.category}</span>
-                            <div class="text-xl font-bold">${i.term}</div>
-                            <div class="absolute bottom-4 text-[10px] text-slate-300 animate-pulse">터치하여 확인</div>
-                        </div>
-                        <div class="absolute inset-0 backface-hidden bg-indigo-600 rounded-3xl rotate-y-180 flex flex-col items-center justify-center p-6 text-center text-white">
-                            <div class="text-4xl mb-4">${i.icon || '✨'}</div>
-                            <p class="text-sm font-bold opacity-90">${i.shortDesc}</p>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        function setFlt(f) { curFltr = f; renderFlashcard(); }
-
-        // --- View 5: Design Concepts Logic (integrated from concepts.html) ---
-        const CONCEPTS = [
-            { id: 1, name: "Modern Clean Blue", tag: "가장 신뢰받는 기업형 컨셉", colors: { primary: "#2563EB", secondary: "#F0F7FF", text: "#1E293B", bg: "#FFFFFF", accent: "#3B82F6", border: "#E2E8F0" }, desc: "흰 배경과 신뢰감 있는 블루를 활용하여 전문적인 느낌을 줍니다. 비즈니스 대시보드나 랜딩페이지에 적합합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Modern Clean Blue\n- Primary: #2563EB (Brand Color)\n- Bg: #FFFFFF (Main White)\n- Sub: #F0F7FF (Soft Blue Bg)\n- Text: #1E293B (Dark Slate)\n- Border: #E2E8F0\nGuide: Use Blue for CTA buttons and interactive elements for high trust." },
-            { id: 2, name: "Slate Dark Premium", tag: "다크모드 기술 및 AI 컨셉", colors: { primary: "#6366F1", secondary: "#1E293B", text: "#F8FAFC", bg: "#0F172A", accent: "#818CF8", border: "#334155" }, desc: "심해의 네이비와 고선명 인디고를 사용하여 미래지향적인 기술력을 상징합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Slate Dark Premium\n- Primary: #6366F1 (Indigo)\n- Bg: #0F172A (Deep Navy)\n- Card: #1E293B (Dark Slate)\n- Text: #F8FAFC (Whiteish)\n- Accent: #818CF8\nGuide: Ideal for developer tools, AI platforms, or futuristic dashboard designs." },
-            { id: 3, name: "Nature Green Pastel", tag: "편안한 힐링 및 환경 컨셉", colors: { primary: "#059669", secondary: "#F0FDF4", text: "#064E3B", bg: "#FFFFFF", accent: "#10B981", border: "#DCFCE7" }, desc: "눈이 편안한 그린과 파스텔톤을 조화시켜 힐링과 친환경적인 감성을 전달합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Nature Green Pastel\n- Primary: #059669 (Emerald-600)\n- Sub: #F0FDF4 (Green-50)\n- Text: #064E3B (Dark Green)\n- Border: #DCFCE7\nGuide: Use for healthcare, farming, or meditation web apps." },
-            { id: 4, name: "Energetic Sunset", tag: "활동적인 스포츠 및 마케팅", colors: { primary: "#F97316", secondary: "#FFF7ED", text: "#431407", bg: "#FFFFFF", accent: "#E11D48", border: "#FFEDD5" }, desc: "오렌지와 레드 컬러의 역동적인 조화로 유저의 열정과 활동성을 자극합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Energetic Sunset\n- Primary: #F97316 (Orange)\n- Accent: #E11D48 (Rose)\n- Bg: #FFFFFF\n- Sub: #FFF7ED\nGuide: High energy theme for fitness, marketing agencies, or creative portfolios." },
-            { id: 5, name: "Luxury Elegant Gold", tag: "고급스러운 프리미엄 브랜드", colors: { primary: "#B45309", secondary: "#FFFBEB", text: "#27272A", bg: "#FFFFFF", accent: "#D97706", border: "#FEF3C7" }, desc: "골드 브라운과 크림 옐로우를 매칭하여 우아하고 고급스러운 브랜드 가치를 표현합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Luxury Elegant Gold\n- Primary: #B45309 (Amber-800)\n- Sub: #FFFBEB (Cream Gold)\n- Text: #27272A (Deep Zinc)\n- Border: #FEF3C7\nGuide: Perfect for jewelry, real estate, or high-end watch retailers." },
-            { id: 6, name: "Soft Lavender Aura", tag: "감성적이고 예술적인 컨셉", colors: { primary: "#7C3AED", secondary: "#F5F3FF", text: "#2E1065", bg: "#FFFFFF", accent: "#A78BFA", border: "#EDE9FE" }, desc: "연보라색과 화이트의 조합으로 몽환적이고 감각적인 예술성을 강조합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Soft Lavender Aura\n- Primary: #7C3AED (Violet)\n- Sub: #F5F3FF (Purple-50)\n- Text: #2E1065 (Dark Purple)\nGuide: Use for design studios, personal blogs, or creative writing platforms." },
-            { id: 7, name: "Deep Ocean Cyan", tag: "지적인 연구 및 탐구 컨셉", colors: { primary: "#0891B2", secondary: "#ECFEFF", text: "#083344", bg: "#FFFFFF", accent: "#22D3EE", border: "#CFFAFE" }, desc: "깊은 바다의 사이안 블루를 사용하여 신비로우면서도 지적인 데이터 탐색을 상징합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Deep Ocean Cyan\n- Primary: #0891B2 (Cyan-600)\n- Sub: #ECFEFF (Cyan-50)\n- Text: #083344 (Dark Cyan)\nGuide: Suitable for science hubs, oceanography, or advanced analytics." },
-            { id: 8, name: "Warm Earth Clay", tag: "목재와 흙의 따뜻한 조화", colors: { primary: "#92400E", secondary: "#FFFBEB", text: "#451A03", bg: "#FFFFFF", accent: "#D97706", border: "#FEF3C7" }, desc: "브라운과 점토색(Clay)을 사용하여 따뜻하고 정겨운 아날로그 감성을 전달합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Warm Earth Clay\n- Primary: #92400E (Amber-800)\n- Bg: #FFFFFF\n- Accent: #D97706\nGuide: Use for handmade craft shops, pottery classes, or wooden architecture." },
-            { id: 9, name: "Mono Industrial Black", tag: "시크하고 차가운 블랙/그레이", colors: { primary: "#18181B", secondary: "#F4F4F5", text: "#09090B", bg: "#FFFFFF", accent: "#71717A", border: "#E4E4E7" }, desc: "무채색의 극적인 대비를 통해 현대적이고 도시적인 미니멀리즘을 추구합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Mono Industrial Black\n- Primary: #18181B (Zinc-900)\n- Sub: #F4F4F5 (Zinc-100)\n- Text: #09090B (Black)\n- Accent: #71717A\nGuide: Architect portfolios, street fashion, or luxury gadget stores." },
-            { id: 10, name: "Neon Cyber Tech", tag: "우주와 메타버스 테마", colors: { primary: "#22D3EE", secondary: "#083344", text: "#ECFEFF", bg: "#020617", accent: "#06B6D4", border: "#164E63" }, desc: "극단적인 블랙 배경에 네온 사이안 컬러를 입혀 가상 현실 테마를 시각화합니다.", blueprint: "::: DESIGN BLUEPRINT :::\nConcept: Neon Cyber Tech\n- Primary: #22D3EE (Neon Cyan)\n- Bg: #020617 (Midnight-950)\n- Sub: #083344 (Highlight)\n- Text: #ECFEFF\nGuide: Metaverse, gaming community, or high-tech blockchain sites." }
-        ];
-        let curConceptId = 1;
-        function renderConceptList() {
-            document.getElementById('concept-list').innerHTML = CONCEPTS.map(c => `
-                <button onclick="selConcept(${c.id})" class="w-full text-left p-4 rounded-2xl border transition-all ${c.id === curConceptId ? 'bg-indigo-50 border-indigo-200' : 'bg-white hover:bg-slate-50 border-transparent'} flex gap-3 items-center">
-                    <div class="w-8 h-8 rounded-full border shadow-inner shrink-0" style="background-color: ${c.colors.primary}"></div>
-                    <div class="flex-1 min-w-0"><p class="font-extrabold text-sm truncate">${c.name}</p><p class="text-[10px] text-slate-400 font-bold">${c.tag}</p></div>
-                </button>
-            `).join('');
-            if (curConceptId) {
-                const c = CONCEPTS.find(i => i.id === curConceptId);
-                document.getElementById('concept-name-display').innerText = `${c.id}. ${c.name}`;
-                renderConceptPreview(c);
+            // 3. 클릭된 버튼 스타일 적용 (활성 상태)
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+                activeBtn.classList.add('bg-indigo-100', 'text-indigo-700', 'shadow-sm');
             }
         }
-        function selConcept(id) { curConceptId = id; renderConceptList(); }
-        function renderConceptPreview(c) {
-            const preview = document.getElementById('preview-box');
-            preview.innerHTML = `
-                <div class="h-full flex flex-col transition-all duration-500 animate-[fadeIn_0.5s]" style="background-color: ${c.colors.bg}; color: ${c.colors.text}">
-                    <header class="px-8 py-4 flex justify-between items-center border-b" style="border-bottom-color: ${c.colors.primary}22">
-                        <div class="flex items-center gap-2 font-black text-lg"><div class="w-8 h-8 rounded-lg text-white flex items-center justify-center" style="background-color: ${c.colors.primary}">C</div>CONCEPT ${c.id}</div>
-                        <button class="px-4 py-2 rounded-full text-[10px] font-black text-white" style="background-color: ${c.colors.primary}">START</button>
-                    </header>
-                    <main class="flex-1 p-12 overflow-auto custom-scrollbar">
-                        <span class="px-2 py-1 rounded-full text-[9px] font-black tracking-widest text-white mb-4 inline-block" style="background-color: ${c.colors.primary}">BRAND STYLE</span>
-                        <h1 class="text-5xl font-black mb-4 leading-tight">당신의 영감을 위한<br><span style="color: ${c.colors.primary}">디자인 가이드</span></h1>
-                        <p class="text-lg opacity-60 mb-8 max-w-lg">${c.desc}</p>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="p-6 rounded-2xl border-2" style="border-color: ${c.colors.primary}11">🎨 Color Sample</div>
-                            <div class="p-6 rounded-2xl border-2" style="border-color: ${c.colors.primary}11">✨ Layout Pattern</div>
-                        </div>
-                    </main>
-                </div>
-            `;
-        }
-        function copyConceptCode() { const c = CONCEPTS.find(i => i.id === curConceptId); navigator.clipboard.writeText(c.blueprint).then(() => showToast("디자인 가이드 복사됨")); }
 
+        // 버튼들에 클릭 이벤트 리스너 할당
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const src = e.currentTarget.getAttribute('data-src');
+                loadFrame(src, e.currentTarget);
+            });
+        });
+
+        // 초기 아이콘 렌더링
         window.onload = () => {
-            document.querySelectorAll('.nav-btn').forEach(b => b.onclick = (e) => switchView(e.currentTarget.dataset.target));
-
-            // Search Input listener bound if it exists
-            const searchInput = document.getElementById('header-search-input');
-            if (searchInput) searchInput.oninput = renderDictionary;
-
             lucide.createIcons();
-            switchView('view-lesson'); // Default view is Lesson
         };
     </script>
+
 </body>
 
 </html>

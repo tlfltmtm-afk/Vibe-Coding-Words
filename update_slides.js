@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+// 기존 userText 내용은 그대로 유지합니다.
 const userText = `
 **1차시: 바이브 코딩이란? (패러다임의 전환)**
 
@@ -142,7 +143,7 @@ const userText = `
         🌐 과거: 챗GPT 창 열기 ➡️ 질문하기 ➡️ 코드 복사 ➡️ 에디터 창 열기 ➡️ 붙여넣기 (번거로움 폭발)
         💻 **현재: 에디터 속 AI (에이전트)** ➡️ "비서야, 이 버튼 색깔 파란색으로 바꿔줘" 치면 에디터 안에서 코드 자동 수정!
     * **상세 설명:**
-        - 이제는 웹 브라우저와 에디터 창을 정신없이 오갈 필요가 없습니다. 내 코딩 작업실(에디터) 안에 AI를 직접 고용(설치)하여, 내 파일 전체의 맥락을 AI가 파악한 상태에서 실시간으로 대화하며 코드를 고칠 수 있습니다.
+        - 이제는 웹 브라우저와 에디터 창을 정신없이 오갈 필요가 없습니다. 내 코딩 작업실(에디터) 안에 AI를 직접 고용(설치)하여, 내 파일 전체의 맥락을 AI 파악한 상태에서 실시간으로 대화하며 코드를 고칠 수 있습니다.
 
 * **[Slide 2] 비서 고용하기 (플러그인 설치) 🤝**
     * **도식:**
@@ -270,7 +271,7 @@ const userText = `
         ❌ **해킹의 표적:** \`const API_KEY = "sk-12345...";\` ➡️ 자바스크립트 코드 파일에 대놓고 적어서 깃허브에 올리기
         ⭕ **철벽 방어:** \`API_KEY\`는 \`.env\`라는 비밀 환경변수 파일에 몰래 숨겨두고, 깃허브 업로드 제외 목록(\`.gitignore\`)에 등록하기!
     * **상세 설명:**
-        - API Key는 내 지갑과 연결된 '신용카드 번호+비밀번호'와 같습니다. 코드에 키를 적나라하게 적은 채로 공개된 깃허브에 올리면, 해커들의 자동화 봇이 1초 만에 이를 긁어가서 하루 밤새 수백만 원의 요금을 발생시킵니다. 보안은 개발의 1원칙입니다.
+        - API Key는 내 지갑과 연결된 '신용카드 번호+비밀번호'와 같습니다. 코드에 키 적나라하게 적은 채로 공개된 깃허브에 올리면, 해커들의 자동화 봇이 1초 만에 이를 긁어가서 하루 밤새 수백만 원의 요금을 발생시킵니다. 보안은 개발의 1원칙입니다.
 
 * **[Slide 3] 안전벨트 꽉 매기 (과다청구 요금 폭탄 방지) 🛑**
     * **도식:**
@@ -292,172 +293,4 @@ const userText = `
 * **[Slide 2] 매번 입력하는 귀찮음 없애기 (Local Storage) 💾**
     * **도식:**
         1회차 접속: API 키 복사해서 붙여넣기 ➡️ 브라우저 내부 창고(\`Local Storage\`)에 키를 암호화하여 저장
-        2회차 접속: 자바스크립트가 창고 검사 ➡️ "저장된 키가 있네요! 귀찮은 입력 없이 바로 AI 채팅창 열어드릴게요."
-    * **상세 설명:**
-        - 아무리 무료라도 매번 사이트에 들어올 때마다 복잡한 영어 스펠링 키를 넣으라고 하면 아무도 안 씁니다. 사용자의 웹 브라우저(크롬 등)가 제공하는 개인 보관함을 활용해 보안을 유지하면서도 자동 로그인과 같은 편의성을 제공하는 로직을 추가합니다.
-
-* **[Slide 3] 실전 사례: 학교 전체에 뿌리는 '학급컨설팅 도우미' 👨🏫**
-    * **도식:**
-        [교사 A] ➡️ 내 웹 접속 ➡️ 본인 무료 구글 API 키 입력 ➡️ 학생 상담 데이터 요약 (내 비용 0원)
-        [교사 B] ➡️ 내 웹 접속 ➡️ 본인 무료 구글 API 키 입력 ➡️ 학부모 통신문 작성 (내 비용 0원)
-    * **상세 설명:**
-        - 이 방식을 사용하면 내 웹사이트가 아무리 대박이 나서 전국 1만 명의 교사가 접속하더라도 서버비 걱정이 없습니다. 각자 자신의 한도를 쓰기 때문에, 혁신적인 교육용 툴을 마음껏 만들고 커뮤니티에 기분 좋게 공유할 수 있습니다.
-
----
-
-**13차시: [실전 B-2] 자체 API 포함 완성형 웹 만들기**
-
-* **[Slide 1] 진짜 상용 서비스처럼 매끄럽게 만들기 🏢**
-    * **도식:**
-        [프론트엔드 (접속자 화면)] ↔️ **[내 백엔드 서버: 내 API 키를 단단히 숨겨둔 금고 🛡️]** ↔️ [AI 모델 (구글/OpenAI)]
-    * **상세 설명:**
-        - 사용자가 아무런 키를 입력하지 않아도, 일반 앱처럼 그냥 접속해서 버튼만 누르면 짠! 하고 AI 결과가 나오는 완벽한 서비스 형태입니다. 단, 비용은 전적으로 '내 지갑(API 키)'에서 나가기 때문에 백엔드(서버) 구조 설계와 방어 로직이 생명입니다.
-
-* **[Slide 2] 프론트와 AI 사이에 검문소(서버) 세우기 🚧**
-    * **도식:**
-        1️⃣ 사용자: 프론트 화면에서 "질문 있어요!" 버튼 클릭
-        2️⃣ 내 백엔드(검문소): "음, 비정상적인 해킹 시도가 아니군. 내 지갑에서 돈(API 키) 꺼내서 진짜 AI에게 물어보고 올게."
-        3️⃣ AI 답변 도착 ➡️ 프론트 화면으로 결과만 안전하게 전송!
-    * **상세 설명:**
-        - 프론트엔드(HTML/JS) 코드에 내 API 키를 넣는 것은 자살 행위입니다. 반드시 중간에 내 소유의 안전한 백엔드 서버를 거쳐서 AI와 통신하도록 파이프라인을 꺾어주어야만 내 소중한 키를 해커로부터 숨길 수 있습니다.
-
-* **[Slide 3] 요금 폭탄을 막는 강력한 방패들 (트래픽 통제) 🛡️**
-    * **도식:**
-        ✋ **Rate Limit (속도/횟수 제한):** "한 IP 주소(사람)당 1시간에 최대 5번만 질문할 수 있어!" (매크로 공격 방어)
-        🗄️ **Caching (캐싱/기억하기):** "어? '세종대왕 업적'은 방금 전 다른 사람이 물어봤던 거네? 비싸게 AI한테 또 묻지 말고 아까 저장해둔 답변 그냥 복사해서 줄게! (통신 비용 0원)"
-    * **상세 설명:**
-        - 내 돈이 나가는 서비스이므로, 악성 유저나 비효율적인 중복 질문으로 인한 과금을 서버 단에서 원천 차단하는 필수 고급 기술(하지만 바이브 코딩으로는 1분 만에 구현 가능)입니다.
-
----
-
-**14차시: 깃허브(GitHub)로 내 웹 무료 배포하기**
-
-* **[Slide 1] 배포(Deployment)란? 내 컴퓨터 밖으로 나가기 🌍**
-    * **도식:**
-        🏠 배포 전: \`C:\\Users\\Desktop\\index.html\` ➡️ 내 노트북이 꺼지면 사이트도 죽음. 나 혼자만 볼 수 있음.
-        🌐 배포 후: \`https://my-vibe-coding.vercel.app\` ➡️ 24시간 365일 켜져 있는 클라우드 서버. 전 세계 누구나 URL만 치면 접속 가능!
-    * **상세 설명:**
-        - 아무리 멋진 웹사이트를 만들었어도 내 컴퓨터(로컬) 안에만 있으면 의미가 없습니다. 내 폴더 안의 파일들을 지구 어딘가에 있는 거대한 데이터센터(서버)로 옮겨 심고, 고유한 인터넷 주소를 부여받는 과정이 바로 '배포'입니다.
-
-* **[Slide 2] 클릭 몇 번이면 끝나는 마법, Vercel(버셀) ⚡**
-    * **도식:**
-        1️⃣ Vercel 홈페이지 가입 ➡️ 2️⃣ 내 깃허브(GitHub) 계정 연결 허용 ➡️ 3️⃣ 배포할 프로젝트 'Import' 버튼 클릭! ➡️ 4️⃣ (1분 대기) 소스코드가 라이브 웹사이트로 자동 변신!
-    * **상세 설명:**
-        - 과거에는 서버 컴퓨터를 임대하고, 리눅스 명령어를 치고, 복잡한 네트워크 설정을 해야 했습니다. 요즘은 Vercel이나 GitHub Pages 같은 서비스가 이 모든 귀찮은 과정을 생략하고, 소스코드만 던져주면 알아서 뚝딱 서버를 세팅해 줍니다. 심지어 소규모 프로젝트는 평생 무료입니다!
-
-* **[Slide 3] 짜잔! 첫 웹사이트 오픈 기념식 및 자동 업데이트 🎀**
-    * **도식:**
-        초록색 'Ready' 글씨 확인 ➡️ Vercel이 지어준 기본 제공 URL(주소) 복사 ➡️ 카카오톡으로 동료들에게 전송 및 스마트폰 접속 테스트!
-        ✨ **보너스 (CI/CD):** 에디터에서 배경색을 빨간색으로 고치고 깃허브에 다시 올리기만 하면? Vercel이 알아채고 자동으로 라이브 사이트에 1분 만에 적용해 줌!
-    * **상세 설명:**
-        - 내가 만든 소프트웨어가 전 세계 망에 연결되는 쾌감을 느끼는 순간입니다. 더 놀라운 것은, 한 번 연결해 두면 앞으로 코드를 수정해서 깃허브에 올릴 때마다 Vercel이 알아채고 새 버전으로 사이트를 자동 업데이트(재배포) 해준다는 점입니다.
-
----
-
-**15차시: 나만의 브랜드, 개인 도메인 연결하기**
-
-* **[Slide 1] 복잡한 기본 주소 대신, 나만의 간판 달기 📛**
-    * **도식:**
-        ❌ Vercel 기본 주소: \`https://vibe-project-12345ab-random.vercel.app\` (외우기도, 남에게 알려주기도 민망하고 힘듦)
-        ⭕ **개인 도메인: \`https://www.teachers-vibe.co.kr\` (명함에 적기 좋은 전문성, 짧고 기억하기 쉬움!)**
-    * **상세 설명:**
-        - 무료로 받은 배포 주소는 임시 번호판과 같습니다. 나만의 철학, 내 이름, 혹은 우리 학급의 아이덴티티가 담긴 깔끔한 '도메인(인터넷 주소)'을 연결하는 순간, 연습용 프로젝트가 아닌 진짜 상용 서비스와 같은 강력한 브랜드 가치를 갖게 됩니다.
-
-* **[Slide 2] 내 땅(인터넷 주소) 저렴하게 등기 치기 📜**
-    * **도식:**
-        국내 등록 업체(가비아, 호스팅케이알 등) 접속 ➡️ 원하는 이름 검색 (\`.co.kr\`, \`.com\`, \`.net\` 등) ➡️ 누가 안 샀다면 1년 단위로 대여 결제 (커피 몇 잔 값이면 충분! 보통 1~2만 원 대)
-    * **상세 설명:**
-        - 인터넷 주소는 '선착순 임대' 개념입니다. 세계 통용되는 \`.com\`이나 국내 법인/개인을 나타내는 \`.co.kr\` 등 원하는 확장자를 검색해 보고, 저렴한 업체를 골라 소유권을 확보해 보세요. (참고로 한글 도메인보다 영어 도메인이 오류가 적습니다.)
-
-* **[Slide 3] 산 도메인을 내 웹사이트에 씌우기 (네임서버 연결) 🔗**
-    * **도식:**
-        [Vercel 설정] "내 사이트 주소를 \`teachers-vibe.co.kr\`로 할래!" (등록)
-        ⬇️ (서로 주파수 맞추기) ⬇️
-        [가비아 네임서버 설정] "사람들이 이 주소 치고 들어오면, Vercel에 올려둔 내 서버 IP 주소로 안내해 줘!" (매핑 완료)
-    * **상세 설명:**
-        - 도메인 구매처(가비아)와 서버 호스팅처(Vercel)는 별개의 회사입니다. 따라서 "이 도메인을 치면 저기 있는 서버로 데려가라"고 방향을 지정해 주는 '네임서버(DNS)' 설정 과정이 필요합니다. 이 과정만 거치면 진정한 나만의 웹 서비스 론칭이 완료됩니다. 축하합니다!
-`;
-
-let currentLesson;
-const parsedData = {};
-
-const lines = userText.split('\n');
-let sessionKey = 0;
-let slideIndex = 0;
-
-for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (line.match(/^\\*\\*(\\d+)차시:/)) {
-        sessionKey = parseInt(line.match(/^\\*\\*(\\d+)차시:/)[1]);
-        parsedData[sessionKey] = [];
-        slideIndex = -1;
-    } else if (line.match(/^\\* \\*\\*\\[Slide \\d+\\] (.*?)\\*\\*/)) {
-        slideIndex++;
-        const titleMatch = line.match(/^\\* \\*\\*\\[Slide \\d+\\] (.*?)\\*\\*/)[1].trim();
-        parsedData[sessionKey].push({ title: titleMatch, diagram: '', desc: '' });
-    } else if (line.match(/^\\* \\*\\*도식:\\*\\*/)) {
-        let diagram = '';
-        let j = i + 1;
-        while (j < lines.length && !lines[j].trim().match(/^\\* \\*\\*상세 설명:\\*\\*/)) {
-            if (lines[j].trim().length > 0) {
-                diagram += lines[j].trim().replace(/^[-*]\\s*/, '') + '\\n';
-            }
-            j++;
-        }
-        if (parsedData[sessionKey] && parsedData[sessionKey][slideIndex]) {
-            parsedData[sessionKey][slideIndex].diagram = diagram.trim();
-        }
-        i = j - 1;
-    } else if (line.match(/^\\* \\*\\*상세 설명:\\*\\*/)) {
-        let desc = '';
-        let j = i + 1;
-        while (j < lines.length && !lines[j].trim().match(/^\\* \\*\\*\\[Slide \\d+\\]/) && !lines[j].trim().match(/^\\*\\*\\d+차시:/)) {
-            if (lines[j].trim().length > 0) {
-                desc += lines[j].trim().replace(/^[-*]\\s*/, '') + ' ';
-            }
-            j++;
-        }
-        if (parsedData[sessionKey] && parsedData[sessionKey][slideIndex]) {
-            parsedData[sessionKey][slideIndex].desc = desc.trim();
-        }
-        i = j - 1;
-    }
-}
-
-// Generate the replacement script for lesson.html and index.html
-function updateFile(targetPath) {
-    let content = fs.readFileSync(targetPath, 'utf8');
-    const lessonDataRegex = /const lessonData = \\[[\\s\\S]*?\\n\\s*];/m;
-
-    // We need to parse existing lessonData? No, let's just do a regex replace on the slides array using ast or logic, or just evaluate the existing array, update it, and stringify it back.
-    // Easiest is to extract the old one, eval it, update it, stringify it
-
-    const match = content.match(lessonDataRegex);
-    if (!match) return;
-
-    // eval safely
-    let data;
-    eval('data = ' + match[0].replace('const lessonData =', '').replace(/;$/, ''));
-
-    for (let l of data) {
-        if (parsedData[l.id]) {
-            // retain links if they exist
-            for (let sIdx = 0; sIdx < l.slides.length; sIdx++) {
-                if (parsedData[l.id][sIdx]) {
-                    if (l.slides[sIdx].links) {
-                        parsedData[l.id][sIdx].links = l.slides[sIdx].links;
-                    }
-                }
-            }
-            l.slides = parsedData[l.id];
-        }
-    }
-
-    const stringified = 'const lessonData = ' + JSON.stringify(data, null, 4).replace(/"([^"]+)":/g, '$1:') + ';';
-    content = content.replace(lessonDataRegex, stringified);
-    fs.writeFileSync(targetPath, content, 'utf8');
-}
-
-updateFile(path.join(__dirname, 'index.html'));
-updateFile(path.join(__dirname, 'lesson.html'));
-console.log('Update finished.');
+        2회차 접속: 자바스크립트

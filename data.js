@@ -111,12 +111,12 @@ const DB = [
             const box = c.querySelector('#scroll-box-2');
             let count = 0;
             const handler = () => {
-                if(box.scrollTop + box.clientHeight >= box.scrollHeight - 10) {
+                if (box.scrollTop + box.clientHeight >= box.scrollHeight - 10) {
                     const spinner = c.querySelector('#loading-spinner-2');
                     spinner.classList.remove('hidden');
                     box.removeEventListener('scroll', handler); // prevent double load
                     setTimeout(() => {
-                        for(let i=0; i<3; i++) {
+                        for (let i = 0; i < 3; i++) {
                             count++;
                             const div = document.createElement('div');
                             div.className = 'p-3 bg-indigo-50 border border-indigo-200 text-indigo-700 text-sm font-bold animate-[fadeIn_0.5s]';
@@ -153,8 +153,8 @@ const DB = [
             window.showTabEx = (btn, idx) => {
                 Array.from(btn.parentElement.children).forEach(b => b.className = 'flex-1 py-2 font-medium text-slate-500 hover:text-slate-700');
                 btn.className = 'flex-1 py-2 border-b-2 border-indigo-600 font-bold text-indigo-600 bg-indigo-50';
-                for(let i=1; i<=3; i++) document.getElementById('tab-ex-'+i).classList.add('hidden');
-                document.getElementById('tab-ex-'+idx).classList.remove('hidden');
+                for (let i = 1; i <= 3; i++) document.getElementById('tab-ex-' + i).classList.add('hidden');
+                document.getElementById('tab-ex-' + idx).classList.remove('hidden');
             };
         }
     },
@@ -464,15 +464,15 @@ const DB = [
                 </div>
             </div>`;
             window.simProg = () => {
-                const b=document.getElementById('pb-bar'), t=document.getElementById('pb-txt');
-                let w=0; b.style.width='0%'; t.innerText='0%';
-                if(window.pIntv) clearInterval(window.pIntv);
-                window.pIntv = setInterval(()=>{
-                    if(!document.getElementById('pb-bar')) { clearInterval(window.pIntv); return; }
-                    w+=Math.floor(Math.random()*15)+5;
-                    if(w>=100) { w=100; clearInterval(window.pIntv); }
-                    b.style.width=w+'%'; t.innerText=w+'%';
-                },400);
+                const b = document.getElementById('pb-bar'), t = document.getElementById('pb-txt');
+                let w = 0; b.style.width = '0%'; t.innerText = '0%';
+                if (window.pIntv) clearInterval(window.pIntv);
+                window.pIntv = setInterval(() => {
+                    if (!document.getElementById('pb-bar')) { clearInterval(window.pIntv); return; }
+                    w += Math.floor(Math.random() * 15) + 5;
+                    if (w >= 100) { w = 100; clearInterval(window.pIntv); }
+                    b.style.width = w + '%'; t.innerText = w + '%';
+                }, 400);
             };
             setTimeout(window.simProg, 100);
         }
@@ -593,6 +593,29 @@ const DB = [
                 <button class="absolute bottom-5 right-5 w-[52px] h-[52px] bg-indigo-600 text-white rounded-full shadow-[0_10px_20px_-5px_rgba(79,70,229,0.7)] border border-indigo-500 hover:bg-indigo-700 hover:shadow-xl hover:rotate-90 hover:scale-105 active:scale-95 transform transition-all duration-300 flex items-center justify-center text-3xl font-light focus:outline-none focus:ring-4 focus:ring-indigo-300">
                     <span class="mb-1 leading-none inline-block text-[32px]">+</span>
                 </button>
+            </div>`
+    },
+    {
+        id: 29, term: '아이프레임 (Iframe)', category: '3.콘텐츠', icon: '🖼️',
+        shortDesc: '웹페이지 안에 또 다른 웹페이지를 액자처럼 삽입하는 태그',
+        detailDesc: '현재 우리가 보고 있는 바이브 코딩의 메인 화면 구조이기도 합니다. 유튜브 영상, 구글 지도, 또는 내가 만든 다른 HTML 파일을 현재 화면 안의 네모난 창에 그대로 띄울 때 사용합니다.',
+        actionPrompt: '\n<iframe \n  src="lesson.html" \n  width="100%" \n  height="300" \n  frameborder="0">\n</iframe>',
+        render: (c) => c.innerHTML = `
+            <div class="h-full bg-slate-100 flex flex-col items-center justify-center p-4 relative">
+                <div class="absolute top-4 left-4 text-xs font-black text-slate-400">부모 웹페이지 (index.html)</div>
+                
+                <div class="w-full max-w-[280px] bg-white border-4 border-indigo-200 rounded-xl shadow-lg overflow-hidden flex flex-col mt-4">
+                    <div class="h-8 bg-indigo-50 border-b border-indigo-100 flex items-center px-3 gap-1.5 shrink-0">
+                        <span class="text-[10px] bg-indigo-500 text-white px-1.5 py-0.5 rounded font-mono font-bold tracking-widest">iframe</span>
+                        <span class="text-[10px] text-indigo-400 font-bold ml-1">src="lesson.html"</span>
+                    </div>
+                    <div class="h-40 bg-slate-800 flex flex-col items-center justify-center text-center p-4 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+                        <span class="text-emerald-400 text-4xl mb-2 relative z-10 animate-bounce">✨</span>
+                        <p class="text-[11px] font-bold text-white relative z-10">전혀 다른 독립된 HTML 파일이<br>이 네모난 공간 안에서 실행됩니다!</p>
+                    </div>
+                </div>
+                <p class="text-[11px] font-bold text-indigo-500 mt-4 text-center bg-indigo-50 px-3 py-1.5 rounded-full">↑ 테두리 안쪽이 Iframe 영역입니다.</p>
             </div>`
     }
 ];
