@@ -57,7 +57,8 @@
         }
 
         .accordion-content.open {
-            max-height: 1500px;
+            max-height: 2500px;
+            /* Q&A 영역이 바로 보이므로 높이를 여유 있게 조절 */
             padding-top: 1.5rem;
             padding-bottom: 2rem;
         }
@@ -225,8 +226,8 @@
             <i data-lucide="check" class="w-4 h-4 md:w-5 md:h-5"></i>
         </div>
         <div>
-            <p class="font-black text-sm md:text-base tracking-tight">COPIED!</p>
-            <p class="text-[11px] md:text-xs text-slate-300 font-medium mt-0.5">프롬프트가 클립보드에 복사되었습니다.</p>
+            <p class="font-black text-sm md:text-base tracking-tight">알림</p>
+            <p class="text-[11px] md:text-xs text-slate-300 font-medium mt-0.5">메시지가 복사되었습니다.</p>
         </div>
     </div>
 
@@ -293,7 +294,7 @@
                 summary: '생산성을 극대화해 줄 나만의 코드 작업실을 구축하고 초기 환경을 설정합니다.',
                 topic: 'Code Editors',
                 slides: [
-                    { title: '본격적인 개발을 위한 나만의 작업실 🏗️', diagram: '📝 윈도우 메모장 (단순 텍스트) ➡️ 글씨가 흑백이고 오타를 잡아주지 않아 코딩 시 눈이 빠질 듯 아픔 (🚫)\n💻 **코드 에디터 (전문가용 툴)** ➡️ 문법별 색상 구분, 자동 완성, 에러 실시간 밑줄 표시, AI 비서 탑재 (✅)', desc: '- 코딩(웹 개발)은 수많은 영어 단어와 기호의 조합입니다. 전문 목수에게 좋은 톱이 필요하듯, 우리에게는 코드를 예쁘게 정렬해주고 실수를 방지해 주는 \'전용 편집기(Code Editor)\'가 필수입니다. 이것이 우리 컴퓨터 속의 진짜 작업실이 됩니다.' },
+                    { title: '본격적인 개발을 위한 나만의 작업실 🏗️', diagram: '📝 윈도우 메모장 (단순 대시보드) ➡️ 글씨가 흑백이고 오타를 잡아주지 않아 코딩 시 눈이 빠질 듯 아픔 (🚫)\n💻 **코드 에디터 (전문가용 툴)** ➡️ 문법별 색상 구분, 자동 완성, 에러 실시간 밑줄 표시, AI 비서 탑재 (✅)', desc: '- 코딩(웹 개발)은 수많은 영어 단어와 기호의 조합입니다. 전문 목수에게 좋은 톱이 필요하듯, 우리에게는 코드를 예쁘게 정렬해주고 실수를 방지해 주는 \'전용 편집기(Code Editor)\'가 필수입니다. 이것이 우리 컴퓨터 속의 진짜 작업실이 됩니다.' },
                     { title: '대표적인 에디터 3대장, 내 취향 고르기 ⚔️', diagram: '📘 **VS Code (마이크로소프트):** 전 세계 1위. 수만 개의 확장 프로그램 존재. 가장 무난한 정석.\n🚀 **안티그래비티 (국내 개발):** 한국인에게 최적화된 최신 에디터. 초보자 친화적이고 빠름.\n🖱️ **Cursor (커서):** 요즘 가장 뜨거운 툴. 에디터 자체가 AI 기반이라 코딩 자동화의 끝판왕.', desc: '- 각 에디터마다 장단점이 뚜렷합니다. 기존에 익숙한 방식이 좋다면 VS Code를, AI가 내 코드를 전반적으로 다 훑어보고 알아서 타이핑해 주는 미래지향적 경험을 원한다면 Cursor나 안티그래비티를 추천합니다.' },
                     { title: '작업실 인테리어 시작하기 (초기 세팅) 🪚', diagram: '공식 홈페이지 다운로드 및 설치 ➡️ 한글 언어팩 설치(필요시) ➡️ 바탕화면에 \'바이브코딩_작업실\' 빈 폴더 생성 ➡️ 에디터에서 해당 폴더를 열기 (준비 완료!)', desc: '- 에디터를 설치했다고 끝이 아닙니다. 에디터에게 \'내가 작업할 공간(폴더)\'을 명확히 지정해 주어야 합니다. 폴더를 열고 그 안에 `index.html` 같은 파일을 생성하는 것부터가 모든 웹 개발의 진정한 첫걸음입니다.' }
                 ],
@@ -451,16 +452,13 @@
                                         <option value="grok">Grok</option>
                                     </select>
                                 </div>
-                                <button onclick="handleMentoring(${lesson.id})" title="보통 멘토링 프롬프트" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
-                                    <i data-lucide="brain-circuit" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
+                                <button onclick="handleMentoring(${lesson.id})" title="AI 멘토에게 질문하기" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
+                                    <i data-lucide="bot" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
                                 </button>
                                 <button onclick="openSlides(${lesson.id})" title="슬라이드 열기" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
                                     <i data-lucide="presentation" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
                                 </button>
-                                <button onclick="toggleQnA(${lesson.id}, event)" title="심화 Q&A" class="p-2 hover:bg-indigo-600 bg-indigo-50 rounded-xl transition-all group/btn">
-                                    <i data-lucide="message-circle-question" class="w-4 h-4 md:w-5 md:h-5 text-indigo-600 group-hover/btn:text-white transition-colors"></i>
-                                </button>
-                            </div>
+                                </div>
                             <div class="p-1 md:p-1.5">
                                 <i data-lucide="chevron-down" id="chevron-${lesson.id}" class="chevron-icon w-4 h-4 md:w-5 md:h-5 text-slate-300"></i>
                             </div>
@@ -476,9 +474,8 @@
                                     <option value="claude">Claude</option>
                                 </select>
                                 <div class="flex gap-1">
-                                    <button onclick="handleMentoring(${lesson.id}, true)" class="p-2.5 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="brain-circuit" class="w-4 h-4"></i></button>
+                                    <button onclick="handleMentoring(${lesson.id}, true)" class="p-2.5 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="bot" class="w-4 h-4"></i></button>
                                     <button onclick="openSlides(${lesson.id})" class="p-2.5 bg-indigo-600 text-white rounded-lg"><i data-lucide="presentation" class="w-4 h-4"></i></button>
-                                    <button onclick="toggleQnA(${lesson.id}, event)" class="p-2.5 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="message-circle-question" class="w-4 h-4"></i></button>
                                 </div>
                             </div>
 
@@ -495,7 +492,7 @@
                                 </div>
                             </div>
 
-                            <div id="qna-section-${lesson.id}" class="hidden p-5 md:p-8 bg-white rounded-[1.5rem] md:rounded-[2rem] border-2 border-indigo-100 shadow-xl overflow-hidden relative">
+                            <div id="qna-section-${lesson.id}" class="p-5 md:p-8 bg-white rounded-[1.5rem] md:rounded-[2rem] border-2 border-indigo-100 shadow-xl overflow-hidden relative">
                                 <div class="absolute -right-8 -top-8 text-indigo-50/50 hidden md:block">
                                     <i data-lucide="help-circle" class="w-40 h-40"></i>
                                 </div>
@@ -505,21 +502,13 @@
                                         <h4 class="text-xs md:text-sm font-black text-indigo-900 flex items-center gap-2">
                                             💡 이 차시에서 꼭 물어봐야 할 질문 목록
                                         </h4>
-                                        <div class="flex items-center gap-2 md:gap-3">
-                                            <div class="select-wrapper">
-                                                <select id="qna-ai-select-${lesson.id}" class="bg-slate-50 border border-slate-200 text-slate-600 text-[11px] md:text-[12px] font-bold pl-3 pr-8 py-2 rounded-xl focus:ring-4 focus:ring-indigo-100 outline-none appearance-none cursor-pointer">
-                                                    <option value="gemini">Gemini AI</option>
-                                                    <option value="chatgpt">ChatGPT</option>
-                                                    <option value="claude">Claude 3.5</option>
-                                                    <option value="grok">Grok</option>
-                                                </select>
-                                            </div>
-                                            <button onclick="handleQnAMentoring(${lesson.id})" class="px-4 md:px-6 py-2 bg-gradient-to-r from-indigo-600 to-accent text-white rounded-xl text-[11px] md:text-[12px] font-black shadow-lg shadow-indigo-500/30 active:scale-95 transition-all flex items-center gap-2">
-                                                멘토학습 <i data-lucide="sparkles" class="w-3 h-3 md:w-4 md:h-4"></i>
-                                            </button>
-                                        </div>
                                     </div>
                                     <ul id="qna-list-${lesson.id}" class="grid gap-2 md:gap-3">
+                                        ${lesson.qaList.map((q, i) => `
+                                            <li class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-100 text-[13px] md:text-[14px] font-bold text-slate-700 flex gap-3 hover:bg-white hover:border-indigo-300 transition-all group/qa leading-snug">
+                                                <span class="text-indigo-400 group-hover/qa:text-indigo-600 transition-colors shrink-0">${i + 1}.</span> ${q}
+                                            </li>
+                                        `).join('')}
                                     </ul>
                                 </div>
                             </div>
@@ -532,6 +521,7 @@
 
         lucide.createIcons();
 
+        // 아코디언 토글 로직
         function toggleAccordion(id) {
             const content = document.getElementById(`content-${id}`);
             const chevron = document.getElementById(`chevron-${id}`);
@@ -559,66 +549,68 @@
             }
         }
 
-        function toggleQnA(id, event) {
-            if (event) event.stopPropagation();
-            const content = document.getElementById(`content-${id}`);
-            const qnaSection = document.getElementById(`qna-section-${id}`);
-            const lesson = lessonData.find(l => l.id === id);
-
-            if (!content.classList.contains('open')) toggleAccordion(id);
-
-            if (qnaSection.classList.contains('hidden')) {
-                qnaSection.classList.remove('hidden');
-                const listEl = document.getElementById(`qna-list-${id}`);
-                listEl.innerHTML = lesson.qaList.map((q, i) => `
-                    <li class="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-100 text-[13px] md:text-[14px] font-bold text-slate-700 flex gap-3 hover:bg-white hover:border-indigo-300 transition-all group/qa leading-snug">
-                        <span class="text-indigo-400 group-hover/qa:text-indigo-600 transition-colors shrink-0">${i + 1}.</span> ${q}
-                    </li>
-                `).join('');
-                setTimeout(() => qnaSection.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-            } else {
-                qnaSection.classList.add('hidden');
-            }
-        }
-
+        // 고도화된 AI 멘토링 프롬프트 및 연동 로직
         function handleMentoring(id, isMobile = false) {
             const lesson = lessonData.find(l => l.id === id);
+
+            // 1. 선택된 AI 웹사이트 확인
             const selectElId = isMobile ? `ai-select-mobile-${id}` : `ai-select-${id}`;
             const selectEl = document.getElementById(selectElId) || document.getElementById(`ai-select-${id}`);
             const selectedAI = selectEl.value;
 
-            const lessonDesc = lesson.slides.map(s => s.desc).join(' ');
-            const fullPrompt = `나는 아주아주 초보자야. 내가 현재 학습 중인 주제는 '${lesson.title}'이야.\n\n학습한 핵심 내용은 다음과 같아:\n${lessonDesc}\n\n나의 멘토가 되어줘. 이 내용을 매우 쉽게 설명해주고, 내가 꼭 알아야 할 팁 3가지를 정리해줘.`;
+            // 2. 참조 자료(슬라이드 및 Q&A 내용) 텍스트화
+            const slideContents = lesson.slides.map((s, i) =>
+                `[슬라이드 ${i + 1}] ${s.title}\n- 도식: ${s.diagram}\n- 설명: ${s.desc}`
+            ).join('\n\n');
+            const qaContents = lesson.qaList.map((q, i) => `${i + 1}. ${q}`).join('\n');
 
-            navigator.clipboard.writeText(fullPrompt).then(() => {
-                showToast("Basic Prompt Copied", "멘토링 프롬프트가 복사되었습니다.");
-                setTimeout(() => window.open(aiUrls[selectedAI], '_blank'), 1000);
-            });
+            // 3. 복사될 프롬프트 조립 (요청하신 규칙과 페르소나 적용)
+            const fullPrompt = `너는 코딩 마스터이자 코딩을 가르치는 아주 친절한 교육자이다.
+나는 아래 [참조 자료]의 내용을 학습했는데, 궁금한 것이 많은 아주아주 초보이다. 내가 제공한 내용을 바탕으로 나를 멘토링 해줘.
+
+[참조 자료: ${lesson.title}]
+■ 요약: ${lesson.summary}
+
+■ 슬라이드 상세 내용:
+${slideContents}
+
+■ 이 차시에서 꼭 물어봐야 할 질문(Q&A) 목록:
+${qaContents}
+
+---
+[지시 사항]
+1. 첫 답변은 [참조 자료]의 핵심 내용을 초보자가 이해하기 쉽도록 다시 한번 요약 정리해 줘.
+2. 요약 내용 하단에는 내가 제공한 [질문(Q&A) 목록]을 숫자 번호와 함께 보기 좋게 정리해서 제공해 줘.
+3. 질문 목록 아래에 다음 문구를 그대로 덧붙여서 나를 환영해 줘:
+   "그리고 궁금한 것은 어떤 것이든 물어봐. 아래 큐앤에이 번호를 입력만 해도 좋아. 현재 고민중인 상황을 캡처해서 보여줘도 좋아!"
+4. 마지막으로 [추천 질문 항목]을 추가해서, 위 질문 목록에는 없지만 현재 주제와 관련하여 내가 추가로 물어보면 좋을 만한 심화/호기심 유발 질문 1~2가지를 네가 먼저 제안하며 멘토링을 이어나가 줘.`;
+
+            // 4. 로컬 환경 호환 및 팝업 차단 우회를 위한 복사 & 실행 로직
+            try {
+                // 브라우저 로컬 보안 정책(file://)을 우회하는 안전한 복사 방식
+                const textArea = document.createElement("textarea");
+                textArea.value = fullPrompt;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+
+                // 알림 팝업(토스트) 즉시 띄우기
+                showToast("AI 멘토링 준비 완료!", "Ai멘토 프롬프트가 복사되었습니다. 붙여넣기를 통해 멘토와 추가 학습을 시작하세요.");
+
+                // 팝업 차단 방지를 위해 클릭 액션 내에서 딜레이 없이 즉시 새 탭 열기
+                window.open(aiUrls[selectedAI], '_blank');
+
+            } catch (err) {
+                console.error('클립보드 복사 실패:', err);
+                alert("클립보드 복사에 실패했습니다. 브라우저 환경을 확인해주세요.");
+            }
         }
 
-        function handleQnAMentoring(id) {
-            const lesson = lessonData.find(l => l.id === id);
-            const selectEl = document.getElementById(`qna-ai-select-${id}`);
-            const selectedAI = selectEl.value;
-
-            const slideSummaries = lesson.slides.map((s, idx) => `Stage ${idx + 1}: ${s.desc}`).join('\n');
-            const questions = lesson.qaList.map((q, i) => `${i + 1}. ${q}`).join('\n');
-
-            const fullPrompt = `나는 아주아주 초보자야. 내가 현재 학습 중인 주제는 '${lesson.title}'이야.
-학습한 핵심 내용은 다음과 같아:
-${slideSummaries}
-
-그리고 이와 관련해서 내가 실무적으로 궁금해할 만한 질문 목록은 다음과 같아:
-${questions}
-
-나의 멘토가 되어줘. 위 질문 목록을 나에게 다시 보기 좋게 제시해 주고, '원하는 질문의 번호를 입력하면 매우 쉽고 자세하게 설명해 주겠다'고 안내해 줘. 내가 번호를 입력하기 전까지는 절대 먼저 답변하지 마.`;
-
-            navigator.clipboard.writeText(fullPrompt).then(() => {
-                showToast("Q&A Prompt Copied", "심화 질문 목록과 프롬프트가 복사되었습니다.");
-                setTimeout(() => window.open(aiUrls[selectedAI], '_blank'), 1000);
-            });
-        }
-
+        // 알림창 띄우기 로직 수정
         function showToast(title, sub) {
             const toast = document.getElementById('toast');
             toast.querySelector('p.font-black').textContent = title;
@@ -630,11 +622,11 @@ ${questions}
         let currentSession = null;
         let currentSlideIndex = 0;
         const modal = document.getElementById('slide-modal');
-        const slideTitleEl = document.getElementById('slide-title'); // 상단 바의 제목 요소
+        const slideTitleEl = document.getElementById('slide-title');
         const slideDescEl = document.getElementById('slide-desc');
         const slideDiagramEl = document.getElementById('slide-diagram');
         const slideLinksEl = document.getElementById('slide-links');
-        const slideBadge = document.getElementById('slide-badge'); // 본문 내부 배지
+        const slideBadge = document.getElementById('slide-badge');
         const slideIndicator = document.getElementById('slide-indicator');
         const progressBar = document.getElementById('progress-bar');
         const btnPrev = document.getElementById('btn-prev-slide');
@@ -665,12 +657,8 @@ ${questions}
             const slide = currentSession.slides[currentSlideIndex];
             const total = currentSession.slides.length;
 
-            // 상단 바 제목 업데이트
             slideTitleEl.innerHTML = formatMarkdown(slide.title);
-
-            // 본문 내부 배지 업데이트
             slideBadge.textContent = `STAGE ${String(currentSlideIndex + 1).padStart(2, '0')}`;
-
             slideDiagramEl.innerHTML = formatMarkdown(slide.diagram);
             slideDescEl.innerHTML = formatMarkdown(slide.desc);
             slideWatermark.textContent = String(currentSlideIndex + 1).padStart(2, '0');
