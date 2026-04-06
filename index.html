@@ -83,9 +83,7 @@
 
         function loadFrame(src, activeBtn) {
             // 1. Iframe 소스 변경
-            if (iframe.src && !iframe.src.endsWith(src)) {
-                iframe.src = src;
-            }
+            iframe.src = src;
 
             // 2. 모든 버튼 스타일 초기화 (비활성 상태)
             navButtons.forEach(btn => {
