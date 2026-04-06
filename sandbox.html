@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>용어 실습</title>
+    <title>용어 실습 - 바이브 코딩</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="data.js"></script>
@@ -21,6 +21,12 @@
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 10px;
+        }
+
+        /* 코드 강조를 위한 추가 스타일 */
+        .code-block-container pre {
+            word-break: break-all;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -45,6 +51,18 @@
         const contentEl = document.getElementById('sbx-content');
         let currentId = 1;
 
+        // [전문가 가이드] 특수문자 안전 변환 함수 (HTML 깨짐 방지 핵심)
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+
         function renderList() {
             listEl.innerHTML = DB.map(item => `
                 <button onclick="selectItem(${item.id})" class="w-full p-4 rounded-2xl text-left transition-all ${currentId === item.id ? 'bg-white shadow-md border-indigo-200 border-2' : 'hover:bg-white/50 text-slate-500'}">
@@ -59,28 +77,65 @@
         function selectItem(id) {
             currentId = id;
             const item = DB.find(i => i.id === id);
+
+            // 안전한 데이터 처리
+            const safeCode = escapeHtml(item.actionPrompt);
+
             contentEl.innerHTML = `
-                <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-hidden">
-                    <div class="flex flex-col gap-4 overflow-hidden">
-                        <div class="bg-white rounded-[24px] p-6 shadow-sm border border-slate-200">
-                            <h3 class="text-2xl font-black text-slate-900 mb-2">${item.term}</h3>
-                            <p class="text-slate-500 text-sm">${item.detailDesc}</p>
-                        </div>
-                        <div class="flex-1 bg-slate-900 rounded-[24px] p-6 font-mono text-indigo-300 text-sm overflow-auto relative group">
-                            <div class="absolute top-4 right-4 text-[10px] text-slate-500 font-bold tracking-widest uppercase">HTML Code</div>
-                            <pre class="whitespace-pre-wrap leading-relaxed">${item.actionPrompt}</pre>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-[32px] shadow-xl border-4 border-slate-200 overflow-hidden flex flex-col relative group">
+                <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden">
+                    
+                    <div class="lg:col-span-2 bg-white rounded-[32px] shadow-xl border-4 border-slate-200 overflow-hidden flex flex-col relative group">
                         <div class="h-10 bg-slate-100 border-b border-slate-200 flex items-center px-4 gap-1.5">
                             <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
                             <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
                             <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+                            <span class="ml-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">Live Preview</span>
                         </div>
                         <div class="flex-1 overflow-auto bg-white relative p-4" id="preview-area"></div>
                     </div>
+
+                    <div class="lg:col-span-1 flex flex-col gap-4 overflow-hidden">
+                        
+                        <div class="bg-white rounded-[24px] p-6 shadow-sm border border-slate-200 overflow-y-auto custom-scrollbar flex flex-col shrink-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">${escapeHtml(item.category)}</span>
+                            </div>
+                            <h3 class="text-2xl font-black text-slate-900 mb-1">${escapeHtml(item.term)} ${item.icon}</h3>
+                            <p class="text-indigo-500 font-bold text-sm mb-4">${escapeHtml(item.shortDesc)}</p>
+                            <div class="h-px bg-slate-100 w-full mb-4"></div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">Detailed Description</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed">${escapeHtml(item.detailDesc)}</p>
+                        </div>
+
+                        <div class="flex-1 bg-slate-900 rounded-[24px] p-6 font-mono text-indigo-300 text-[12px] overflow-hidden flex flex-col relative">
+                            <div class="flex justify-between items-center mb-3 shrink-0">
+                                <div class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">HTML Reference</div>
+                                <button id="copy-btn" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-400 px-2 py-1 rounded transition-colors active:scale-95">
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="flex-1 overflow-auto custom-scrollbar code-block-container">
+                                <pre class="leading-relaxed outline-none">${safeCode}</pre>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             `;
+
+            // [전문가 가이드] 복사 버튼 이벤트 리스너를 별도로 등록하여 인용구 충돌 완전 방지
+            document.getElementById('copy-btn').onclick = () => {
+                navigator.clipboard.writeText(item.actionPrompt);
+                const btn = document.getElementById('copy-btn');
+                btn.innerText = 'Copied!';
+                btn.classList.add('text-emerald-400');
+                setTimeout(() => {
+                    btn.innerText = 'Copy';
+                    btn.classList.remove('text-emerald-400');
+                }, 1500);
+            };
+
+            // 렌더링 실행
             item.render(document.getElementById('preview-area'));
             renderList();
             lucide.createIcons();
