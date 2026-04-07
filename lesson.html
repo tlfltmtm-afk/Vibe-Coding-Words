@@ -163,11 +163,12 @@
 
                     <div
                         class="bg-white border border-slate-200 rounded-[1.5rem] p-6 md:p-8 flex flex-col md:flex-row gap-5 shadow-sm">
-                        <div class="shrink-0 flex justify-center md:justify-start">
+                        <div class="shrink-0 flex items-center gap-3 justify-center md:justify-start">
                             <div
                                 class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center shadow-inner border border-indigo-100">
-                                <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i>
+                                <i data-lucide="bot" class="w-6 h-6 text-indigo-600"></i>
                             </div>
+                            <span class="font-black text-indigo-600 text-sm md:text-base">AI 멘토</span>
                         </div>
                         <div class="space-y-2 w-full">
                             <span
@@ -227,6 +228,31 @@
             <p class="font-black text-sm md:text-base tracking-tight">COPIED!</p>
             <p class="text-[11px] md:text-xs text-slate-300 font-medium mt-0.5">프롬프트가 클립보드에 복사되었습니다.</p>
         </div>
+    </div>
+
+    <!-- 관련 링크 플로팅 버튼 및 팝업 -->
+    <div class="fixed bottom-20 right-6 z-50 flex flex-col items-end gap-4">
+        <!-- 팝업 아코디언 -->
+        <div id="links-popup" class="hidden w-72 md:w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transition-all duration-300 translate-y-4 opacity-0 max-h-[70vh] flex flex-col">
+            <div class="p-4 bg-indigo-600 text-white flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="link" class="w-4 h-4"></i>
+                    <span class="font-black text-sm tracking-tight">관련 링크 모음</span>
+                </div>
+                <button onclick="toggleLinksPopup()" class="p-1 hover:bg-white/20 rounded-lg transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="links-popup-content" class="overflow-y-auto custom-scrollbar p-2 space-y-2 bg-slate-50/50">
+                <!-- 여기에 동적으로 링크들이 추가됩니다 -->
+            </div>
+        </div>
+
+        <!-- 플로팅 버튼 -->
+        <button id="btn-links-toggle" onclick="toggleLinksPopup()" 
+            class="w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all active:scale-90 group">
+            <i data-lucide="link" class="w-6 h-6 group-hover:rotate-12 transition-transform"></i>
+        </button>
     </div>
 
     <script src="lesson.js"></script>
