@@ -229,9 +229,14 @@ const lessonData = [
                 desc: '- 외부에서 데이터를 가져오지 않는다면 뼈대와 단순 기능만 들어있는 \'정적 웹사이트\'가 유리합니다.'
             },
             {
-                title: 'AI로 기능 구현하기 (교육용 게임/UI 사례) 🗺️',
-                diagram: '🕵️‍♂️ 방탈출 웹: "비밀번호 1024 입력 시 다음 화면 이동 로직 구현"',
-                desc: '- 데이터베이스 없이 JavaScript 조건문(if-else)만으로도 훌륭한 교육용 게임이나 인터랙티브 웹을 만들 수 있습니다.'
+                title: 'AI로 기능 구현하기 (교육용 구현 사례) 🗺️',
+                diagram: '🕵️‍♂️ 사례: "어사문, 미술탐험대, 시간표 생성기 등"',
+                desc: '- 데이터베이스 없이 JavaScript 조건문(if-else)만으로도 훌륭한 교육용 게임이나 인터랙티브 웹을 만들 수 있습니다. 아래 실제 구현 사례들을 참고해 보세요.',
+                links: [
+                    { name: '어사문', url: 'https://eosamun.crownyuja.co.kr/' },
+                    { name: '미술탐험대', url: 'https://crownyuja.co.kr/Art-Explorer/' },
+                    { name: '시간표 생성기', url: 'https://crownyuja.co.kr/schedule/' }
+                ]
             },
             {
                 title: '즉각적인 피드백과 미세 조정의 쾌감 🔍',
@@ -261,9 +266,13 @@ const lessonData = [
                 desc: '- 개발자인 나는 유지비용을 1원도 내지 않고 사용자 기기에서 복사+이동을 유도하는 실용적 설계입니다.'
             },
             {
-                title: '교육 현장 적용 사례 🎒',
-                diagram: '진로 탐험대, 시간 탐험대 페르소나 생성기 등',
-                desc: '- 프롬프트 엔지니어링 지식이 없는 학생들도 버튼 몇 번으로 최고 품질의 AI 결과를 얻게 됩니다.'
+                title: '프롬프트 생성기 실전 사례 🎒',
+                diagram: '🚀 진로탐험대, 역사탐험대 등 교육용 툴 제작',
+                desc: '- 프롬프트 엔지니어링 지식이 없는 학생과 교사들도 버튼 몇 번으로 최고 품질의 AI 결과를 얻게 됩니다. 아래 실제 운영 중인 생성기들을 체험해 보세요.',
+                links: [
+                    { name: '진로탐험대', url: 'https://crownyuja.co.kr/Career-Prompt/' },
+                    { name: '역사탐험대', url: 'https://crownyuja.co.kr/history-prompt/' }
+                ]
             }
         ],
         qaList: [
@@ -349,9 +358,12 @@ const lessonData = [
                 desc: '- 사용자의 웹 브라우저 보관함을 활용해 보안을 유지하면서도 자동 로그인과 같은 편의성을 제공합니다.'
             },
             {
-                title: '실전 사례: 학교 전체에 뿌리는 툴 👨‍🏫',
-                diagram: '만 명의 교사가 접속해도 서버비 걱정 없이 혁신적인 교육 툴 공유 가능',
-                desc: '- 각자 자신의 한도를 쓰기 때문에 트래픽 부담이 전혀 없습니다.'
+                title: '사용자 API 방식 실전 사례 👨‍🏫',
+                diagram: '🏫 학급컨설팅 도우미 등 학교 맞춤형 툴',
+                desc: '- 만 명의 교사가 접속해도 서버비 걱정 없이 혁신적인 교육 툴을 공유할 수 있습니다. 각자 자신의 API 한도를 사용하므로 트래픽과 비용 부담이 없습니다.',
+                links: [
+                    { name: '학급컨설팅 도우미', url: 'https://crownyuja.co.kr/happy-school/' }
+                ]
             }
         ],
         qaList: [
